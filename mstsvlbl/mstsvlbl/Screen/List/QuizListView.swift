@@ -17,7 +17,7 @@ struct QuizListView: View {
         GridItem(
             .adaptive(
                 minimum: DesignBook.Layout.gridMinWidth,
-                maximum: DesignBook.Layout.gridMaxWidth
+                maximum: .infinity
             ),
             spacing: DesignBook.Layout.gridSpacing,
             alignment: .top
@@ -32,6 +32,7 @@ struct QuizListView: View {
                         makeItemView(quiz: quiz)
                     }
                 }
+                .padding(DesignBook.Spacing.lg)
             }
             .navigationTitle("Quizzes")
             .task { await viewModel.load() }

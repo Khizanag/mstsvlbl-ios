@@ -34,7 +34,6 @@ struct QuizPlayView: View {
         .padding(DesignBook.Layout.contentPadding)
         .navigationTitle(quiz.title)
     }
-
 }
 
 // MARK: - Subviews
