@@ -9,7 +9,7 @@ import SwiftUI
 import Observation
 
 struct MainTabView: View {
-    @State private var coordinator = QuizFlowCoordinator()
+    @State private var coordinator = Coordinator()
 
     var body: some View {
         TabView {
@@ -49,8 +49,10 @@ struct MainTabView: View {
 // MARK: - Tabs
 private extension MainTabView {
     var quizzesTab: some View {
-        RootNavigatorView()
-            .environment(coordinator)
+        NavigatorView {
+            QuizListView()
+        }
+        .environment(coordinator)
     }
 
     var discoverTab: some View {

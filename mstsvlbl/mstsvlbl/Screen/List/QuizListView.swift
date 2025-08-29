@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizListView: View {
     @State private var viewModel = QuizListViewModel()
-    @Environment(QuizFlowCoordinator.self) private var coordinator
+    @Environment(Coordinator.self) private var coordinator
     @Environment(UserStore.self) private var userStore
 
     private let columns = [
@@ -22,21 +22,19 @@ struct QuizListView: View {
             alignment: .top
         )
     ]
-
+    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
-                    ForEach(viewModel.quizzes) { quiz in
-                        makeItemView(quiz: quiz)
-                    }
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
+                ForEach(viewModel.quizzes) { quiz in
+                    makeItemView(quiz: quiz)
                 }
-                .padding(DesignBook.Spacing.lg)
             }
-            .navigationTitle("Quizzes")
-            .toolbar { toolbarContent }
-            .task { await viewModel.load() }
+            .padding(DesignBook.Spacing.lg)
         }
+        .navigationTitle("Quizzes")
+        .toolbar { toolbarContent }
+        .task { await viewModel.load() }
     }
 }
 
