@@ -9,53 +9,32 @@ import SwiftUI
 
 struct QuizDetailView: View {
     let quiz: Quiz
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
                 cover
-
-                VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
-                    Text(quiz.title)
-                        .font(DesignBook.Font.title2)
-
-                    if let description = quiz.description, !description.isEmpty {
-                        Text(description)
-                            .font(DesignBook.Font.body)
-                            .foregroundStyle(DesignBook.Color.textSecondary)
-                    }
-
-                    HStack(spacing: DesignBook.Spacing.xl) {
-                        Label("\(quiz.questions.count) questions", systemImage: "list.number")
-                        if let createdAt = quiz.createdAt {
-                            Label(createdAt, systemImage: "calendar")
-                        }
-                        if let max = quiz.maxTimeSeconds, max > 0 {
-                            Label("\(max)s", systemImage: "timer")
-                        }
-                    }
-                    .font(DesignBook.Font.subheadline)
-                    .foregroundStyle(DesignBook.Color.textSecondary)
-                }
-
+                
+                detailsSection
+                
                 Spacer(minLength: DesignBook.Spacing.xl)
-
+                
                 actionButtons
             }
-            .padding(DesignBook.Layout.contentPadding)
+            .padding(.horizontal, DesignBook.Layout.contentPadding)
         }
         .navigationTitle("Overview")
     }
 }
 
+// MARK: - Components
 private extension QuizDetailView {
-    @ViewBuilder
     var cover: some View {
         ZStack {
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
                 .fill(DesignBook.Color.mutedBackground)
                 .frame(height: 180)
-
+            
             if let name = quiz.coverName, !name.isEmpty {
                 Image(name)
                     .resizable()
@@ -70,7 +49,7 @@ private extension QuizDetailView {
         }
         .shadow(DesignBook.Shadow.m)
     }
-
+    
     var actionButtons: some View {
         HStack(spacing: DesignBook.Spacing.lg) {
             NavigationLink {
@@ -80,7 +59,7 @@ private extension QuizDetailView {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-
+            
             ShareLink(item: quiz.title) {
                 Label("Share", systemImage: "square.and.arrow.up")
                     .frame(maxWidth: .infinity)
@@ -88,8 +67,34 @@ private extension QuizDetailView {
             .buttonStyle(.bordered)
         }
     }
+    
+    var detailsSection: some View {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
+            Text(quiz.title)
+                .font(DesignBook.Font.title2)
+            
+            if let description = quiz.description, !description.isEmpty {
+                Text(description)
+                    .font(DesignBook.Font.body)
+                    .foregroundStyle(DesignBook.Color.textSecondary)
+            }
+            
+            HStack(spacing: DesignBook.Spacing.xl) {
+                Label("\(quiz.questions.count) questions", systemImage: "list.number")
+                if let createdAt = quiz.createdAt {
+                    Label(createdAt, systemImage: "calendar")
+                }
+                if let max = quiz.maxTimeSeconds, max > 0 {
+                    Label("\(max)s", systemImage: "timer")
+                }
+            }
+            .font(DesignBook.Font.subheadline)
+            .foregroundStyle(DesignBook.Color.textSecondary)
+        }
+    }
 }
 
+// MARK: - Preview
 #Preview {
     QuizDetailView(quiz: .example)
 }

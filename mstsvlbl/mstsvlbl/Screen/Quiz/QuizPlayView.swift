@@ -8,21 +8,30 @@
 import SwiftUI
 
 struct QuizPlayView: View {
+    // MARK: - Properties
     @State private var viewModel: QuizViewModel
-    
-    let quiz: Quiz
 
+    // MARK: - Init
     init(quiz: Quiz) {
         _viewModel = State(wrappedValue: QuizViewModel(quiz: quiz))
-        self.quiz = quiz
     }
 
+    // MARK: - Body
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            
             if viewModel.currentQuestion != nil {
+                headerView
+                    .padding(DesignBook.Layout.contentPadding)
+                    .background(.ultraThinMaterial)
+                
+                Spacer()
+
                 questionView
 
                 choicesView
+                
+                Spacer()
 
                 footerView
             } else {
@@ -30,12 +39,7 @@ struct QuizPlayView: View {
             }
         }
         .padding(DesignBook.Layout.contentPadding)
-        .navigationTitle(quiz.title)
-        .safeAreaInset(edge: .top) {
-            headerView
-                .padding(DesignBook.Layout.contentPadding)
-                .background(.ultraThinMaterial)
-        }
+        .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
         .onAppear { viewModel.startTimerIfNeeded() }
         .onDisappear { viewModel.stopTimer() }
     }
@@ -46,7 +50,7 @@ private extension QuizPlayView {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                Text(quiz.title)
+                Text(viewModel.quiz?.title ?? "") // TODO: Fix
                     .font(DesignBook.Font.headline)
 
                 Spacer()
@@ -56,7 +60,7 @@ private extension QuizPlayView {
                 .foregroundStyle(.secondary)
             }
 
-            if let max = quiz.maxTimeSeconds, max > 0 {
+            if let max = viewModel.quiz?.maxTimeSeconds, max > 0 {
                 HStack {
                     Spacer()
                     Label("\(viewModel.remainingSeconds)s", systemImage: "timer")

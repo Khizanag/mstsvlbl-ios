@@ -21,8 +21,14 @@ struct RootNavigatorView: View {
                 }
         }
         .sheet(item: $coordinator.sheet) { sheet in
-            sheet()
-                .environment(coordinator)
+            switch sheet {
+            case .play:
+                NavigationStack { sheet().environment(coordinator) }
+                    .presentationDetents([])
+                    .presentationDragIndicator(.hidden)
+            default:
+                sheet().environment(coordinator)
+            }
         }
     }
 }
