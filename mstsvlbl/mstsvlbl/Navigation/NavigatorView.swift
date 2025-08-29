@@ -12,7 +12,7 @@ import Combine
 @MainActor
 @Observable
 final class Coordinator {
-    /*fileprivate*/ var path: [Page] = []
+    fileprivate var path: [Page] = []
     fileprivate var sheet: Page?
     fileprivate var fullScreenCoverPage: Page?
     
@@ -93,12 +93,11 @@ struct NavigatorView<Root: View>: View {
                 .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
                     page(wrappedInNavigatorView: true)
                 }
-                .onReceive(coordinator.shouldDismissPublisher) {
-                    dismiss()
-                }
-                .environment(coordinator)
         }
-        
+        .onReceive(coordinator.shouldDismissPublisher) {
+            dismiss()
+        }
+        .environment(coordinator)
     }
 }
 
