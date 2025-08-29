@@ -12,13 +12,11 @@ struct BookmarksView: View {
     @State private var allQuizzes: [Quiz] = []
     @State private var isLoading = false
     private let repository: QuizRepository = BundleQuizRepository()
-
+    
     var body: some View {
-        NavigatorView {
-            content
-                .navigationTitle("Bookmarks")
-        }
-        .task { await loadQuizzesIfNeeded() }
+        content
+            .navigationTitle("Bookmarks")
+            .task { await loadQuizzesIfNeeded() }
     }
 }
 
@@ -26,7 +24,7 @@ private extension BookmarksView {
     var bookmarkedQuizzes: [Quiz] {
         allQuizzes.filter { userStore.user.bookmarks.contains($0.id) }
     }
-
+    
     @ViewBuilder
     var content: some View {
         if isLoading {
@@ -51,7 +49,7 @@ private extension BookmarksView {
             }
         }
     }
-
+    
     func loadQuizzesIfNeeded() async {
         guard allQuizzes.isEmpty, !isLoading else { return }
         isLoading = true

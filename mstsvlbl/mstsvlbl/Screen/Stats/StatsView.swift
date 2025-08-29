@@ -9,8 +9,7 @@ import SwiftUI
 
 struct StatsView: View {
     var body: some View {
-        NavigatorView {
-            VStack(spacing: 16) {
+        VStack(spacing: 16) {
                 Text("Your Progress")
                     .font(DesignBook.Font.title2)
                 Text("Coming soon…")
@@ -21,7 +20,6 @@ struct StatsView: View {
             .padding(DesignBook.Layout.contentPadding)
             .navigationTitle("Stats")
         }
-    }
 }
 
 #Preview {

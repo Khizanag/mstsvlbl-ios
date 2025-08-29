@@ -64,34 +64,50 @@ struct NavigatorView<Root: View>: View {
     @ViewBuilder private var root: () -> Root
     @Environment(\.dismiss) private var dismiss
     
-    init(root: @escaping () -> Root) {
+    private let canBeDismissed: Bool
+    
+    init(
+        canBeDismissed: Bool = true,
+        root: @escaping () -> Root
+    ) {
+        self.canBeDismissed = canBeDismissed
         self.root = root
     }
 
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            root()
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            coordinator.dismissFullScreenCover()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                        }
-                        .buttonStyle(.plain)
+            if canBeDismissed {
+                root()
+                    .toolbar {
+                        dismissToolbarItem
                     }
-                }
+            } else {
+                root()
+            }
         }
         .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
-            page()
+            page(wrappedInNavigatorView: true)
         }
         .sheet(item: $coordinator.sheet) { sheet in
             sheet()
         }
         .environment(coordinator)
         .onReceive(coordinator.shouldDismissPublisher) {
-            print("Did receive dismiss signal")
             dismiss()
+        }
+    }
+}
+
+// MARK: - Components
+private extension NavigatorView {
+    var dismissToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                coordinator.dismiss()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.plain)
         }
     }
 }

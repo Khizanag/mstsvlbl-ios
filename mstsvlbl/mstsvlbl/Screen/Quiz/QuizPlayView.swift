@@ -10,44 +10,42 @@ import SwiftUI
 struct QuizPlayView: View {
     // MARK: - Properties
     @State private var viewModel: QuizViewModel
-
+    
     // MARK: - Init
     init(quiz: Quiz) {
         _viewModel = State(wrappedValue: QuizViewModel(quiz: quiz))
     }
-
+    
     // MARK: - Body
     var body: some View {
-        NavigatorView {
-            VStack(alignment: .leading, spacing: 16) {
-                
-                if viewModel.currentQuestion != nil {
-                    VStack(spacing: 16) {
-                        headerView
-                            .padding(DesignBook.Layout.contentPadding)
-                            .background(.thinMaterial)
-                            .padding(-DesignBook.Layout.contentPadding)
-                        
-                        Spacer()
-
-                        questionView
-
-                        choicesView
-                        
-                        Spacer()
-
-                        footerView
-                    }
+        VStack(alignment: .leading, spacing: 16) {
+            if viewModel.currentQuestion != nil {
+                VStack(spacing: 16) {
+                    headerView
+                        .padding(DesignBook.Layout.contentPadding)
+                        .background(.thinMaterial)
+                        .padding(-DesignBook.Layout.contentPadding)
                     
-                } else {
-                    completedView
+                    Spacer()
+                    
+                    questionView
+                    
+                    choicesView
+                    
+                    Spacer()
+                    
+                    footerView
                 }
+                
+            } else {
+                completedView
             }
-            .padding(DesignBook.Layout.contentPadding)
-            .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
-            .onAppear { viewModel.startTimerIfNeeded() }
-            .onDisappear { viewModel.stopTimer() }
         }
+        .padding(DesignBook.Layout.contentPadding)
+        .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
+        .navigationBarBackButtonHidden()
+        .onAppear { viewModel.startTimerIfNeeded() }
+        .onDisappear { viewModel.stopTimer() }
     }
 }
 
@@ -58,14 +56,14 @@ private extension QuizPlayView {
             HStack(alignment: .firstTextBaseline) {
                 Text(viewModel.quiz?.title ?? "") // TODO: Fix
                     .font(DesignBook.Font.headline)
-
+                
                 Spacer()
-
+                
                 Text("Score: \(viewModel.score)/\(viewModel.totalQuestions)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-
+            
             if let max = viewModel.quiz?.maxTimeSeconds, max > 0 {
                 HStack {
                     Spacer()
@@ -75,12 +73,12 @@ private extension QuizPlayView {
                     Spacer()
                 }
             }
-
+            
             ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
                 .animation(.easeInOut(duration: 0.25), value: viewModel.answeredCount)
         }
     }
-
+    
     @ViewBuilder
     var questionView: some View {
         if let text = viewModel.currentQuestion?.text {
@@ -88,7 +86,7 @@ private extension QuizPlayView {
                 .font(DesignBook.Font.title2)
         }
     }
-
+    
     var choicesView: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
             if let choices = viewModel.currentQuestion?.choices {
@@ -139,7 +137,7 @@ private extension QuizPlayView {
             
             Text("Your score: \(viewModel.score)/\(viewModel.totalQuestions)")
                 .font(.title2)
-
+            
             Button("Restart") {
                 viewModel.restart()
             }

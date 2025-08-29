@@ -10,17 +10,16 @@ import SwiftUI
 enum Page: Hashable {
     case list
     case play(Quiz)
-    case detail(Quiz)
+    case overview(Quiz)
 
     @ViewBuilder
-    func callAsFunction() -> some View {
-        switch self {
-        case .list:
-            QuizListView()
-        case .play(let quiz):
-            QuizPlayView(quiz: quiz)
-        case .detail(let quiz):
-            QuizDetailView(quiz: quiz)
+    func callAsFunction(wrappedInNavigatorView: Bool = false) -> some View {
+        if wrappedInNavigatorView {
+            NavigatorView {
+                content
+            }
+        } else {
+            content
         }
     }
 }
@@ -33,8 +32,20 @@ extension Page: Identifiable {
             "list"
         case .play(let quiz):
             "play_\(quiz.id)"
-        case .detail(let quiz):
-            "detail_\(quiz.id)"
+        case .overview(let quiz):
+            "overview_\(quiz.id)"
+        }
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        switch self {
+        case .list:
+            QuizListView()
+        case .play(let quiz):
+            QuizPlayView(quiz: quiz)
+        case .overview(let quiz):
+            QuizDetailView(quiz: quiz)
         }
     }
 }

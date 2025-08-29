@@ -11,7 +11,7 @@ struct QuizListView: View {
     @State private var viewModel = QuizListViewModel()
     @Environment(Coordinator.self) private var coordinator
     @Environment(UserStore.self) private var userStore
-
+    
     private let columns = [
         GridItem(
             .adaptive(
@@ -24,6 +24,7 @@ struct QuizListView: View {
     ]
     
     var body: some View {
+        
         ScrollView {
             LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
                 ForEach(viewModel.quizzes) { quiz in
@@ -42,7 +43,7 @@ struct QuizListView: View {
 private extension QuizListView {
     func makeItemView(quiz: Quiz) -> some View {
         Button {
-            coordinator.fullScreenCover(.play(quiz))
+            coordinator.fullScreenCover(.overview(quiz))
         } label: {
             QuizCardView(quiz: quiz)
         }
@@ -58,7 +59,7 @@ private extension QuizListView {
         ToolbarItem(placement: .primaryAction) {
             Menu {
                 makeToolbarItemButton(sort: .default)
-
+                
                 Divider()
                 
                 makeToolbarItemButton(sort: .alphabeticalAsc)
@@ -98,28 +99,29 @@ private extension QuizListView {
     func viewModelText(for option: QuizListViewModel.SortOption) -> String {
         option.title
     }
-
+    
     func isSelected(_ option: QuizListViewModel.SortOption) -> Bool {
         viewModel.selectedSort == option
     }
-
+    
     @ViewBuilder
     func itemContextMenu(quiz: Quiz) -> some View {
         Button {
             userStore.toggleBookmark(quizId: quiz.id)
         } label: {
-            Label(userStore.user.bookmarks.contains(quiz.id) ? "Remove Bookmark" : "Add to Bookmarks",
-                  systemImage: userStore.user.bookmarks.contains(quiz.id) ? "bookmark.slash" : "bookmark")
+            Label(
+                userStore.user.bookmarks.contains(quiz.id) ? "Remove Bookmark" : "Add to Bookmarks",
+                systemImage: userStore.user.bookmarks.contains(quiz.id) ? "bookmark.slash" : "bookmark"
+            )
         }
-
+        
         Button {
-//            coordinator.present(quiz)
+            //            coordinator.present(quiz)
         } label: {
             Label("Preview", systemImage: "eye")
         }
     }
 }
-
 
 #Preview {
     QuizListView()

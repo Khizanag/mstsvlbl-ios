@@ -12,7 +12,6 @@ struct SettingsView: View {
     @AppStorage("soundEnabled") private var soundEnabled = true
 
     var body: some View {
-        NavigatorView {
             Form {
                 Section("Feedback") {
                     Toggle("Haptics", isOn: $hapticsEnabled)
@@ -29,7 +28,6 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-        }
     }
 }
 

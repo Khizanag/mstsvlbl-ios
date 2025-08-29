@@ -9,8 +9,6 @@ import SwiftUI
 import Observation
 
 struct MainTabView: View {
-    @State private var coordinator = Coordinator()
-
     var body: some View {
         TabView {
             discoverTab
@@ -49,30 +47,39 @@ struct MainTabView: View {
 // MARK: - Tabs
 private extension MainTabView {
     var quizzesTab: some View {
-        NavigatorView {
+        NavigatorView(canBeDismissed: false) {
             QuizListView()
         }
-        .environment(coordinator)
     }
 
     var discoverTab: some View {
-        DiscoverView()
+        NavigatorView(canBeDismissed: false) {
+            DiscoverView()
+        }
     }
 
     var bookmarksTab: some View {
-        BookmarksView()
+        NavigatorView(canBeDismissed: false) {
+            BookmarksView()
+        }
     }
 
     var statsTab: some View {
-        StatsView()
+        NavigatorView(canBeDismissed: false) {
+            StatsView()
+        }
     }
 
     var profileTab: some View {
-        ProfileView()
+        NavigatorView(canBeDismissed: false) {
+            ProfileView()
+        }
     }
 
     var settingsTab: some View {
-        SettingsView()
+        NavigatorView(canBeDismissed: false) {
+            SettingsView()
+        }
     }
 }
 

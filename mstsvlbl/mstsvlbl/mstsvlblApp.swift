@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct mstsvlblApp: App {
     @State private var userStore = UserStore()
+    
     var body: some Scene {
         WindowGroup {
             MainTabView()
