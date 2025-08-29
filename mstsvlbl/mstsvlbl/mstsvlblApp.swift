@@ -12,7 +12,7 @@ import SwiftData
 struct mstsvlblApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            QuizListView()
         }
     }
 }
