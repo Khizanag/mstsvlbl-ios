@@ -18,30 +18,32 @@ struct QuizPlayView: View {
 
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            
-            if viewModel.currentQuestion != nil {
-                headerView
-                    .padding(DesignBook.Layout.contentPadding)
-                    .background(.ultraThinMaterial)
+        NavigatorView {
+            VStack(alignment: .leading, spacing: 16) {
                 
-                Spacer()
+                if viewModel.currentQuestion != nil {
+                    headerView
+                        .padding(DesignBook.Layout.contentPadding)
+                        .background(.ultraThinMaterial)
+                    
+                    Spacer()
 
-                questionView
+                    questionView
 
-                choicesView
-                
-                Spacer()
+                    choicesView
+                    
+                    Spacer()
 
-                footerView
-            } else {
-                completedView
+                    footerView
+                } else {
+                    completedView
+                }
             }
+            .padding(DesignBook.Layout.contentPadding)
+            .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
+            .onAppear { viewModel.startTimerIfNeeded() }
+            .onDisappear { viewModel.stopTimer() }
         }
-        .padding(DesignBook.Layout.contentPadding)
-        .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
-        .onAppear { viewModel.startTimerIfNeeded() }
-        .onDisappear { viewModel.stopTimer() }
     }
 }
 
