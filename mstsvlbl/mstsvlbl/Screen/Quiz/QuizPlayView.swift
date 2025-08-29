@@ -17,7 +17,8 @@ struct QuizPlayView: View {
                 Text(quiz.title)
                     .font(.headline)
 
-                ProgressView(value: Double(viewModel.currentQuestionIndex + 1), total: Double(viewModel.totalQuestions))
+                ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
+                    .animation(.easeInOut(duration: 0.25), value: viewModel.answeredCount)
 
                 Text(currentQuestion.text)
                     .font(.title2)
@@ -48,7 +49,9 @@ struct QuizPlayView: View {
                         .foregroundStyle(.secondary)
                     Spacer()
                     Button(viewModel.isOnLastQuestion ? "Finish" : "Next") {
-                        viewModel.goToNextQuestion()
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            viewModel.goToNextQuestion()
+                        }
                     }
                     .disabled(!viewModel.hasAnsweredCurrent)
                 }
@@ -77,5 +80,3 @@ struct QuizPlayView: View {
 #Preview {
     QuizPlayView(quiz: Quiz(title: "Sample", questions: []))
 }
-
-

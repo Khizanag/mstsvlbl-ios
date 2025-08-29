@@ -27,6 +27,7 @@ struct QuizCardView: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(.thinMaterial)
         )
+        .contentShape(Rectangle())
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(Color.gray.opacity(0.15))

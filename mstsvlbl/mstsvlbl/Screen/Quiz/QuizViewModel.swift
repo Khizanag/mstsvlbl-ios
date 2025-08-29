@@ -30,6 +30,10 @@ final class QuizViewModel: ObservableObject {
         quiz?.questions.count ?? 0
     }
 
+    var answeredCount: Int {
+        currentQuestionIndex + (hasAnsweredCurrent ? 1 : 0)
+    }
+
     var currentQuestion: Question? {
         guard let quiz else { return nil }
         guard currentQuestionIndex < quiz.questions.count else { return nil }
