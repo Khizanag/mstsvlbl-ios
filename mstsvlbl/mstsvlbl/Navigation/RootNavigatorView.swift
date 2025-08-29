@@ -14,15 +14,15 @@ struct RootNavigatorView: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             QuizListView()
-                .environment(/*\.quizCoordinator, */coordinator)
+                .environment(coordinator)
                 .navigationDestination(for: Page.self) { page in
                     page()
-                        .environment(/*\.quizCoordinator, */coordinator)
+                        .environment(coordinator)
                 }
         }
         .sheet(item: $coordinator.sheet) { sheet in
             sheet()
-                .environment(/*\.quizCoordinator, */coordinator)
+                .environment(coordinator)
         }
     }
 }
