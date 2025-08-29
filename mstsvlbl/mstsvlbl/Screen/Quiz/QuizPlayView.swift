@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct QuizPlayView: View {
-    let quiz: Quiz
     @State private var viewModel: QuizViewModel
+    
+    let quiz: Quiz
 
     init(quiz: Quiz) {
-        _viewModel = StateObject(wrappedValue: QuizViewModel(quiz: quiz))
+        _viewModel = State(wrappedValue: QuizViewModel(quiz: quiz))
         self.quiz = quiz
     }
 
