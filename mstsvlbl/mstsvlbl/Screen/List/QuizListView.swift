@@ -5,8 +5,6 @@
 //  Created by Giga Khizanishvili on 29.08.25.
 //
 
-import Observation
-
 import SwiftUI
 
 struct QuizListView: View {
@@ -52,8 +50,7 @@ private extension QuizListView {
         .buttonStyle(.plain)
         .contextMenu {
             Button {
-                // TODO: Fix
-//                coordinator.present(quiz)
+                // TODO: Implement
             } label: {
                 Label("Preview", systemImage: "eye")
             }
@@ -93,7 +90,10 @@ private extension QuizListView {
             viewModel.selectedSort = sort
         } label: {
             HStack {
-                if isSelected(sort) { Image(systemName: "checkmark") }
+                if isSelected(sort) {
+                    Image(systemName: "checkmark")
+                }
+                
                 Text(viewModelText(for: sort))
             }
         }

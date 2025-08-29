@@ -12,8 +12,6 @@ extension DesignBook {
         static let contentPadding = Spacing.lg
         static let cardPadding = Spacing.lg
         static let gridMinWidth: CGFloat = 150
-//        static let gridMaxWidth: CGFloat = 320
         static let gridSpacing = Spacing.lg
     }
 }
-

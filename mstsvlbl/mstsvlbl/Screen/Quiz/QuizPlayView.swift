@@ -40,8 +40,16 @@ struct QuizPlayView: View {
 private extension QuizPlayView {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(quiz.title)
-                .font(DesignBook.Font.headline)
+            HStack(alignment: .firstTextBaseline) {
+                Text(quiz.title)
+                    .font(DesignBook.Font.headline)
+
+                Spacer()
+
+                Text("Score: \(viewModel.score)/\(viewModel.totalQuestions)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
 
             ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
                 .animation(.easeInOut(duration: 0.25), value: viewModel.answeredCount)
@@ -82,10 +90,6 @@ private extension QuizPlayView {
 
     var footerView: some View {
         HStack {
-            Text("Score: \(viewModel.score)/\(viewModel.totalQuestions)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-
             Spacer()
 
             Button(viewModel.isOnLastQuestion ? "Finish" : "Next") {

@@ -20,6 +20,7 @@ struct QuizPreviewView: View {
             
             HStack(spacing: 12) {
                 Label("\(quiz.questions.count) questions", systemImage: "list.number")
+                
                 if let first = quiz.questions.first {
                     Label("First: \(first.text)", systemImage: "questionmark.circle")
                         .lineLimit(1)
@@ -33,24 +34,12 @@ struct QuizPreviewView: View {
             VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
                 Text("Preview questions")
                     .font(DesignBook.Font.headline)
-                ForEach(quiz.questions.prefix(3)) { q in
-                    VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
-                        Text(q.text)
-                            .font(DesignBook.Font.subheadline)
-                            .foregroundStyle(DesignBook.Color.textPrimary)
-                        Text("\(q.choices.count) options")
-                            .font(DesignBook.Font.caption)
-                            .foregroundStyle(DesignBook.Color.textSecondary)
-                    }
-                    .padding(DesignBook.Spacing.md)
-                    .background(DesignBook.Color.mutedBackground)
-                    .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.md, style: .continuous))
+                
+                ForEach(quiz.questions.prefix(3)) { question in
+                    makeQuestionItemView(question: question)
                 }
-                if quiz.questions.count > 3 {
-                    Text("…and more")
-                        .font(DesignBook.Font.caption)
-                        .foregroundStyle(DesignBook.Color.textSecondary)
-                }
+                
+                moreLabel
             }
             Spacer()
         }
@@ -64,8 +53,33 @@ struct QuizPreviewView: View {
     }
 }
 
+// MARK: - Components
+private extension QuizPreviewView {
+    @ViewBuilder
+    var moreLabel: some View {
+        if quiz.questions.count > 3 {
+            Text("…and more")
+                .font(DesignBook.Font.caption)
+                .foregroundStyle(DesignBook.Color.textSecondary)
+        }
+    }
+    
+    func makeQuestionItemView(question: Question) -> some View {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
+            Text(question.text)
+                .font(DesignBook.Font.subheadline)
+                .foregroundStyle(DesignBook.Color.textPrimary)
+            
+            Text("\(question.choices.count) options")
+                .font(DesignBook.Font.caption)
+                .foregroundStyle(DesignBook.Color.textSecondary)
+        }
+        .padding(DesignBook.Spacing.md)
+        .background(DesignBook.Color.mutedBackground)
+        .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.md, style: .continuous))
+    }
+}
+
 #Preview {
     QuizPreviewView(quiz: Quiz(title: "Sample", questions: []))
 }
-
-
