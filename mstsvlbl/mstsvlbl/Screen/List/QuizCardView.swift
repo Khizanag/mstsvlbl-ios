@@ -12,14 +12,9 @@ struct QuizCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(quiz.title)
-                .font(DesignBook.Font.headline)
-                .foregroundStyle(DesignBook.Color.textPrimary)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-            Text("\(quiz.questions.count) questions")
-                .font(DesignBook.Font.subheadline)
-                .foregroundStyle(DesignBook.Color.textSecondary)
+            titleLabel
+            
+            countLabel
         }
         .padding(DesignBook.Layout.cardPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,7 +27,24 @@ struct QuizCardView: View {
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
                 .stroke(DesignBook.Color.cardBorder)
         )
-        .shadow(color: DesignBook.Color.surfaceShadow, radius: DesignBook.Shadow.cardRadius, x: 0, y: DesignBook.Shadow.cardOffsetY)
+        .shadow(.s)
+    }
+}
+
+// MARK: - Components
+private extension QuizCardView {
+    var titleLabel: some View {
+        Text(quiz.title)
+            .font(DesignBook.Font.headline)
+            .foregroundStyle(DesignBook.Color.textPrimary)
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+    }
+    
+    var countLabel: some View {
+        Text("\(quiz.questions.count) questions")
+            .font(DesignBook.Font.subheadline)
+            .foregroundStyle(DesignBook.Color.textSecondary)
     }
 }
 

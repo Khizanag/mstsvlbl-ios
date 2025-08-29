@@ -19,4 +19,3 @@ extension DesignBook {
         static let caption: SwiftUI.Font = .system(size: 12, weight: .regular, design: .default)
     }
 }
-

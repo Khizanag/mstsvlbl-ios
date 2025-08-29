@@ -11,7 +11,7 @@ struct QuizPreviewView: View {
     let quiz: Quiz
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             VStack(alignment: .leading, spacing: DesignBook.Spacing.xl) {
                 Text(quiz.title)
                     .font(DesignBook.Font.title2)
@@ -60,7 +60,7 @@ struct QuizPreviewView: View {
                     Button("Close") { dismiss() }
                 }
             }
-        }
+//        }
     }
 
     @Environment(\.dismiss) private var dismiss

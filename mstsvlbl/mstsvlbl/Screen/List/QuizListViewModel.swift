@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import Observation
 
 @MainActor
-final class QuizListViewModel: ObservableObject {
-    @Published private(set) var quizzes: [Quiz] = []
-    @Published private(set) var isLoading = false
+@Observable
+final class QuizListViewModel {
+    private(set) var quizzes: [Quiz] = []
+    private(set) var isLoading = false
 
     private let repository: QuizRepository
 
@@ -22,6 +24,7 @@ final class QuizListViewModel: ObservableObject {
         guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
+        
         do {
             quizzes = try await repository.loadAllQuizzes()
         } catch {
@@ -30,5 +33,3 @@ final class QuizListViewModel: ObservableObject {
         }
     }
 }
-
-

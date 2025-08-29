@@ -17,12 +17,8 @@ struct BundleQuizRepository: QuizRepository {
     private let resourceExtension = "json"
 
     func loadQuiz() async throws -> Quiz {
-        if let url = Bundle.main.url(forResource: resourceName, withExtension: resourceExtension) {
-            let data = try Data(contentsOf: url)
-            return try JSONDecoder().decode(Quiz.self, from: data)
-        }
-        // Fallback to a built-in sample to keep the app working on all platforms
-        return makeSampleQuiz()
+        let all = try await loadAllQuizzes()
+        return all.first ?? makeSampleQuiz()
     }
 
     func loadAllQuizzes() async throws -> [Quiz] {
@@ -30,14 +26,16 @@ struct BundleQuizRepository: QuizRepository {
             let data = try Data(contentsOf: url)
             // Try array first
             if let quizzes = try? JSONDecoder().decode([Quiz].self, from: data) {
+                print("Did read the quizzes")
                 return quizzes
             }
-            // Fallback: single quiz file
-            let single = try JSONDecoder().decode(Quiz.self, from: data)
-            return [single]
         }
         // Fallback to multiple samples
-        return [makeSampleQuiz(), makeSampleQuizWith(title: "Swift Basics"), makeSampleQuizWith(title: "Math Warmup")]
+        return [
+            makeSampleQuiz(),
+            makeSampleQuizWith(title: "Swift Basics"),
+            makeSampleQuizWith(title: "Math Warmup")
+        ]
     }
 
     private func makeSampleQuiz() -> Quiz {

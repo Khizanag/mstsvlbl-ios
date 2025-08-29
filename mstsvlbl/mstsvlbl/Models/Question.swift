@@ -12,3 +12,13 @@ struct Question: Codable, Identifiable {
     let text: String
     let choices: [Choice]
 }
+
+// MARK: - Hashable
+extension Question: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+// MARK: - Equatable
+extension Question: Equatable { }

@@ -7,19 +7,30 @@
 
 import Foundation
 import SwiftUI
+import Observation
 
 @MainActor
-final class QuizViewModel: ObservableObject {
-    @Published private(set) var quiz: Quiz?
-    @Published private(set) var currentQuestionIndex = 0
-    @Published private(set) var score = 0
-    @Published private(set) var hasAnsweredCurrent = false
-    @Published private(set) var selectedChoice: Choice?
+@Observable
+final class QuizViewModel {
+    private(set) var quiz: Quiz?
+    private(set) var currentQuestionIndex = 0
+    private(set) var score = 0
+    private(set) var hasAnsweredCurrent = false
+    private(set) var selectedChoice: Choice?
 
     private let repository: QuizRepository
 
     init(repository: QuizRepository = BundleQuizRepository()) {
         self.repository = repository
+    }
+
+    init(quiz: Quiz, repository: QuizRepository = BundleQuizRepository()) {
+        self.repository = repository
+        self.quiz = quiz
+        self.currentQuestionIndex = 0
+        self.score = 0
+        self.hasAnsweredCurrent = false
+        self.selectedChoice = nil
     }
 
     var quizTitle: String {

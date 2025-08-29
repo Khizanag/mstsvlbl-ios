@@ -12,3 +12,17 @@ struct Quiz: Codable, Identifiable {
     let title: String
     let questions: [Question]
 }
+
+// MARK: - Equatable
+extension Quiz: Equatable {
+    static func == (lhs: Quiz, rhs: Quiz) -> Bool { 
+        lhs.id == rhs.id 
+    }
+}
+
+// MARK: - Hashable
+extension Quiz: Hashable {
+    func hash(into hasher: inout Hasher) { 
+        hasher.combine(id) 
+    }
+}

@@ -5,11 +5,13 @@
 //  Created by Giga Khizanishvili on 29.08.25.
 //
 
+import Observation
+
 import SwiftUI
 
 struct QuizListView: View {
-    @StateObject private var viewModel = QuizListViewModel()
-    @State private var previewQuiz: Quiz?
+    @State private var viewModel = QuizListViewModel()
+    @Environment(QuizFlowCoordinator.self) private var coordinator
 
     private let columns = [
         GridItem(
@@ -27,32 +29,37 @@ struct QuizListView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
                     ForEach(viewModel.quizzes) { quiz in
-                        NavigationLink {
-                            QuizPlayView(quiz: quiz)
-                        } label: {
-                            QuizCardView(quiz: quiz)
-                        }
-                        .buttonStyle(.plain)
-                        .simultaneousGesture(
-                            LongPressGesture(minimumDuration: 0.4).onEnded { _ in
-                                previewQuiz = quiz
-                            }
-                        )
+                        makeItemView(quiz: quiz)
                     }
                 }
-//                .padding(16)
             }
             .navigationTitle("Quizzes")
             .task { await viewModel.load() }
-            .sheet(item: $previewQuiz) { quiz in
-                QuizPreviewView(quiz: quiz)
+        }
+    }
+}
+
+// MARK: - Components
+private extension QuizListView {
+    func makeItemView(quiz: Quiz) -> some View {
+        Button {
+            coordinator.push(.play(quiz))
+        } label: {
+            QuizCardView(quiz: quiz)
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            Button {
+                // TODO: Fix
+//                coordinator.present(quiz)
+            } label: {
+                Label("Preview", systemImage: "eye")
             }
         }
     }
 }
 
+
 #Preview {
     QuizListView()
 }
-
-

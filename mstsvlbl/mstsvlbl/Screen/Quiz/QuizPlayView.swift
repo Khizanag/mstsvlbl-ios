@@ -9,7 +9,12 @@ import SwiftUI
 
 struct QuizPlayView: View {
     let quiz: Quiz
-    @StateObject private var viewModel = QuizViewModel()
+    @State private var viewModel: QuizViewModel
+
+    init(quiz: Quiz) {
+        _viewModel = StateObject(wrappedValue: QuizViewModel(quiz: quiz))
+        self.quiz = quiz
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
