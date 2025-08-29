@@ -33,9 +33,6 @@ struct QuizPlayView: View {
         }
         .padding(DesignBook.Layout.contentPadding)
         .navigationTitle(quiz.title)
-        .task {
-            await viewModel.loadQuizzes()
-        }
     }
 
 }
@@ -52,12 +49,11 @@ private extension QuizPlayView {
         }
     }
 
+    @ViewBuilder
     var questionView: some View {
-        Group {
-            if let text = viewModel.currentQuestion?.text {
-                Text(text)
-                    .font(DesignBook.Font.title2)
-            }
+        if let text = viewModel.currentQuestion?.text {
+            Text(text)
+                .font(DesignBook.Font.title2)
         }
     }
 

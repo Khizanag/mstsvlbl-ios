@@ -56,19 +56,6 @@ final class QuizViewModel {
         return currentQuestionIndex == quiz.questions.count - 1
     }
 
-    func loadQuizzes() async {
-        do {
-            let loaded = try await repository.loadQuiz()
-            self.quiz = loaded
-            self.currentQuestionIndex = 0
-            self.score = 0
-            self.hasAnsweredCurrent = false
-            self.selectedChoice = nil
-        } catch {
-            print("Failed to load quiz: \(error)")
-        }
-    }
-
     func select(choice: Choice) {
         guard let question = currentQuestion else { return }
         guard !hasAnsweredCurrent else { return }

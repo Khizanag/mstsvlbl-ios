@@ -26,7 +26,7 @@ final class QuizListViewModel {
         defer { isLoading = false }
         
         do {
-            quizzes = try await repository.loadAllQuizzes()
+            quizzes = try await repository.getAllQuizzes()
         } catch {
             print("Failed to load quizzes: \(error)")
             quizzes = []
