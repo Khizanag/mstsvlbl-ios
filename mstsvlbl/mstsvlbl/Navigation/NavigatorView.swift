@@ -17,6 +17,8 @@ final class Coordinator {
     fileprivate var fullScreenCoverPage: Page?
     
     private let shouldDismissSubject = PassthroughSubject<Void, Never>()
+    
+    fileprivate init() { }
 
     func push(_ page: Page) {
         path.append(page)
@@ -39,7 +41,6 @@ final class Coordinator {
     }
     
     func dismiss() {
-        print("\(Self.self )::\(#function)")
         shouldDismissSubject.send()
     }
 
@@ -60,12 +61,14 @@ final class Coordinator {
 
 // MARK: - RootnavigatorView
 struct NavigatorView<Root: View>: View {
-    @State private var coordinator = Coordinator()
-    @ViewBuilder private var root: () -> Root
     @Environment(\.dismiss) private var dismiss
+    @State private var coordinator = Coordinator()
     
+    // MARK: - Properties
+    @ViewBuilder private var root: () -> Root
     private let canBeDismissed: Bool
     
+    // MARK: - Init
     init(
         canBeDismissed: Bool = true,
         root: @escaping () -> Root
@@ -74,39 +77,45 @@ struct NavigatorView<Root: View>: View {
         self.root = root
     }
 
+    // MARK: - Body
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            if canBeDismissed {
-                root()
-                    .toolbar {
-                        dismissToolbarItem
-                    }
-                    .onAppear {
-                        print("Created navigation stack so it CAN be dismissed")
-                    }
-            } else {
-                root()
-                    .onAppear {
-                        print("Created navigation stack so it can NOT be dismissed")
-                    }
-            }
+            rootContent
+                .navigationDestination(for: Page.self) { page in
+                    page()
+                        .toolbar {
+                            dismissToolbarItem
+                        }
+                }
+                .sheet(item: $coordinator.sheet) { sheet in
+                    sheet()
+                }
+                .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
+                    page(wrappedInNavigatorView: true)
+                }
+                .onReceive(coordinator.shouldDismissPublisher) {
+                    dismiss()
+                }
+                .environment(coordinator)
         }
-        .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
-            print("Wrapping in navigatorView")
-            return page(wrappedInNavigatorView: true)
-        }
-        .sheet(item: $coordinator.sheet) { sheet in
-            sheet()
-        }
-        .environment(coordinator)
-        .onReceive(coordinator.shouldDismissPublisher) {
-            dismiss()
-        }
+        
     }
 }
 
 // MARK: - Components
 private extension NavigatorView {
+    @ViewBuilder
+    var rootContent: some View {
+        if canBeDismissed {
+            root()
+                .toolbar {
+                    dismissToolbarItem
+                }
+        } else {
+            root()
+        }
+    }
+    
     var dismissToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button {
