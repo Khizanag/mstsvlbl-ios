@@ -9,6 +9,7 @@ import Foundation
 
 protocol QuizRepository {
     func loadQuiz() async throws -> Quiz
+    func loadAllQuizzes() async throws -> [Quiz]
 }
 
 struct BundleQuizRepository: QuizRepository {
@@ -22,6 +23,21 @@ struct BundleQuizRepository: QuizRepository {
         }
         // Fallback to a built-in sample to keep the app working on all platforms
         return makeSampleQuiz()
+    }
+
+    func loadAllQuizzes() async throws -> [Quiz] {
+        if let url = Bundle.main.url(forResource: resourceName, withExtension: resourceExtension) {
+            let data = try Data(contentsOf: url)
+            // Try array first
+            if let quizzes = try? JSONDecoder().decode([Quiz].self, from: data) {
+                return quizzes
+            }
+            // Fallback: single quiz file
+            let single = try JSONDecoder().decode(Quiz.self, from: data)
+            return [single]
+        }
+        // Fallback to multiple samples
+        return [makeSampleQuiz(), makeSampleQuizWith(title: "Swift Basics"), makeSampleQuizWith(title: "Math Warmup")]
     }
 
     private func makeSampleQuiz() -> Quiz {
@@ -44,5 +60,18 @@ struct BundleQuizRepository: QuizRepository {
             ]
         )
         return Quiz(title: "Sample Quiz", questions: [q1, q2])
+    }
+
+    private func makeSampleQuizWith(title: String) -> Quiz {
+        let q = Question(
+            id: UUID(),
+            text: "Placeholder question for \(title)",
+            choices: [
+                Choice(id: UUID(), text: "Answer A", isCorrect: true),
+                Choice(id: UUID(), text: "Answer B", isCorrect: false),
+                Choice(id: UUID(), text: "Answer C", isCorrect: false)
+            ]
+        )
+        return Quiz(title: title, questions: [q])
     }
 }
