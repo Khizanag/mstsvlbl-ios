@@ -164,3 +164,4 @@ private extension QuizPlayView {
 #Preview {
     QuizPlayView(quiz: .example)
 }
+ 

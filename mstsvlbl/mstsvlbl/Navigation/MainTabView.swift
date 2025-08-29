@@ -87,5 +87,3 @@ private extension MainTabView {
 #Preview {
     MainTabView()
 }
-
-
