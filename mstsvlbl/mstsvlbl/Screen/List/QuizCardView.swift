@@ -20,7 +20,7 @@ struct QuizCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                .fill(.thinMaterial)
+                .fill(.thickMaterial)
         )
         .contentShape(Rectangle())
         .overlay(
