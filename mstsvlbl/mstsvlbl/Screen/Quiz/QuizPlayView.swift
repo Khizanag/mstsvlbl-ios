@@ -2,7 +2,7 @@
 //  QuizPlayView.swift
 //  mstsvlbl
 //
-//  Created by Assistant on 29.08.25.
+//  Created by Giga Khizanishvili on 29.08.25.
 //
 
 import SwiftUI
@@ -15,13 +15,13 @@ struct QuizPlayView: View {
         VStack(alignment: .leading, spacing: 16) {
             if let currentQuestion = viewModel.currentQuestion {
                 Text(quiz.title)
-                    .font(.headline)
+                    .font(DesignBook.Font.headline)
 
                 ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
                     .animation(.easeInOut(duration: 0.25), value: viewModel.answeredCount)
 
                 Text(currentQuestion.text)
-                    .font(.title2)
+                    .font(DesignBook.Font.title2)
 
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(currentQuestion.choices, id: \.id) { choice in
@@ -33,7 +33,7 @@ struct QuizPlayView: View {
                                     .foregroundStyle(.primary)
                                 Spacer()
                             }
-                            .padding()
+                            .padding(DesignBook.Spacing.lg)
                             .frame(maxWidth: .infinity)
                             .background(viewModel.backgroundColor(for: choice))
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
@@ -69,7 +69,7 @@ struct QuizPlayView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .padding()
+        .padding(DesignBook.Layout.contentPadding)
         .navigationTitle(quiz.title)
         .task {
             await viewModel.loadQuizzes()

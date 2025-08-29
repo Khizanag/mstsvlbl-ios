@@ -2,7 +2,7 @@
 //  QuizPreviewView.swift
 //  mstsvlbl
 //
-//  Created by Assistant on 29.08.25.
+//  Created by Giga Khizanishvili on 29.08.25.
 //
 
 import SwiftUI
@@ -12,9 +12,10 @@ struct QuizPreviewView: View {
 
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DesignBook.Spacing.xl) {
                 Text(quiz.title)
-                    .font(.title2).bold()
+                    .font(DesignBook.Font.title2)
+                    .bold()
 
                 HStack(spacing: 12) {
                     Label("\(quiz.questions.count) questions", systemImage: "list.number")
@@ -23,36 +24,36 @@ struct QuizPreviewView: View {
                             .lineLimit(1)
                     }
                 }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(DesignBook.Font.subheadline)
+                .foregroundStyle(DesignBook.Color.textSecondary)
 
                 Divider()
 
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
                     Text("Preview questions")
-                        .font(.headline)
+                        .font(DesignBook.Font.headline)
                     ForEach(quiz.questions.prefix(3)) { q in
-                        VStack(alignment: .leading, spacing: 6) {
+                        VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
                             Text(q.text)
-                                .font(.subheadline)
-                                .foregroundStyle(.primary)
+                                .font(DesignBook.Font.subheadline)
+                                .foregroundStyle(DesignBook.Color.textPrimary)
                             Text("\(q.choices.count) options")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(DesignBook.Font.caption)
+                                .foregroundStyle(DesignBook.Color.textSecondary)
                         }
-                        .padding(12)
-                        .background(Color.gray.opacity(0.08))
-                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .padding(DesignBook.Spacing.md)
+                        .background(DesignBook.Color.mutedBackground)
+                        .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.md, style: .continuous))
                     }
                     if quiz.questions.count > 3 {
                         Text("…and more")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(DesignBook.Font.caption)
+                            .foregroundStyle(DesignBook.Color.textSecondary)
                     }
                 }
                 Spacer()
             }
-            .padding(16)
+            .padding(DesignBook.Layout.contentPadding)
             .navigationTitle("Preview")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

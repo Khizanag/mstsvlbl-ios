@@ -2,7 +2,7 @@
 //  QuizListView.swift
 //  mstsvlbl
 //
-//  Created by Assistant on 29.08.25.
+//  Created by Giga Khizanishvili on 29.08.25.
 //
 
 import SwiftUI
@@ -12,13 +12,20 @@ struct QuizListView: View {
     @State private var previewQuiz: Quiz?
 
     private let columns = [
-        GridItem(.adaptive(minimum: 200, maximum: 320), spacing: 16, alignment: .top)
+        GridItem(
+            .adaptive(
+                minimum: DesignBook.Layout.gridMinWidth,
+                maximum: DesignBook.Layout.gridMaxWidth
+            ),
+            spacing: DesignBook.Layout.gridSpacing,
+            alignment: .top
+        )
     ]
 
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
+                LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
                     ForEach(viewModel.quizzes) { quiz in
                         NavigationLink {
                             QuizPlayView(quiz: quiz)

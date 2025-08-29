@@ -2,7 +2,7 @@
 //  QuizViewModel.swift
 //  mstsvlbl
 //
-//  Created by Assistant on 29.08.25.
+//  Created by Giga Khizanishvili on 29.08.25.
 //
 
 import Foundation
