@@ -57,7 +57,7 @@ private extension BookmarksView {
         isLoading = true
         defer { isLoading = false }
         do {
-            allQuizzes = try await repository.getAllQuizzes()
+            allQuizzes = try await repository.getAll()
         } catch {
             allQuizzes = []
         }

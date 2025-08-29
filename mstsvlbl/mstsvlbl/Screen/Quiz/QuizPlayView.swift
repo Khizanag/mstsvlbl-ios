@@ -22,19 +22,23 @@ struct QuizPlayView: View {
             VStack(alignment: .leading, spacing: 16) {
                 
                 if viewModel.currentQuestion != nil {
-                    headerView
-                        .padding(DesignBook.Layout.contentPadding)
-                        .background(.ultraThinMaterial)
+                    VStack(spacing: 16) {
+                        headerView
+                            .padding(DesignBook.Layout.contentPadding)
+                            .background(.thinMaterial)
+                            .padding(-DesignBook.Layout.contentPadding)
+                        
+                        Spacer()
+
+                        questionView
+
+                        choicesView
+                        
+                        Spacer()
+
+                        footerView
+                    }
                     
-                    Spacer()
-
-                    questionView
-
-                    choicesView
-                    
-                    Spacer()
-
-                    footerView
                 } else {
                     completedView
                 }
@@ -108,23 +112,31 @@ private extension QuizPlayView {
             }
         }
     }
-
+    
     var footerView: some View {
-        Button(viewModel.isOnLastQuestion ? "Finish" : "Next") {
-            withAnimation(.easeInOut(duration: 0.25)) {
-                viewModel.goToNextQuestion()
+        Button(
+            action: {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    viewModel.goToNextQuestion()
+                }
+            },
+            label: {
+                Text(viewModel.isOnLastQuestion ? "Finish" : "Next")
+                    .padding()
+                    .contentShape(Rectangle())
+                    .frame(maxWidth: .infinity)
             }
-        }
+        )
         .frame(maxWidth: .infinity)
-        .buttonStyle(.borderedProminent)
+        .buttonStyle(.bordered)
         .disabled(!viewModel.hasAnsweredCurrent)
     }
-
+    
     var completedView: some View {
         VStack(spacing: 16) {
             Text("All done!")
                 .font(.title)
-
+            
             Text("Your score: \(viewModel.score)/\(viewModel.totalQuestions)")
                 .font(.title2)
 

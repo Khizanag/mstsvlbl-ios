@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Observation
+import Combine
 
 @MainActor
 @Observable
@@ -14,6 +15,8 @@ final class Coordinator {
     fileprivate var path: [Page] = []
     fileprivate var sheet: Page?
     fileprivate var fullScreenCoverPage: Page?
+    
+    private let shouldDismissSubject = PassthroughSubject<Void, Never>()
 
     func push(_ page: Page) {
         path.append(page)
@@ -34,6 +37,11 @@ final class Coordinator {
     func dismissFullScreenCover() {
         fullScreenCoverPage = nil
     }
+    
+    func dismiss() {
+        print("\(Self.self )::\(#function)")
+        shouldDismissSubject.send()
+    }
 
     func pop() {
         if !path.isEmpty {
@@ -44,12 +52,17 @@ final class Coordinator {
     func popToRoot() {
         path.removeAll()
     }
+    
+    fileprivate var shouldDismissPublisher: AnyPublisher<Void, Never> {
+        shouldDismissSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - RootnavigatorView
 struct NavigatorView<Root: View>: View {
     @State private var coordinator = Coordinator()
     @ViewBuilder private var root: () -> Root
+    @Environment(\.dismiss) private var dismiss
     
     init(root: @escaping () -> Root) {
         self.root = root
@@ -58,6 +71,16 @@ struct NavigatorView<Root: View>: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             root()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            coordinator.dismissFullScreenCover()
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
         }
         .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
             page()
@@ -66,6 +89,10 @@ struct NavigatorView<Root: View>: View {
             sheet()
         }
         .environment(coordinator)
+        .onReceive(coordinator.shouldDismissPublisher) {
+            print("Did receive dismiss signal")
+            dismiss()
+        }
     }
 }
 

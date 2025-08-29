@@ -34,7 +34,7 @@ final class QuizListViewModel {
         defer { isLoading = false }
         
         do {
-            let loaded = try await repository.getAllQuizzes()
+            let loaded = try await repository.getAll()
             originalQuizzes = loaded
         } catch {
             print("Failed to load quizzes: \(error)")
