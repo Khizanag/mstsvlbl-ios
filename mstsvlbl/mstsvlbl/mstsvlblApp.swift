@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct mstsvlblApp: App {
-    var sharedModelContainer: ModelContainer = {
+    private let sharedModelContainer = {
         let schema = Schema([
             Item.self,
         ])

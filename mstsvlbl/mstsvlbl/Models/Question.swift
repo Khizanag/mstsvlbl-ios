@@ -12,5 +12,3 @@ struct Question: Codable, Identifiable {
     let text: String
     let choices: [Choice]
 }
-
-

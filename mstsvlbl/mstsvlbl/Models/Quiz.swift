@@ -11,5 +11,3 @@ struct Quiz: Codable {
     let title: String
     let questions: [Question]
 }
-
-

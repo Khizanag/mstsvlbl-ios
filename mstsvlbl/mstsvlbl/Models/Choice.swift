@@ -12,5 +12,3 @@ struct Choice: Codable, Identifiable, Equatable {
     let text: String
     let isCorrect: Bool
 }
-
-

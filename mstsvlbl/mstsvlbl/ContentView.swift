@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftData
+ 
 
 struct ContentView: View {
     @StateObject private var viewModel = QuizViewModel()
@@ -75,7 +75,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 #Preview {
     ContentView()

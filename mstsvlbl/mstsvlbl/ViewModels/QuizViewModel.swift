@@ -11,9 +11,9 @@ import SwiftUI
 @MainActor
 final class QuizViewModel: ObservableObject {
     @Published private(set) var quiz: Quiz?
-    @Published private(set) var currentQuestionIndex: Int = 0
-    @Published private(set) var score: Int = 0
-    @Published private(set) var hasAnsweredCurrent: Bool = false
+    @Published private(set) var currentQuestionIndex = 0
+    @Published private(set) var score = 0
+    @Published private(set) var hasAnsweredCurrent = false
     @Published private(set) var selectedChoice: Choice?
 
     private let repository: QuizRepository
@@ -97,5 +97,3 @@ final class QuizViewModel: ObservableObject {
         return isCorrect ? Color.green.opacity(0.15) : Color.gray.opacity(0.1)
     }
 }
-
-

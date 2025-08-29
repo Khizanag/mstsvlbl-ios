@@ -12,8 +12,8 @@ protocol QuizRepository {
 }
 
 struct BundleQuizRepository: QuizRepository {
-    let resourceName: String = "Quizzes"
-    let resourceExtension: String = "json"
+    private let resourceName = "Quizzes"
+    private let resourceExtension = "json"
 
     func loadQuiz() async throws -> Quiz {
         if let url = Bundle.main.url(forResource: resourceName, withExtension: resourceExtension) {
@@ -46,5 +46,3 @@ struct BundleQuizRepository: QuizRepository {
         return Quiz(title: "Sample Quiz", questions: [q1, q2])
     }
 }
-
-
