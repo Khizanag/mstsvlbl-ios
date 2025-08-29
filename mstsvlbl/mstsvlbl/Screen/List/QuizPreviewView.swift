@@ -81,13 +81,5 @@ private extension QuizPreviewView {
 }
 
 #Preview {
-    QuizPreviewView(
-        quiz: Quiz(
-            title: "Sample",
-            description: "Description",
-            createdAt: "bla",
-            coverName: "coverName",
-            questions: []
-        )
-    )
+    QuizPreviewView(quiz: .example)
 }

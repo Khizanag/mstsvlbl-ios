@@ -13,6 +13,7 @@ struct Quiz: Codable, Identifiable {
     let description: String?
     let createdAt: String?
     let coverName: String?
+    let maxTimeSeconds: Int?
     let questions: [Question]
 }
 
@@ -39,6 +40,7 @@ extension Quiz {
             description: "This is an example quiz.",
             createdAt: nil,
             coverName: nil,
+            maxTimeSeconds: 300,
             questions: []
         )
     }

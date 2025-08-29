@@ -30,6 +30,9 @@ struct QuizDetailView: View {
                         if let createdAt = quiz.createdAt {
                             Label(createdAt, systemImage: "calendar")
                         }
+                        if let max = quiz.maxTimeSeconds, max > 0 {
+                            Label("\(max)s", systemImage: "timer")
+                        }
                     }
                     .font(DesignBook.Font.subheadline)
                     .foregroundStyle(DesignBook.Color.textSecondary)
@@ -88,7 +91,5 @@ private extension QuizDetailView {
 }
 
 #Preview {
-    QuizDetailView(quiz: Quiz(title: "Sample Quiz", description: "Description", createdAt: "2025-08-29", coverName: nil, questions: []))
+    QuizDetailView(quiz: .example)
 }
-
-

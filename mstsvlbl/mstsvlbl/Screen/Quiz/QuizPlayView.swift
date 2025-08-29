@@ -20,8 +20,6 @@ struct QuizPlayView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if viewModel.currentQuestion != nil {
-                headerView
-
                 questionView
 
                 choicesView
@@ -33,6 +31,13 @@ struct QuizPlayView: View {
         }
         .padding(DesignBook.Layout.contentPadding)
         .navigationTitle(quiz.title)
+        .safeAreaInset(edge: .top) {
+            headerView
+                .padding(DesignBook.Layout.contentPadding)
+                .background(.ultraThinMaterial)
+        }
+        .onAppear { viewModel.startTimerIfNeeded() }
+        .onDisappear { viewModel.stopTimer() }
     }
 }
 
@@ -47,8 +52,18 @@ private extension QuizPlayView {
                 Spacer()
 
                 Text("Score: \(viewModel.score)/\(viewModel.totalQuestions)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            }
+
+            if let max = quiz.maxTimeSeconds, max > 0 {
+                HStack {
+                    Spacer()
+                    Label("\(viewModel.remainingSeconds)s", systemImage: "timer")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
             }
 
             ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
@@ -65,7 +80,7 @@ private extension QuizPlayView {
     }
 
     var choicesView: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
             if let choices = viewModel.currentQuestion?.choices {
                 ForEach(choices, id: \.id) { choice in
                     Button {
@@ -89,16 +104,14 @@ private extension QuizPlayView {
     }
 
     var footerView: some View {
-        HStack {
-            Spacer()
-
-            Button(viewModel.isOnLastQuestion ? "Finish" : "Next") {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    viewModel.goToNextQuestion()
-                }
+        Button(viewModel.isOnLastQuestion ? "Finish" : "Next") {
+            withAnimation(.easeInOut(duration: 0.25)) {
+                viewModel.goToNextQuestion()
             }
-            .disabled(!viewModel.hasAnsweredCurrent)
         }
+        .frame(maxWidth: .infinity)
+        .buttonStyle(.borderedProminent)
+        .disabled(!viewModel.hasAnsweredCurrent)
     }
 
     var completedView: some View {
