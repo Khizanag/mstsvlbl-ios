@@ -10,6 +10,7 @@ import SwiftUI
 struct QuizListView: View {
     @State private var viewModel = QuizListViewModel()
     @Environment(QuizFlowCoordinator.self) private var coordinator
+    @Environment(UserStore.self) private var userStore
 
     private let columns = [
         GridItem(
@@ -48,13 +49,7 @@ private extension QuizListView {
             QuizCardView(quiz: quiz)
         }
         .buttonStyle(.plain)
-        .contextMenu {
-            Button {
-                // TODO: Implement
-            } label: {
-                Label("Preview", systemImage: "eye")
-            }
-        }
+        .contextMenu { itemContextMenu(quiz: quiz) }
     }
 }
 
@@ -108,6 +103,22 @@ private extension QuizListView {
 
     func isSelected(_ option: QuizListViewModel.SortOption) -> Bool {
         viewModel.selectedSort == option
+    }
+
+    @ViewBuilder
+    func itemContextMenu(quiz: Quiz) -> some View {
+        Button {
+            userStore.toggleBookmark(quizId: quiz.id)
+        } label: {
+            Label(userStore.user.bookmarks.contains(quiz.id) ? "Remove Bookmark" : "Add to Bookmarks",
+                  systemImage: userStore.user.bookmarks.contains(quiz.id) ? "bookmark.slash" : "bookmark")
+        }
+
+        Button {
+//            coordinator.present(quiz)
+        } label: {
+            Label("Preview", systemImage: "eye")
+        }
     }
 }
 

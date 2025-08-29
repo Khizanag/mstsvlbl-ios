@@ -8,8 +8,25 @@
 import SwiftUI
 
 struct BookmarksView: View {
+    @Environment(UserStore.self) private var userStore
+    @State private var allQuizzes: [Quiz] = []
+
     var body: some View {
         NavigationView {
+            content
+                .navigationTitle("Bookmarks")
+        }
+    }
+}
+
+private extension BookmarksView {
+    var bookmarkedQuizzes: [Quiz] {
+        allQuizzes.filter { userStore.user.bookmarks.contains($0.id) }
+    }
+
+    @ViewBuilder
+    var content: some View {
+        if bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
                 Image(systemName: "bookmark")
                     .font(.system(size: 48))
@@ -22,7 +39,10 @@ struct BookmarksView: View {
                 Spacer()
             }
             .padding(DesignBook.Layout.contentPadding)
-            .navigationTitle("Bookmarks")
+        } else {
+            List(bookmarkedQuizzes, id: \.id) { quiz in
+                Text(quiz.title)
+            }
         }
     }
 }
