@@ -14,17 +14,26 @@ final class QuizFlowCoordinator {
     
     var path: [Page] = []
     var sheet: Page?
+    var fullScreenCoverPage: Page?
 
     func push(_ page: Page) {
         path.append(page)
     }
 
-    func present(_ page: Page) {
+    func presentSheet(_ page: Page) {
         sheet = page
+    }
+    
+    func fullScreenCover(_ page: Page) {
+        fullScreenCoverPage = page
     }
 
     func dismissSheet() {
         sheet = nil
+    }
+    
+    func dismissFullScreenCover() {
+        fullScreenCoverPage = nil
     }
 
     func pop() {

@@ -20,15 +20,11 @@ struct RootNavigatorView: View {
                         .environment(coordinator)
                 }
         }
+        .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
+            page()
+        }
         .sheet(item: $coordinator.sheet) { sheet in
-            switch sheet {
-            case .play:
-                NavigationStack { sheet().environment(coordinator) }
-                    .presentationDetents([])
-                    .presentationDragIndicator(.hidden)
-            default:
-                sheet().environment(coordinator)
-            }
+            sheet()
         }
     }
 }

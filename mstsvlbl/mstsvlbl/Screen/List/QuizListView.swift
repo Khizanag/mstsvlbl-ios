@@ -44,7 +44,7 @@ struct QuizListView: View {
 private extension QuizListView {
     func makeItemView(quiz: Quiz) -> some View {
         Button {
-            coordinator.present(.play(quiz))
+            coordinator.fullScreenCover(.play(quiz))
         } label: {
             QuizCardView(quiz: quiz)
         }
