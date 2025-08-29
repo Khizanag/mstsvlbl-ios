@@ -46,6 +46,9 @@ struct QuizPlayView: View {
         .navigationBarBackButtonHidden()
         .onAppear { viewModel.startTimerIfNeeded() }
         .onDisappear { viewModel.stopTimer() }
+        .onAppear {
+            print("THIS IS PLAY VIEW")
+        }
     }
 }
 

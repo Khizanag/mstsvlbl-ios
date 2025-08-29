@@ -12,7 +12,7 @@ import Combine
 @MainActor
 @Observable
 final class Coordinator {
-    fileprivate var path: [Page] = []
+    /*fileprivate*/ var path: [Page] = []
     fileprivate var sheet: Page?
     fileprivate var fullScreenCoverPage: Page?
     
@@ -81,12 +81,19 @@ struct NavigatorView<Root: View>: View {
                     .toolbar {
                         dismissToolbarItem
                     }
+                    .onAppear {
+                        print("Created navigation stack so it CAN be dismissed")
+                    }
             } else {
                 root()
+                    .onAppear {
+                        print("Created navigation stack so it can NOT be dismissed")
+                    }
             }
         }
         .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
-            page(wrappedInNavigatorView: true)
+            print("Wrapping in navigatorView")
+            return page(wrappedInNavigatorView: true)
         }
         .sheet(item: $coordinator.sheet) { sheet in
             sheet()

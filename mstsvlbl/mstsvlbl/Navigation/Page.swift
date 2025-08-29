@@ -18,8 +18,14 @@ enum Page: Hashable {
             NavigatorView {
                 content
             }
+            .onAppear {
+                print("Wrapped in navigator:  \(wrappedInNavigatorView) ")
+            }
         } else {
             content
+                .onAppear {
+                    print("Wrapped in navigator:  \(wrappedInNavigatorView) ")
+                }
         }
     }
 }
@@ -45,7 +51,7 @@ extension Page: Identifiable {
         case .play(let quiz):
             QuizPlayView(quiz: quiz)
         case .overview(let quiz):
-            QuizDetailView(quiz: quiz)
+            QuizOverviewView(quiz: quiz)
         }
     }
 }
