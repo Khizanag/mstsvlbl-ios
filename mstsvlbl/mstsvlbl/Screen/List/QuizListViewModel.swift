@@ -8,18 +8,20 @@
 import Foundation
 import Observation
 
+import SwiftUI
+
 @MainActor
 @Observable
 final class QuizListViewModel {
-    private(set) var quizzes: [Quiz] = []
-    private(set) var isLoading = false
-    private var originalQuizzes: [Quiz] = []
-    var selectedSort: SortOption = .default {
-        didSet {
-            applySort(selectedSort)
-        }
+    var quizzes: [Quiz] {
+        getQuizzesSorted(by: selectedSort)
     }
-
+    
+    private(set) var isLoading = false
+    
+    var selectedSort: SortOption = .default
+    
+    private var originalQuizzes: [Quiz] = []
     private let repository: QuizRepository
 
     init(repository: QuizRepository = BundleQuizRepository()) {
@@ -34,13 +36,33 @@ final class QuizListViewModel {
         do {
             let loaded = try await repository.getAllQuizzes()
             originalQuizzes = loaded
-            quizzes = loaded
         } catch {
             print("Failed to load quizzes: \(error)")
-            quizzes = []
+            originalQuizzes = []
         }
     }
+}
 
+// MARK: - Private
+private extension QuizListViewModel {
+    func getQuizzesSorted(by option: SortOption) -> [Quiz] {
+        switch option {
+        case .default:
+            originalQuizzes
+        case .alphabeticalAsc:
+             originalQuizzes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+        case .alphabeticalDesc:
+            originalQuizzes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedDescending }
+        case .questionCountAsc:
+            originalQuizzes.sorted { $0.questions.count < $1.questions.count }
+        case .questionCountDesc:
+            originalQuizzes.sorted { $0.questions.count > $1.questions.count }
+        }
+    }
+}
+
+// MARK: - SortOption
+extension QuizListViewModel {
     enum SortOption: String, CaseIterable, Identifiable {
         case `default`
         case alphabeticalAsc
@@ -63,21 +85,6 @@ final class QuizListViewModel {
             case .questionCountDesc:
                 "Questions · Most First"
             }
-        }
-    }
-
-    func applySort(_ option: SortOption) {
-        quizzes = switch option {
-        case .default:
-            originalQuizzes
-        case .alphabeticalAsc:
-             originalQuizzes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
-        case .alphabeticalDesc:
-            originalQuizzes.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedDescending }
-        case .questionCountAsc:
-            originalQuizzes.sorted { $0.questions.count < $1.questions.count }
-        case .questionCountDesc:
-            originalQuizzes.sorted { $0.questions.count > $1.questions.count }
         }
     }
 }

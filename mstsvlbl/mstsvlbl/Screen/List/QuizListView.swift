@@ -67,60 +67,35 @@ private extension QuizListView {
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
             Menu {
-                // Section: Default
-                Button {
-                    viewModel.selectedSort = .default
-                } label: {
-                    HStack {
-                        if isSelected(.default) { Image(systemName: "checkmark") }
-                        Text(viewModelText(for: .default))
-                    }
-                }
+                makeToolbarItemButton(sort: .default)
 
                 Divider()
-
-                // Section: Title
-                Button {
-                    viewModel.selectedSort = .alphabeticalAsc
-                } label: {
-                    HStack {
-                        if isSelected(.alphabeticalAsc) { Image(systemName: "checkmark") }
-                        Text(viewModelText(for: .alphabeticalAsc))
-                    }
-                }
-                Button {
-                    viewModel.selectedSort = .alphabeticalDesc
-                } label: {
-                    HStack {
-                        if isSelected(.alphabeticalDesc) { Image(systemName: "checkmark") }
-                        Text(viewModelText(for: .alphabeticalDesc))
-                    }
-                }
-
+                
+                makeToolbarItemButton(sort: .alphabeticalAsc)
+                makeToolbarItemButton(sort: .alphabeticalDesc)
+                
                 Divider()
-
-                // Section: Question Count
-                Button {
-                    viewModel.selectedSort = .questionCountAsc
-                } label: {
-                    HStack {
-                        if isSelected(.questionCountAsc) { Image(systemName: "checkmark") }
-                        Text(viewModelText(for: .questionCountAsc))
-                    }
-                }
-                Button {
-                    viewModel.selectedSort = .questionCountDesc
-                } label: {
-                    HStack {
-                        if isSelected(.questionCountDesc) { Image(systemName: "checkmark") }
-                        Text(viewModelText(for: .questionCountDesc))
-                    }
-                }
+                
+                makeToolbarItemButton(sort: .questionCountAsc)
+                makeToolbarItemButton(sort: .questionCountDesc)
             } label: {
                 Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
                     .font(DesignBook.Font.caption)
             }
             .controlSize(.small)
+        }
+    }
+    
+    func makeToolbarItemButton(
+        sort: QuizListViewModel.SortOption
+    ) -> some View {
+        Button {
+            viewModel.selectedSort = sort
+        } label: {
+            HStack {
+                if isSelected(sort) { Image(systemName: "checkmark") }
+                Text(viewModelText(for: sort))
+            }
         }
     }
 }
