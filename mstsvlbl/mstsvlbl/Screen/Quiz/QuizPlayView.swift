@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuizPlayView: View {
     // MARK: - Properties
+    @Environment(Coordinator.self) private var coordinator
     @State private var viewModel: QuizViewModel
     
     // MARK: - Init
@@ -46,9 +47,6 @@ struct QuizPlayView: View {
         .navigationBarBackButtonHidden()
         .onAppear { viewModel.startTimerIfNeeded() }
         .onDisappear { viewModel.stopTimer() }
-        .onAppear {
-            print("THIS IS PLAY VIEW")
-        }
     }
 }
 
@@ -141,8 +139,8 @@ private extension QuizPlayView {
             Text("Your score: \(viewModel.score)/\(viewModel.totalQuestions)")
                 .font(.title2)
             
-            Button("Restart") {
-                viewModel.restart()
+            Button("Done") {
+                coordinator.dismiss()
             }
             .buttonStyle(.borderedProminent)
         }

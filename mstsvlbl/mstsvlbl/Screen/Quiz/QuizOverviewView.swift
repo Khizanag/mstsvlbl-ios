@@ -1,5 +1,5 @@
 //
-//  QuizDetailView.swift
+//  QuizOverviewView.swift
 //  mstsvlbl
 //
 //  Created by Giga Khizanishvili on 29.08.25.
@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct QuizDetailView: View {
+struct QuizOverviewView: View {
+    @Environment(Coordinator.self) private var coordinator
+    
     let quiz: Quiz
     
     var body: some View {
@@ -28,7 +30,7 @@ struct QuizDetailView: View {
 }
 
 // MARK: - Components
-private extension QuizDetailView {
+private extension QuizOverviewView {
     var cover: some View {
         ZStack {
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
@@ -52,8 +54,8 @@ private extension QuizDetailView {
     
     var actionButtons: some View {
         HStack(spacing: DesignBook.Spacing.lg) {
-            NavigationLink {
-                QuizPlayView(quiz: quiz)
+            Button {
+                coordinator.push(.play(quiz))
             } label: {
                 Label("Start", systemImage: "play.fill")
                     .frame(maxWidth: .infinity)
@@ -96,5 +98,5 @@ private extension QuizDetailView {
 
 // MARK: - Preview
 #Preview {
-    QuizDetailView(quiz: .example)
+    QuizOverviewView(quiz: .example)
 }
