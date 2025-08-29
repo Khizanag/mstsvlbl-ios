@@ -139,10 +139,23 @@ private extension QuizPlayView {
             Text("Your score: \(viewModel.score)/\(viewModel.totalQuestions)")
                 .font(.title2)
             
-            Button("Done") {
-                coordinator.dismiss()
+            HStack(spacing: DesignBook.Spacing.lg) {
+                Button {
+                    viewModel.restart()
+                } label: {
+                    Text("Restart")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    coordinator.dismiss()
+                } label: {
+                    Text("Done")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
             }
-            .buttonStyle(.borderedProminent)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

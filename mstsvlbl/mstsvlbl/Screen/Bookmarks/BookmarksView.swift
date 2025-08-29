@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct BookmarksView: View {
+    @Environment(Coordinator.self) private var coordinator
     @Environment(UserStore.self) private var userStore
     @State private var allQuizzes: [Quiz] = []
     @State private var isLoading = false
     private let repository: QuizRepository = BundleQuizRepository()
+    
+    @State private var selectedItemId: String? = nil
     
     var body: some View {
         content
@@ -44,8 +47,21 @@ private extension BookmarksView {
             }
             .padding(DesignBook.Layout.contentPadding)
         } else {
-            List(bookmarkedQuizzes, id: \.id) { quiz in
-                Text(quiz.title)
+            List(bookmarkedQuizzes, id: \.id, selection: $selectedItemId) { quiz in
+                HStack {
+                    Text(quiz.title)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(DesignBook.Color.textSecondary)
+                }
+            }
+            .onChange(of: selectedItemId) { (oldValue, newValue) in
+                guard let newValue, let quiz = allQuizzes.first(where: { $0.id == newValue }) else { return }
+                
+                coordinator.fullScreenCover(.overview(quiz))
+                withAnimation {
+                    selectedItemId = nil
+                }
             }
         }
     }
@@ -65,5 +81,3 @@ private extension BookmarksView {
 #Preview {
     BookmarksView()
 }
-
-
