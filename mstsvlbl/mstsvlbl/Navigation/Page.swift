@@ -10,6 +10,7 @@ import SwiftUI
 enum Page: Hashable {
     case list
     case play(Quiz)
+    case detail(Quiz)
 
     @ViewBuilder
     func callAsFunction() -> some View {
@@ -18,6 +19,8 @@ enum Page: Hashable {
             QuizListView()
         case .play(let quiz):
             QuizPlayView(quiz: quiz)
+        case .detail(let quiz):
+            QuizDetailView(quiz: quiz)
         }
     }
 }
@@ -30,6 +33,8 @@ extension Page: Identifiable {
             "list"
         case .play(let quiz):
             "play_\(quiz.id)"
+        case .detail(let quiz):
+            "detail_\(quiz.id)"
         }
     }
 }

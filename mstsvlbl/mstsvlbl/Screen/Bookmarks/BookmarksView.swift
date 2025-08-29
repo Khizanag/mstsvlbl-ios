@@ -10,12 +10,15 @@ import SwiftUI
 struct BookmarksView: View {
     @Environment(UserStore.self) private var userStore
     @State private var allQuizzes: [Quiz] = []
+    @State private var isLoading = false
+    private let repository: QuizRepository = BundleQuizRepository()
 
     var body: some View {
         NavigationView {
             content
                 .navigationTitle("Bookmarks")
         }
+        .task { await loadQuizzesIfNeeded() }
     }
 }
 
@@ -26,7 +29,10 @@ private extension BookmarksView {
 
     @ViewBuilder
     var content: some View {
-        if bookmarkedQuizzes.isEmpty {
+        if isLoading {
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        } else if bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
                 Image(systemName: "bookmark")
                     .font(.system(size: 48))
@@ -43,6 +49,17 @@ private extension BookmarksView {
             List(bookmarkedQuizzes, id: \.id) { quiz in
                 Text(quiz.title)
             }
+        }
+    }
+
+    func loadQuizzesIfNeeded() async {
+        guard allQuizzes.isEmpty, !isLoading else { return }
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            allQuizzes = try await repository.getAllQuizzes()
+        } catch {
+            allQuizzes = []
         }
     }
 }

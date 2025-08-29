@@ -1,0 +1,94 @@
+//
+//  QuizDetailView.swift
+//  mstsvlbl
+//
+//  Created by Giga Khizanishvili on 29.08.25.
+//
+
+import SwiftUI
+
+struct QuizDetailView: View {
+    let quiz: Quiz
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
+                cover
+
+                VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
+                    Text(quiz.title)
+                        .font(DesignBook.Font.title2)
+
+                    if let description = quiz.description, !description.isEmpty {
+                        Text(description)
+                            .font(DesignBook.Font.body)
+                            .foregroundStyle(DesignBook.Color.textSecondary)
+                    }
+
+                    HStack(spacing: DesignBook.Spacing.xl) {
+                        Label("\(quiz.questions.count) questions", systemImage: "list.number")
+                        if let createdAt = quiz.createdAt {
+                            Label(createdAt, systemImage: "calendar")
+                        }
+                    }
+                    .font(DesignBook.Font.subheadline)
+                    .foregroundStyle(DesignBook.Color.textSecondary)
+                }
+
+                Spacer(minLength: DesignBook.Spacing.xl)
+
+                actionButtons
+            }
+            .padding(DesignBook.Layout.contentPadding)
+        }
+        .navigationTitle("Overview")
+    }
+}
+
+private extension QuizDetailView {
+    @ViewBuilder
+    var cover: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
+                .fill(DesignBook.Color.mutedBackground)
+                .frame(height: 180)
+
+            if let name = quiz.coverName, !name.isEmpty {
+                Image(name)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 180)
+                    .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
+            } else {
+                Image(systemName: "square.grid.2x2")
+                    .font(.system(size: 48))
+                    .foregroundStyle(DesignBook.Color.textSecondary)
+            }
+        }
+        .shadow(DesignBook.Shadow.m)
+    }
+
+    var actionButtons: some View {
+        HStack(spacing: DesignBook.Spacing.lg) {
+            NavigationLink {
+                QuizPlayView(quiz: quiz)
+            } label: {
+                Label("Start", systemImage: "play.fill")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+
+            ShareLink(item: quiz.title) {
+                Label("Share", systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+}
+
+#Preview {
+    QuizDetailView(quiz: Quiz(title: "Sample Quiz", description: "Description", createdAt: "2025-08-29", coverName: nil, questions: []))
+}
+
+

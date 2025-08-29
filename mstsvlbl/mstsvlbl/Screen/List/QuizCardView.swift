@@ -50,6 +50,6 @@ private extension QuizCardView {
 
 // MARK: - Preview
 #Preview {
-    QuizCardView(quiz: Quiz(title: "Sample", questions: []))
+    QuizCardView(quiz: .example)
         .padding()
 }

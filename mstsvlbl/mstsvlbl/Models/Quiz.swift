@@ -10,6 +10,9 @@ import Foundation
 struct Quiz: Codable, Identifiable {
     var id: String { title }
     let title: String
+    let description: String?
+    let createdAt: String?
+    let coverName: String?
     let questions: [Question]
 }
 
@@ -24,5 +27,19 @@ extension Quiz: Equatable {
 extension Quiz: Hashable {
     func hash(into hasher: inout Hasher) { 
         hasher.combine(id) 
+    }
+}
+
+
+extension Quiz {
+    static var example: Quiz {
+        .init(
+//            id: UUID(),
+            title: "Example Quiz",
+            description: "This is an example quiz.",
+            createdAt: nil,
+            coverName: nil,
+            questions: []
+        )
     }
 }

@@ -119,5 +119,5 @@ private extension QuizPlayView {
 }
 
 #Preview {
-    QuizPlayView(quiz: Quiz(title: "Sample", questions: []))
+    QuizPlayView(quiz: .example)
 }
