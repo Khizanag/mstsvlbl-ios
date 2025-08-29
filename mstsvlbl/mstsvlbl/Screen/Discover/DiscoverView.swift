@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiscoverView: View {
     var body: some View {
-        NavigationView {
+        NavigatorView {
             VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
                 Text("Featured Quizzes")
                     .font(DesignBook.Font.title2)

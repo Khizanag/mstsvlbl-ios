@@ -14,7 +14,7 @@ struct BookmarksView: View {
     private let repository: QuizRepository = BundleQuizRepository()
 
     var body: some View {
-        NavigationView {
+        NavigatorView {
             content
                 .navigationTitle("Bookmarks")
         }

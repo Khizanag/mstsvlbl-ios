@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        NavigationView {
+        NavigatorView {
             VStack(spacing: DesignBook.Spacing.lg) {
                 Image(systemName: "person.circle")
                     .font(.system(size: 64))

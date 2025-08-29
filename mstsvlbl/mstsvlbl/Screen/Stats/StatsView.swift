@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StatsView: View {
     var body: some View {
-        NavigationView {
+        NavigatorView {
             VStack(spacing: 16) {
                 Text("Your Progress")
                     .font(DesignBook.Font.title2)
@@ -27,5 +27,3 @@ struct StatsView: View {
 #Preview {
     StatsView()
 }
-
-
