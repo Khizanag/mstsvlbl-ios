@@ -11,13 +11,13 @@ struct StatsView: View {
     var body: some View {
         VStack(spacing: 16) {
                 Text("Your Progress")
-                    .font(DesignBook.Font.title2)
+                    .font(DesignBook.Font.title2())
                 Text("Coming soon…")
-                    .font(DesignBook.Font.subheadline)
-                    .foregroundStyle(DesignBook.Color.textSecondary)
+                    .font(DesignBook.Font.subheadline())
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
                 Spacer()
             }
-            .padding(DesignBook.Layout.contentPadding)
+            .padding(16)
             .navigationTitle("Stats")
         }
 }

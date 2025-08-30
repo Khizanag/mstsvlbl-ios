@@ -23,7 +23,7 @@ struct SettingsView: View {
                         Text("Version")
                         Spacer()
                         Text("1.0")
-                            .foregroundStyle(DesignBook.Color.textSecondary)
+                            .foregroundStyle(DesignBook.Color.Text.secondary)
                     }
                 }
             }

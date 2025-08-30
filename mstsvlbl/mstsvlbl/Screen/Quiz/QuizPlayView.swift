@@ -23,9 +23,9 @@ struct QuizPlayView: View {
             if viewModel.currentQuestion != nil {
                 VStack(spacing: 16) {
                     headerView
-                        .padding(DesignBook.Layout.contentPadding)
+                        .padding(16)
                         .background(.thinMaterial)
-                        .padding(-DesignBook.Layout.contentPadding)
+                        .padding(-16)
                     
                     Spacer()
                     
@@ -42,7 +42,7 @@ struct QuizPlayView: View {
                 completedView
             }
         }
-        .padding(DesignBook.Layout.contentPadding)
+        .padding(16)
         .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
         .navigationBarBackButtonHidden()
         .onAppear { viewModel.startTimerIfNeeded() }
@@ -56,7 +56,7 @@ private extension QuizPlayView {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
                 Text(viewModel.quiz?.title ?? "") // TODO: Fix
-                    .font(DesignBook.Font.headline)
+                    .font(DesignBook.Font.headline())
                 
                 Spacer()
                 
@@ -69,7 +69,7 @@ private extension QuizPlayView {
                 HStack {
                     Spacer()
                     Label("\(viewModel.remainingSeconds)s", systemImage: "timer")
-                        .font(.subheadline)
+                        .font(DesignBook.Font.subheadline())
                         .foregroundStyle(.secondary)
                     Spacer()
                 }
@@ -84,7 +84,7 @@ private extension QuizPlayView {
     var questionView: some View {
         if let text = viewModel.currentQuestion?.text {
             Text(text)
-                .font(DesignBook.Font.title2)
+                .font(DesignBook.Font.title2())
         }
     }
     

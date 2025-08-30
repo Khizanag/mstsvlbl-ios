@@ -11,15 +11,15 @@ struct DiscoverView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
             Text("Featured Quizzes")
-                .font(DesignBook.Font.title2)
+                .font(DesignBook.Font.title2())
             
             Text("Handpicked collections to get you started.")
-                .font(DesignBook.Font.subheadline)
-                .foregroundStyle(DesignBook.Color.textSecondary)
+                .font(DesignBook.Font.subheadline())
+                .foregroundStyle(DesignBook.Color.Text.secondary)
             
             Spacer()
         }
-        .padding(DesignBook.Layout.contentPadding)
+        .padding(16)
         .navigationTitle("Discover")
     }
 }

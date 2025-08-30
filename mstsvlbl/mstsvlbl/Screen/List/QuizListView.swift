@@ -15,10 +15,10 @@ struct QuizListView: View {
     private let columns = [
         GridItem(
             .adaptive(
-                minimum: DesignBook.Layout.gridMinWidth,
+                minimum: 150,
                 maximum: .infinity
             ),
-            spacing: DesignBook.Layout.gridSpacing,
+            spacing: 16,
             alignment: .top
         )
     ]
@@ -26,7 +26,7 @@ struct QuizListView: View {
     var body: some View {
         
         ScrollView {
-            LazyVGrid(columns: columns, spacing: DesignBook.Layout.gridSpacing) {
+            LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(viewModel.quizzes) { quiz in
                     makeItemView(quiz: quiz)
                 }
@@ -71,7 +71,7 @@ private extension QuizListView {
                 makeToolbarItemButton(sort: .questionCountDesc)
             } label: {
                 Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
-                    .font(DesignBook.Font.caption)
+                    .font(DesignBook.Font.caption())
             }
             .controlSize(.small)
         }

@@ -23,7 +23,7 @@ struct QuizOverviewView: View {
                 
                 actionButtons
             }
-            .padding(.horizontal, DesignBook.Layout.contentPadding)
+            .padding(.horizontal, 16)
         }
         .navigationTitle("Overview")
     }
@@ -34,7 +34,7 @@ private extension QuizOverviewView {
     var cover: some View {
         ZStack {
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                .fill(DesignBook.Color.mutedBackground)
+                .fill(DesignBook.Color.Background.muted)
                 .frame(height: 180)
             
             if let name = quiz.coverName, !name.isEmpty {
@@ -46,7 +46,7 @@ private extension QuizOverviewView {
             } else {
                 Image(systemName: "square.grid.2x2")
                     .font(.system(size: 48))
-                    .foregroundStyle(DesignBook.Color.textSecondary)
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
             }
         }
         .shadow(DesignBook.Shadow.m)
@@ -73,12 +73,12 @@ private extension QuizOverviewView {
     var detailsSection: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
             Text(quiz.title)
-                .font(DesignBook.Font.title2)
+                .font(DesignBook.Font.title2())
             
             if let description = quiz.description, !description.isEmpty {
                 Text(description)
-                    .font(DesignBook.Font.body)
-                    .foregroundStyle(DesignBook.Color.textSecondary)
+                    .font(DesignBook.Font.body())
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
             }
             
             HStack(spacing: DesignBook.Spacing.xl) {
@@ -90,8 +90,8 @@ private extension QuizOverviewView {
                     Label("\(max)s", systemImage: "timer")
                 }
             }
-            .font(DesignBook.Font.subheadline)
-            .foregroundStyle(DesignBook.Color.textSecondary)
+            .font(DesignBook.Font.subheadline())
+            .foregroundStyle(DesignBook.Color.Text.secondary)
         }
     }
 }

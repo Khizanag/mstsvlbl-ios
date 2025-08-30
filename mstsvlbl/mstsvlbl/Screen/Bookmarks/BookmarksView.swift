@@ -36,23 +36,23 @@ private extension BookmarksView {
         } else if bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
                 Image(systemName: "bookmark")
-                    .font(.system(size: 48))
-                    .foregroundStyle(DesignBook.Color.textSecondary)
+                    .font(DesignBook.Font.title())
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
                 Text("No bookmarks yet")
-                    .font(DesignBook.Font.headline)
+                    .font(DesignBook.Font.headline())
                 Text("Save your favorite quizzes to find them quickly.")
-                    .font(DesignBook.Font.subheadline)
-                    .foregroundStyle(DesignBook.Color.textSecondary)
+                    .font(DesignBook.Font.subheadline())
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
                 Spacer()
             }
-            .padding(DesignBook.Layout.contentPadding)
+            .padding(16)
         } else {
             List(bookmarkedQuizzes, id: \.id, selection: $selectedItemId) { quiz in
                 HStack {
                     Text(quiz.title)
                     Spacer()
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(DesignBook.Color.textSecondary)
+                        .foregroundStyle(DesignBook.Color.Text.secondary)
                 }
             }
             .onChange(of: selectedItemId) { (oldValue, newValue) in

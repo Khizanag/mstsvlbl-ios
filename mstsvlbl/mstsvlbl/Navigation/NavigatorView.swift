@@ -90,9 +90,15 @@ struct NavigatorView<Root: View>: View {
                 .sheet(item: $coordinator.sheet) { sheet in
                     sheet()
                 }
+                #if os(iOS)
                 .fullScreenCover(item: $coordinator.fullScreenCoverPage) { page in
                     page(wrappedInNavigatorView: true)
                 }
+                #else
+                .sheet(item: $coordinator.fullScreenCoverPage) { page in
+                    page(wrappedInNavigatorView: true)
+                }
+                #endif
         }
         .onReceive(coordinator.shouldDismissPublisher) {
             dismiss()
@@ -115,6 +121,20 @@ private extension NavigatorView {
         }
     }
     
+    #if os(macOS)
+    @ToolbarContentBuilder
+    var dismissToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .automatic) {
+            Button {
+                coordinator.dismiss()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    #else
+    @ToolbarContentBuilder
     var dismissToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button {
@@ -125,7 +145,9 @@ private extension NavigatorView {
             .buttonStyle(.plain)
         }
     }
+    #endif
 }
+
 
 // MARK: - Preview
 #Preview {

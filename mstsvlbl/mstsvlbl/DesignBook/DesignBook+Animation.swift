@@ -9,8 +9,16 @@ import SwiftUI
 
 extension DesignBook {
     enum Animation {
-        static let fast: SwiftUI.Animation = .easeInOut(duration: Duration.fast)
-        static let normal: SwiftUI.Animation = .easeInOut(duration: Duration.normal)
+        case fast
+        case normal
+        
+        func callAsFunction() -> SwiftUI.Animation {
+            switch self {
+            case .fast:
+                .easeInOut(duration: Duration.fast)
+            case .normal:
+                .easeInOut(duration: Duration.normal)
+            }
+        }
     }
 }
-

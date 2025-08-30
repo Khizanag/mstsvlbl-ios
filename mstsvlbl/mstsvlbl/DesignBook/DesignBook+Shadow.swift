@@ -26,9 +26,9 @@ extension DesignBook {
 
 // MARK: - Presets
 extension DesignBook.Shadow {
-    static let s = DesignBook.Shadow(color: DesignBook.Color.surfaceShadow, radius: 4, x: 0, y: 2)
-    static let m = DesignBook.Shadow(color: DesignBook.Color.surfaceShadow, radius: 8, x: 0, y: 4)
-    static let l = DesignBook.Shadow(color: DesignBook.Color.surfaceShadow, radius: 16, x: 0, y: 8)
+    static let s = DesignBook.Shadow(color: DesignBook.Color.Overlay.shadow, radius: 4, x: 0, y: 2)
+    static let m = DesignBook.Shadow(color: DesignBook.Color.Overlay.shadow, radius: 8, x: 0, y: 4)
+    static let l = DesignBook.Shadow(color: DesignBook.Color.Overlay.shadow, radius: 16, x: 0, y: 8)
 }
 
 // MARK: - ShadowModifier

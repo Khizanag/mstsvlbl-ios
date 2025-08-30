@@ -16,7 +16,7 @@ struct QuizCardView: View {
             
             countLabel
         }
-        .padding(DesignBook.Layout.cardPadding)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
@@ -25,7 +25,7 @@ struct QuizCardView: View {
         .contentShape(Rectangle())
         .overlay(
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                .stroke(DesignBook.Color.cardBorder)
+                .stroke(DesignBook.Color.Border.default)
         )
         .shadow(.s)
     }
@@ -35,16 +35,16 @@ struct QuizCardView: View {
 private extension QuizCardView {
     var titleLabel: some View {
         Text(quiz.title)
-            .font(DesignBook.Font.headline)
-            .foregroundStyle(DesignBook.Color.textPrimary)
+            .font(DesignBook.Font.headline())
+            .foregroundStyle(DesignBook.Color.Text.primary)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
     }
     
     var countLabel: some View {
         Text("\(quiz.questions.count) questions")
-            .font(DesignBook.Font.subheadline)
-            .foregroundStyle(DesignBook.Color.textSecondary)
+            .font(DesignBook.Font.subheadline())
+            .foregroundStyle(DesignBook.Color.Text.secondary)
     }
 }
 
