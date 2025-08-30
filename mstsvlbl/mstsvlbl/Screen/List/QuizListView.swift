@@ -114,12 +114,6 @@ private extension QuizListView {
                 systemImage: userStore.user.bookmarks.contains(quiz.id) ? "bookmark.slash" : "bookmark"
             )
         }
-        
-        Button {
-            //            coordinator.present(quiz)
-        } label: {
-            Label("Preview", systemImage: "eye")
-        }
     }
 }
 
