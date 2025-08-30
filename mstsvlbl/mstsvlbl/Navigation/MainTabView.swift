@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Observation
 
 struct MainTabView: View {
     var body: some View {

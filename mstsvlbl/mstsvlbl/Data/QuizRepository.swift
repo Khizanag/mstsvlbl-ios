@@ -13,18 +13,24 @@ protocol QuizRepository {
 }
 
 struct BundleQuizRepository: QuizRepository {
-    private let resourceName = "Quizzes"
     private let resourceExtension = "json"
+    private let databaseDirectoryName = "Database"
 
     func getAll() async throws -> [Quiz] {
-        if let url = Bundle.main.url(forResource: resourceName, withExtension: resourceExtension),
-           let data = try? Data(contentsOf: url),
-           let quizzes = try? JSONDecoder().decode([Quiz].self, from: data)
-        {
-            return quizzes
+        let fm = FileManager.default
+        if let resourcesURL = Bundle.main.resourceURL,
+           let enumerator = fm.enumerator(at: resourcesURL, includingPropertiesForKeys: nil) {
+            var items: [Quiz] = []
+            for case let fileUrl as URL in enumerator {
+                guard fileUrl.pathExtension.lowercased() == resourceExtension else { continue }
+                if let data = try? Data(contentsOf: fileUrl),
+                   let quiz = try? JSONDecoder().decode(Quiz.self, from: data) {
+                    items.append(quiz)
+                }
+            }
+            if !items.isEmpty { return items }
         }
-        
-        // TODO: Return error
+
         return []
     }
 

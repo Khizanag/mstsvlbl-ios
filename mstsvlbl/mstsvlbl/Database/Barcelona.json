@@ -1,0 +1,26 @@
+{
+    "title": "Barcelona",
+    "maxTimeSeconds": 240,
+    "questions": [
+        {
+            "id": "88888888-8888-8888-8888-888888888801",
+            "text": "In which country is the city of Barcelona located?",
+            "choices": [
+                { "id": "88888888-8888-8888-8888-888888888811", "text": "Spain", "isCorrect": true },
+                { "id": "88888888-8888-8888-8888-888888888812", "text": "Portugal", "isCorrect": false },
+                { "id": "88888888-8888-8888-8888-888888888813", "text": "Italy", "isCorrect": false }
+            ]
+        },
+        {
+            "id": "88888888-8888-8888-8888-888888888802",
+            "text": "Which famous architect designed the Sagrada Família in Barcelona?",
+            "choices": [
+                { "id": "88888888-8888-8888-8888-888888888821", "text": "Antoni Gaudí", "isCorrect": true },
+                { "id": "88888888-8888-8888-8888-888888888822", "text": "Frank Lloyd Wright", "isCorrect": false },
+                { "id": "88888888-8888-8888-8888-888888888823", "text": "Le Corbusier", "isCorrect": false }
+            ]
+        }
+    ]
+}
+
+

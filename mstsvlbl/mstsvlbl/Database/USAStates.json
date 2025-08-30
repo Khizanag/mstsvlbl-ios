@@ -1,0 +1,26 @@
+{
+    "title": "USA States",
+    "maxTimeSeconds": 480,
+    "questions": [
+        {
+            "id": "33333333-3333-3333-3333-333333333301",
+            "text": "Which of the following is a U.S. state?",
+            "choices": [
+                { "id": "33333333-3333-3333-3333-333333333311", "text": "Wyoming", "isCorrect": true },
+                { "id": "33333333-3333-3333-3333-333333333312", "text": "Quebec", "isCorrect": false },
+                { "id": "33333333-3333-3333-3333-333333333313", "text": "Bavaria", "isCorrect": false }
+            ]
+        },
+        {
+            "id": "33333333-3333-3333-3333-333333333302",
+            "text": "What is the capital of California?",
+            "choices": [
+                { "id": "33333333-3333-3333-3333-333333333321", "text": "Sacramento", "isCorrect": true },
+                { "id": "33333333-3333-3333-3333-333333333322", "text": "Los Angeles", "isCorrect": false },
+                { "id": "33333333-3333-3333-3333-333333333323", "text": "San Francisco", "isCorrect": false }
+            ]
+        }
+    ]
+}
+
+

@@ -23,5 +23,3 @@ struct RandomDiscoverQuizzesRepository: DiscoverQuizzesRepository {
         return Array(all.shuffled().prefix(limit))
     }
 }
-
-

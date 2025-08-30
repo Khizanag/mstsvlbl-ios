@@ -11,21 +11,18 @@ enum Page: Hashable {
     case list
     case play(Quiz)
     case overview(Quiz)
+}
 
+// MARK: - callAsFunction
+extension Page {
     @ViewBuilder
     func callAsFunction(wrappedInNavigatorView: Bool = false) -> some View {
         if wrappedInNavigatorView {
             NavigatorView {
                 content
             }
-            .onAppear {
-                print("Wrapped in navigator:  \(wrappedInNavigatorView) ")
-            }
         } else {
             content
-                .onAppear {
-                    print("Wrapped in navigator:  \(wrappedInNavigatorView) ")
-                }
         }
     }
 }
