@@ -54,6 +54,24 @@ private extension BookmarksView {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(DesignBook.Color.Text.secondary)
                 }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        withAnimation {
+                            userStore.toggleBookmark(quizId: quiz.id)
+                        }
+                    } label: {
+                        Label("Remove", systemImage: "bookmark.slash")
+                    }
+                }
+                .contextMenu {
+                    Button {
+                        withAnimation {
+                            userStore.toggleBookmark(quizId: quiz.id)
+                        }
+                    } label: {
+                        Label("Remove Bookmark", systemImage: "bookmark.slash")
+                    }
+                }
             }
             .onChange(of: selectedItemId) { (oldValue, newValue) in
                 guard let newValue, let quiz = allQuizzes.first(where: { $0.id == newValue }) else { return }

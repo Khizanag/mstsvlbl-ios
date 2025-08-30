@@ -9,6 +9,7 @@ import Foundation
 
 protocol QuizRepository {
     func getAll() async throws -> [Quiz]
+    func get(by ids: [String]) async throws -> [Quiz]
 }
 
 struct BundleQuizRepository: QuizRepository {
@@ -25,5 +26,11 @@ struct BundleQuizRepository: QuizRepository {
         
         // TODO: Return error
         return []
+    }
+
+    func get(by ids: [String]) async throws -> [Quiz] {
+        let all = try await getAll()
+        let set = Set(ids)
+        return all.filter { set.contains($0.id) }
     }
 }
