@@ -7,15 +7,18 @@
 
 import SwiftUI
 import SwiftData
+import AuthenticationServices
 
 @main
 struct mstsvlblApp: App {
     @State private var userStore = UserStore()
+    @State private var auth = AuthService()
     
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .environment(userStore)
+                .environment(auth)
         }
     }
 }
