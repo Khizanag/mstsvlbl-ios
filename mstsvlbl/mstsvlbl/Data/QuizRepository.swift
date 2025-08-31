@@ -14,7 +14,7 @@ protocol QuizRepository {
 
 struct BundleQuizRepository: QuizRepository {
     private let resourceExtension = "json"
-    private let databaseDirectoryName = "Database"
+    private let databaseDirectoryName = "Database"
 
     func getAll() async throws -> [Quiz] {
         let fm = FileManager.default

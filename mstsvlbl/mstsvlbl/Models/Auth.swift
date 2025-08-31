@@ -57,5 +57,3 @@ extension AuthService: ASAuthorizationControllerPresentationContextProviding {
         ASPresentationAnchor()
     }
 }
-
-
