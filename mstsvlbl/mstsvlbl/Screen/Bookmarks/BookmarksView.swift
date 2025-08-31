@@ -10,7 +10,7 @@ import SwiftUI
 struct BookmarksView: View {
     @Environment(Coordinator.self) private var coordinator
     @Environment(UserStore.self) private var userStore
-    @StateObject private var viewModel = BookmarksViewModel()
+    @State private var viewModel = BookmarksViewModel()
     @State private var selectedItemId: String?
 
     var body: some View {

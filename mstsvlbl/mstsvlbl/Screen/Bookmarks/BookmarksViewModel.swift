@@ -5,11 +5,13 @@
 //  Created by Giga Khizanishvili on 29.08.25.
 //
 
-import Foundation
+import Observation
+import SwiftUI
 
-final class BookmarksViewModel: ObservableObject {
-    @Published private(set) var isLoading = false
-    @Published private(set) var bookmarkedQuizzes: [Quiz] = []
+@Observable
+final class BookmarksViewModel {
+    private(set) var isLoading = false
+    private(set) var bookmarkedQuizzes: [Quiz] = []
 
     private let getBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase
 
@@ -23,7 +25,6 @@ final class BookmarksViewModel: ObservableObject {
     func loadQuizzesIfNeeded(user: User) async {
         guard bookmarkedQuizzes.isEmpty else {
             self.user = user
-            objectWillChange.send()
             return
         }
         isLoading = true
@@ -36,6 +37,5 @@ final class BookmarksViewModel: ObservableObject {
         }
         
         isLoading = false
-        objectWillChange.send()
     }
 }
