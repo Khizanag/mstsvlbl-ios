@@ -12,22 +12,22 @@ struct SettingsView: View {
     @AppStorage("soundEnabled") private var soundEnabled = true
 
     var body: some View {
-            Form {
-                Section("Feedback") {
-                    Toggle("Haptics", isOn: $hapticsEnabled)
-                    Toggle("Sound", isOn: $soundEnabled)
-                }
+        Form {
+            Section("Feedback") {
+                Toggle("Haptics", isOn: $hapticsEnabled)
+                Toggle("Sound", isOn: $soundEnabled)
+            }
 
-                Section("About") {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("1.0")
-                            .foregroundStyle(DesignBook.Color.Text.secondary)
-                    }
+            Section("About") {
+                HStack {
+                    Text("Version")
+                    Spacer()
+                    Text("1.0")
+                        .foregroundStyle(DesignBook.Color.Text.secondary)
                 }
             }
-            .navigationTitle("Settings")
+        }
+        .navigationTitle("Settings")
     }
 }
 

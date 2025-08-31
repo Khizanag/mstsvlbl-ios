@@ -19,7 +19,7 @@ struct DiscoverView: View {
                 banners
                 Spacer(minLength: 0)
             }
-            .padding(16)
+            .padding(DesignBook.Spacing.lg)
         }
         .navigationTitle("Discover")
         .task { await loadIfNeeded() }
@@ -59,7 +59,8 @@ private extension DiscoverView {
                         banner(for: quiz)
                     }
                 }
-                .padding(.vertical, 4)
+                .padding(.horizontal, DesignBook.Spacing.lg)
+                .padding(.vertical, DesignBook.Spacing.xs)
             }
         }
     }
@@ -107,7 +108,7 @@ private extension DiscoverView {
                     .font(DesignBook.Font.footnote())
                     .foregroundStyle(.white.opacity(0.9))
                 }
-                .padding(16)
+                .padding(DesignBook.Spacing.lg)
             }
             .shadow(.l)
         }

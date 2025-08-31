@@ -19,6 +19,7 @@ final class UserStore {
         }
     }
 
+    // MARK: - Init
     init() {
         if let data = UserDefaults.standard.data(forKey: storageKey),
            let loaded = try? JSONDecoder().decode(User.self, from: data) {
@@ -49,12 +50,13 @@ final class UserStore {
             .map { $0.id }
         user.featured = Array(top5)
     }
+}
 
-    private func persist() {
+// MARK: - Private
+private extension UserStore {
+    func persist() {
         if let data = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(data, forKey: storageKey)
         }
     }
 }
-
-
