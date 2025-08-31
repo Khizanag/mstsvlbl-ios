@@ -12,7 +12,11 @@ import Observation
 @MainActor
 @Observable
 final class AuthService: NSObject {
-    enum State { case signedOut, signingIn, signedIn }
+    enum State { 
+        case signedOut
+        case signingIn
+        case signedIn
+    }
 
     private(set) var state: State = .signedOut
     private(set) var userIdentifier: String? = nil
