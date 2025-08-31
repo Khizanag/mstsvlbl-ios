@@ -18,7 +18,7 @@ struct QuizListView: View {
                 minimum: 150,
                 maximum: .infinity
             ),
-            spacing: 16,
+            spacing: DesignBook.Spacing.lg,
             alignment: .top
         )
     ]
@@ -26,7 +26,7 @@ struct QuizListView: View {
     var body: some View {
         
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 16) {
+            LazyVGrid(columns: columns, spacing: DesignBook.Spacing.lg) {
                 ForEach(viewModel.quizzes) { quiz in
                     makeItemView(quiz: quiz)
                 }

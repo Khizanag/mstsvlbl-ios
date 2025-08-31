@@ -18,49 +18,54 @@ struct ProfileView: View {
                 .foregroundStyle(DesignBook.Color.Text.secondary)
             
             if isSignedIn {
-                Text("Signed in")
-                    .font(DesignBook.Font.headline())
-                Button("Sign Out") { auth.signOut() }
-                    .buttonStyle(.bordered)
+                signedInContent
             } else {
-                Text("Guest User")
-                    .font(DesignBook.Font.headline())
-
-                Text("Sign in to sync your progress across devices.")
-                    .font(DesignBook.Font.subheadline())
-                    .foregroundStyle(DesignBook.Color.Text.secondary)
-
-                LoginButtons
+                guestContent
             }
             
             Spacer()
         }
-        .padding(16)
+        .padding(DesignBook.Spacing.lg)
         .navigationTitle("Profile")
     }
 }
 
 private extension ProfileView {
     var isSignedIn: Bool { auth.state == .signedIn }
+    
+    @ViewBuilder
+    var signedInContent: some View {
+        Text("Signed in")
+            .font(DesignBook.Font.headline())
+        
+        Button("Sign Out") { auth.signOut() }
+            .buttonStyle(.bordered)
+    }
+    
+    @ViewBuilder
+    var guestContent: some View {
+        Text("Guest User")
+            .font(DesignBook.Font.headline())
 
-    var LoginButtons: some View {
-        VStack(spacing: DesignBook.Spacing.sm) {
-            SignInWithAppleButton
-                .frame(height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
+        Text("Sign in to sync your progress across devices.")
+            .font(DesignBook.Font.subheadline())
+            .foregroundStyle(DesignBook.Color.Text.secondary)
 
-            Button("Maybe later") {}
-                .buttonStyle(.plain)
-                .foregroundStyle(DesignBook.Color.Text.secondary)
-        }
-        .padding(.horizontal, 24)
+        loginButton
     }
 
-    private var SignInWithAppleButton: some View {
+    var loginButton: some View {
+        signInWithAppleButton
+            .frame(height: 50) // TODO: Consider adding height constants to DesignBook
+            .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
+            .padding(.horizontal, DesignBook.Spacing.xl)
+    }
+
+    private var signInWithAppleButton: some View {
         SignInWithAppleButtonView {
             auth.signInWithApple()
         }
-        .frame(height: 50)
+        .frame(height: 50) // TODO: Consider adding height constants to DesignBook
         .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
     }
 }
@@ -68,4 +73,3 @@ private extension ProfileView {
 #Preview {
     ProfileView()
 }
- 

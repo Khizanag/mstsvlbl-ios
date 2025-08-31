@@ -15,9 +15,9 @@ extension DesignBook {
         func callAsFunction() -> SwiftUI.Animation {
             switch self {
             case .fast:
-                .easeInOut(duration: Duration.fast)
+                    .easeInOut(duration: Duration.fast)
             case .normal:
-                .easeInOut(duration: Duration.normal)
+                    .easeInOut(duration: Duration.normal)
             }
         }
     }

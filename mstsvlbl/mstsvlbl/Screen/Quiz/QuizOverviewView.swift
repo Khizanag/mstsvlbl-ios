@@ -23,7 +23,7 @@ struct QuizOverviewView: View {
                 
                 actionButtons
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, DesignBook.Spacing.lg)
         }
         .navigationTitle("Overview")
     }
@@ -35,13 +35,13 @@ private extension QuizOverviewView {
         ZStack {
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
                 .fill(DesignBook.Color.Background.muted)
-                .frame(height: 180)
+                .frame(height: 180) // TODO: Consider adding height constants to DesignBook
             
             if let name = quiz.coverName, !name.isEmpty {
                 Image(name)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: 180)
+                    .frame(height: 180) // TODO: Consider adding height constants to DesignBook
                     .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
             } else {
                 Image(systemName: "square.grid.2x2")

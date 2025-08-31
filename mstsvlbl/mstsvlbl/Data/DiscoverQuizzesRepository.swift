@@ -13,11 +13,11 @@ protocol DiscoverQuizzesRepository {
 
 struct RandomDiscoverQuizzesRepository: DiscoverQuizzesRepository {
     private let baseRepository: QuizRepository
-
+    
     init(baseRepository: QuizRepository = BundleQuizRepository()) {
         self.baseRepository = baseRepository
     }
-
+    
     func getDiscoverQuizzes(limit: Int) async throws -> [Quiz] {
         let all = try await baseRepository.getAll()
         return Array(all.shuffled().prefix(limit))

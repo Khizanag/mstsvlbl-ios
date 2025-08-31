@@ -19,13 +19,13 @@ struct QuizPlayView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
             if viewModel.currentQuestion != nil {
-                VStack(spacing: 16) {
+                VStack(spacing: DesignBook.Spacing.lg) {
                     headerView
-                        .padding(16)
+                        .padding(DesignBook.Spacing.lg)
                         .background(.thinMaterial)
-                        .padding(-16)
+                        .padding(-DesignBook.Spacing.lg)
                     
                     Spacer()
                     
@@ -42,7 +42,7 @@ struct QuizPlayView: View {
                 completedView
             }
         }
-        .padding(16)
+        .padding(DesignBook.Spacing.lg)
         .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
         .navigationBarBackButtonHidden()
         .onAppear { viewModel.startTimerIfNeeded() }
@@ -53,7 +53,7 @@ struct QuizPlayView: View {
 // MARK: - Subviews
 private extension QuizPlayView {
     var headerView: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.md) {
             HStack(alignment: .firstTextBaseline) {
                 Text(viewModel.quiz?.title ?? "") // TODO: Fix
                     .font(DesignBook.Font.headline())
@@ -76,7 +76,7 @@ private extension QuizPlayView {
             }
             
             ProgressView(value: Double(viewModel.answeredCount), total: Double(viewModel.totalQuestions))
-                .animation(.easeInOut(duration: 0.25), value: viewModel.answeredCount)
+                .animation(.easeInOut(duration: DesignBook.Duration.normal), value: viewModel.answeredCount)
         }
     }
     
@@ -103,7 +103,7 @@ private extension QuizPlayView {
                         .padding(DesignBook.Spacing.lg)
                         .frame(maxWidth: .infinity)
                         .background(viewModel.backgroundColor(for: choice))
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.sm, style: .continuous))
                     }
                     .buttonStyle(.plain)
                     .disabled(viewModel.hasAnsweredCurrent)
@@ -115,7 +115,7 @@ private extension QuizPlayView {
     var footerView: some View {
         Button(
             action: {
-                withAnimation(.easeInOut(duration: 0.25)) {
+                withAnimation(.easeInOut(duration: DesignBook.Duration.normal)) {
                     viewModel.goToNextQuestion()
                 }
             },
@@ -132,7 +132,7 @@ private extension QuizPlayView {
     }
     
     var completedView: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: DesignBook.Spacing.lg) {
             Text("All done!")
                 .font(.title)
             
@@ -161,6 +161,7 @@ private extension QuizPlayView {
     }
 }
 
+// MARK: - Preview
 #Preview {
     QuizPlayView(quiz: .example)
 }

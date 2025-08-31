@@ -11,12 +11,12 @@ struct QuizCardView: View {
     let quiz: Quiz
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
             titleLabel
             
             countLabel
         }
-        .padding(16)
+        .padding(DesignBook.Spacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)

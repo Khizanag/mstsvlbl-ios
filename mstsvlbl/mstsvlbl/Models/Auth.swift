@@ -12,15 +12,9 @@ import Observation
 @MainActor
 @Observable
 final class AuthService: NSObject {
-    enum State { 
-        case signedOut
-        case signingIn
-        case signedIn
-    }
-
     private(set) var state: State = .signedOut
     private(set) var userIdentifier: String? = nil
-
+    
     func signInWithApple() {
         state = .signingIn
         let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -30,13 +24,14 @@ final class AuthService: NSObject {
         controller.presentationContextProvider = self
         controller.performRequests()
     }
-
+    
     func signOut() {
         userIdentifier = nil
         state = .signedOut
     }
 }
 
+// MARK: - ASAuthorizationControllerDelegate
 extension AuthService: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -46,14 +41,24 @@ extension AuthService: ASAuthorizationControllerDelegate {
             state = .signedOut
         }
     }
-
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         state = .signedOut
     }
 }
 
+// MARK: - ASAuthorizationControllerPresentationContextProviding
 extension AuthService: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         ASPresentationAnchor()
+    }
+}
+
+// MARK: - State
+extension AuthService {
+    enum State {
+        case signedOut
+        case signingIn
+        case signedIn
     }
 }

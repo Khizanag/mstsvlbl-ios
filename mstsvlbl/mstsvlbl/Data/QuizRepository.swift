@@ -15,7 +15,7 @@ protocol QuizRepository {
 struct BundleQuizRepository: QuizRepository {
     private let resourceExtension = "json"
     private let databaseDirectoryName = "Database"
-
+    
     func getAll() async throws -> [Quiz] {
         let fm = FileManager.default
         if let resourcesURL = Bundle.main.resourceURL,
@@ -30,10 +30,10 @@ struct BundleQuizRepository: QuizRepository {
             }
             if !items.isEmpty { return items }
         }
-
+        
         return []
     }
-
+    
     func get(by ids: [String]) async throws -> [Quiz] {
         let all = try await getAll()
         let set = Set(ids)

@@ -10,30 +10,23 @@ import SwiftUI
 struct BookmarksView: View {
     @Environment(Coordinator.self) private var coordinator
     @Environment(UserStore.self) private var userStore
-    @State private var allQuizzes: [Quiz] = []
-    @State private var isLoading = false
-    private let repository: QuizRepository = BundleQuizRepository()
-    
-    @State private var selectedItemId: String? = nil
-    
+    @StateObject private var viewModel = BookmarksViewModel()
+    @State private var selectedItemId: String?
+
     var body: some View {
         content
             .navigationTitle("Bookmarks")
-            .task { await loadQuizzesIfNeeded() }
+            .task { await viewModel.loadQuizzesIfNeeded(user: userStore.user) }
     }
 }
 
 private extension BookmarksView {
-    var bookmarkedQuizzes: [Quiz] {
-        allQuizzes.filter { userStore.user.bookmarks.contains($0.id) }
-    }
-    
     @ViewBuilder
     var content: some View {
-        if isLoading {
+        if viewModel.isLoading {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        } else if bookmarkedQuizzes.isEmpty {
+        } else if viewModel.bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
                 Image(systemName: "bookmark")
                     .font(DesignBook.Font.title())
@@ -45,9 +38,9 @@ private extension BookmarksView {
                     .foregroundStyle(DesignBook.Color.Text.secondary)
                 Spacer()
             }
-            .padding(16)
+            .padding(DesignBook.Spacing.lg)
         } else {
-            List(bookmarkedQuizzes, id: \.id, selection: $selectedItemId) { quiz in
+            List(viewModel.bookmarkedQuizzes, id: \.id, selection: $selectedItemId) { quiz in
                 HStack {
                     Text(quiz.title)
                     Spacer()
@@ -74,7 +67,7 @@ private extension BookmarksView {
                 }
             }
             .onChange(of: selectedItemId) { (oldValue, newValue) in
-                guard let newValue, let quiz = allQuizzes.first(where: { $0.id == newValue }) else { return }
+                guard let newValue, let quiz = viewModel.bookmarkedQuizzes.first(where: { $0.id == newValue }) else { return }
                 
                 coordinator.fullScreenCover(.overview(quiz))
                 withAnimation {
@@ -83,19 +76,9 @@ private extension BookmarksView {
             }
         }
     }
-    
-    func loadQuizzesIfNeeded() async {
-        guard allQuizzes.isEmpty, !isLoading else { return }
-        isLoading = true
-        defer { isLoading = false }
-        do {
-            allQuizzes = try await repository.getAll()
-        } catch {
-            allQuizzes = []
-        }
-    }
 }
 
+// MARK: - Preview
 #Preview {
     BookmarksView()
 }

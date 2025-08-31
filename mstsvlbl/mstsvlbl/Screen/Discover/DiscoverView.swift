@@ -12,6 +12,8 @@ struct DiscoverView: View {
     @State private var quizzes: [Quiz] = []
     @State private var isLoading = false
     private let repository: DiscoverQuizzesRepository = RandomDiscoverQuizzesRepository()
+    
+    // MARK: - Body
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
@@ -25,12 +27,6 @@ struct DiscoverView: View {
         .task { await loadIfNeeded() }
     }
 }
-
-#if DEBUG
-#Preview {
-    DiscoverView()
-}
-#endif
 
 private extension DiscoverView {
     var header: some View {
@@ -127,3 +123,7 @@ private extension DiscoverView {
     }
 }
 
+// MARK: - Preview
+#Preview {
+    DiscoverView()
+}
