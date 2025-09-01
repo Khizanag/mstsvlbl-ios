@@ -29,17 +29,15 @@ private extension BookmarksView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         } else if viewModel.bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
-                Image(systemName: "bookmark")
-                    .font(DesignBook.Font.title())
-                    .foregroundStyle(DesignBook.Color.Text.secondary)
-                Text("No bookmarks yet")
-                    .font(DesignBook.Font.headline())
-                Text("Save your favorite quizzes to find them quickly.")
-                    .font(DesignBook.Font.subheadline())
-                    .foregroundStyle(DesignBook.Color.Text.secondary)
+                DesignBook.HeaderView(
+                    icon: "bookmark.circle",
+                    title: "No bookmarks yet",
+                    subtitle: "Save your favorite quizzes to find them quickly"
+                )
+                
                 Spacer()
             }
-            .padding(DesignBook.Spacing.lg)
+            .padding(DesignBook.Spacing.xl)
         } else {
             List(viewModel.bookmarkedQuizzes, id: \.id, selection: $selectedItemId) { quiz in
                 HStack {

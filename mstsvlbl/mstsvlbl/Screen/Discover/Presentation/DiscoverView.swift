@@ -9,26 +9,45 @@ import SwiftUI
 
 struct DiscoverView: View {
     @Environment(Coordinator.self) private var coordinator
-    @State private var quizzes: [Quiz] = []
-    @State private var isLoading = false
-    @Injected private var repository: DiscoverQuizzesRepository
-    
-    // MARK: - Body
+    @State private var viewModel = DiscoverViewModel()
+    @State private var selectedItemId: String?
+
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
-                header
-                banners
-                Spacer(minLength: 0)
-            }
-            .padding(DesignBook.Spacing.lg)
-        }
-        .navigationTitle("Discover")
-        .task { [self] in await loadIfNeeded() }
+        content
+            .navigationTitle("Discover")
+            .task { [self] in await viewModel.loadQuizzesIfNeeded() }
     }
 }
 
 private extension DiscoverView {
+    @ViewBuilder
+    var content: some View {
+        if viewModel.isLoading {
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        } else if viewModel.discoverQuizzes.isEmpty {
+            VStack(spacing: DesignBook.Spacing.lg) {
+                DesignBook.HeaderView(
+                    icon: "sparkles",
+                    title: "No recommendations right now",
+                    subtitle: "Check back soon for new featured quizzes"
+                )
+                
+                Spacer()
+            }
+            .padding(DesignBook.Spacing.xl)
+        } else {
+            ScrollView {
+                VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
+                    header
+                    banners
+                    Spacer(minLength: 0)
+                }
+                .padding(DesignBook.Spacing.lg)
+            }
+        }
+    }
+    
     var header: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
             Text("Featured Quizzes")
@@ -41,23 +60,14 @@ private extension DiscoverView {
     
     @ViewBuilder
     var banners: some View {
-        if isLoading {
-            ProgressView()
-                .frame(maxWidth: .infinity, alignment: .center)
-        } else if quizzes.isEmpty {
-            Text("No recommendations right now. Check back soon.")
-                .font(DesignBook.Font.subheadline())
-                .foregroundStyle(DesignBook.Color.Text.secondary)
-        } else {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: DesignBook.Spacing.lg) {
-                    ForEach(quizzes) { quiz in
-                        self.banner(for: quiz)
-                    }
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: DesignBook.Spacing.lg) {
+                ForEach(viewModel.discoverQuizzes) { quiz in
+                    self.banner(for: quiz)
                 }
-                .padding(.horizontal, DesignBook.Spacing.lg)
-                .padding(.vertical, DesignBook.Spacing.xs)
             }
+            .padding(.horizontal, DesignBook.Spacing.lg)
+            .padding(.vertical, DesignBook.Spacing.xs)
         }
     }
     
@@ -70,7 +80,7 @@ private extension DiscoverView {
                     .fill(DesignBook.Color.Background.muted)
                     .frame(width: 320, height: 180)
                 
-                if let name = quiz.coverName, !name.isEmpty {
+                if let name = quiz.coverName {
                     Image(name)
                         .resizable()
                         .scaledToFill()
@@ -109,17 +119,6 @@ private extension DiscoverView {
             .shadow(.l)
         }
         .buttonStyle(.plain)
-    }
-    
-    func loadIfNeeded() async {
-        guard quizzes.isEmpty, !isLoading else { return }
-        isLoading = true
-        defer { isLoading = false }
-        do {
-            quizzes = try await repository.getDiscoverQuizzes(limit: 5)
-        } catch {
-            quizzes = []
-        }
     }
 }
 

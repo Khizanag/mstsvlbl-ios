@@ -11,7 +11,7 @@ public enum DIBootstrap {
             r.singleton(AuthService.self) { AuthService() }
             r.singleton(UserStore.self) { UserStore() }
             r.factory(QuizRepository.self) { BundleQuizRepository() }
-            r.factory(DiscoverQuizzesRepository.self) { RandomDiscoverQuizzesRepository() }
+            r.factory(GetDiscoverQuizzesUseCase.self) { DefaultGetDiscoverQuizzesUseCase() }
             r.factory(GetBookmarkedQuizzesUseCase.self) { DefaultGetBookmarkedQuizzesUseCase() }
             r.factory(BookmarksViewModel.self) { BookmarksViewModel() }
             r.factory(QuizListViewModel.self) { QuizListViewModel() }

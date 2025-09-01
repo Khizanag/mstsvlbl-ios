@@ -11,6 +11,9 @@ struct QuizPlayView: View {
     // MARK: - Properties
     @Environment(Coordinator.self) private var coordinator
     @State private var viewModel: QuizViewModel
+    @AppStorage("autoAdvanceEnabled") private var autoAdvanceEnabled = false
+    @AppStorage("confirmBeforeExit") private var confirmBeforeExit = true
+    @State private var showingExitConfirmation = false
     
     // MARK: - Init
     init(quiz: Quiz) {
@@ -45,6 +48,29 @@ struct QuizPlayView: View {
         .padding(DesignBook.Spacing.lg)
         .navigationTitle(viewModel.quiz?.title ?? "") // TODO: Fix
         .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Back") {
+                    if confirmBeforeExit && viewModel.currentQuestionIndex > 0 {
+                        showingExitConfirmation = true
+                    } else {
+                        coordinator.dismiss()
+                    }
+                }
+            }
+        }
+        .confirmationDialog(
+            "Exit Quiz",
+            isPresented: $showingExitConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Exit Quiz", role: .destructive) {
+                coordinator.dismiss()
+            }
+            Button("Continue Quiz", role: .cancel) {}
+        } message: {
+            Text("Are you sure you want to exit? Your progress will be lost.")
+        }
         .onAppear { viewModel.startTimerIfNeeded() }
         .onDisappear { viewModel.stopTimer() }
     }
@@ -65,7 +91,7 @@ private extension QuizPlayView {
                     .foregroundStyle(.secondary)
             }
             
-            if let max = viewModel.quiz?.maxTimeSeconds, max > 0 {
+            if viewModel.shouldShowTimer {
                 HStack {
                     Spacer()
                     Label("\(viewModel.remainingSeconds)s", systemImage: "timer")
@@ -113,22 +139,36 @@ private extension QuizPlayView {
     }
     
     var footerView: some View {
-        Button(
-            action: {
-                withAnimation(.easeInOut(duration: DesignBook.Duration.normal)) {
-                    viewModel.goToNextQuestion()
+        VStack(spacing: DesignBook.Spacing.md) {
+            if autoAdvanceEnabled && viewModel.hasAnsweredCurrent && !viewModel.isOnLastQuestion {
+                HStack {
+                    Spacer()
+                    Text("Next question in 1.5s...")
+                        .font(DesignBook.Font.caption())
+                        .foregroundStyle(DesignBook.Color.Text.secondary)
+                    Spacer()
                 }
-            },
-            label: {
-                Text(viewModel.isOnLastQuestion ? "Finish" : "Next")
-                    .padding()
-                    .contentShape(Rectangle())
-                    .frame(maxWidth: .infinity)
             }
-        )
-        .frame(maxWidth: .infinity)
-        .buttonStyle(.bordered)
-        .disabled(!viewModel.hasAnsweredCurrent)
+            
+            if !autoAdvanceEnabled || viewModel.isOnLastQuestion {
+                Button(
+                    action: {
+                        withAnimation(.easeInOut(duration: DesignBook.Duration.normal)) {
+                            viewModel.goToNextQuestion()
+                        }
+                    },
+                    label: {
+                        Text(viewModel.isOnLastQuestion ? "Finish" : "Next")
+                            .padding()
+                            .contentShape(Rectangle())
+                            .frame(maxWidth: .infinity)
+                    }
+                )
+                .frame(maxWidth: .infinity)
+                .buttonStyle(.bordered)
+                .disabled(!viewModel.hasAnsweredCurrent)
+            }
+        }
     }
     
     var completedView: some View {

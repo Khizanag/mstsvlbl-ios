@@ -37,7 +37,7 @@ private extension QuizOverviewView {
                 .fill(DesignBook.Color.Background.muted)
                 .frame(height: 180) // TODO: Consider adding height constants to DesignBook
             
-            if let name = quiz.coverName, !name.isEmpty {
+            if let name = quiz.coverName {
                 Image(name)
                     .resizable()
                     .scaledToFill()
@@ -75,7 +75,7 @@ private extension QuizOverviewView {
             Text(quiz.title)
                 .font(DesignBook.Font.title2())
             
-            if let description = quiz.description, !description.isEmpty {
+            if let description = quiz.description {
                 Text(description)
                     .font(DesignBook.Font.body())
                     .foregroundStyle(DesignBook.Color.Text.secondary)

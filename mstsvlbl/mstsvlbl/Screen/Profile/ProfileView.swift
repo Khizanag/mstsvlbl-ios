@@ -12,20 +12,24 @@ struct ProfileView: View {
     @Injected private var auth: AuthService
 
     var body: some View {
-        VStack(spacing: DesignBook.Spacing.lg) {
-            Image(systemName: "person.circle")
-                .font(DesignBook.Font.extraLargeTitle())
-                .foregroundStyle(DesignBook.Color.Text.secondary)
-            
-            if isSignedIn {
-                signedInContent
-            } else {
-                guestContent
+        ScrollView {
+            VStack(spacing: DesignBook.Spacing.lg) {
+                DesignBook.HeaderView(
+                    icon: "person.circle.fill",
+                    title: "Profile",
+                    subtitle: isSignedIn ? "Manage your account and preferences" : "Sign in to sync your progress"
+                )
+                
+                if isSignedIn {
+                    signedInContent
+                } else {
+                    guestContent
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding(DesignBook.Spacing.xl)
         }
-        .padding(DesignBook.Spacing.lg)
         .navigationTitle("Profile")
     }
 }

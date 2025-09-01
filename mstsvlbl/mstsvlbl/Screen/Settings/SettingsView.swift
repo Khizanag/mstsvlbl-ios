@@ -42,21 +42,11 @@ struct SettingsView: View {
 // MARK: - Components
 private extension SettingsView {
     var headerSection: some View {
-        VStack(spacing: DesignBook.Spacing.md) {
-            Image(systemName: "gear.circle.fill")
-                .font(.system(size: 60))
-                .foregroundStyle(DesignBook.Color.Text.primary)
-                .symbolRenderingMode(.hierarchical)
-            
-            Text("Settings")
-                .font(DesignBook.Font.largeTitle())
-                .fontWeight(.bold)
-            
-            Text("Customize your quiz experience")
-                .font(DesignBook.Font.subheadline())
-                .foregroundStyle(DesignBook.Color.Text.secondary)
-        }
-        .padding(.bottom, DesignBook.Spacing.lg)
+        DesignBook.HeaderView(
+            icon: "gear.circle.fill",
+            title: "Settings",
+            subtitle: "Customize your quiz experience"
+        )
     }
     
     var gameplaySection: some View {

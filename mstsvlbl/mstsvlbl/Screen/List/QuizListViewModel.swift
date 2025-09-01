@@ -11,6 +11,8 @@ import SwiftUI
 
 @Observable
 final class QuizListViewModel {
+    @Injected @ObservationIgnored private var repository: QuizRepository
+    
     var quizzes: [Quiz] {
         getQuizzesSorted(by: selectedSort)
     }
@@ -20,7 +22,6 @@ final class QuizListViewModel {
     var selectedSort: SortOption = .default
     
     private var originalQuizzes: [Quiz] = []
-    @Injected @ObservationIgnored private var repository: QuizRepository
 
     func load() async {
         guard !isLoading else { return }

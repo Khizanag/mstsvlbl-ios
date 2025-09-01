@@ -11,11 +11,11 @@ import SwiftUI
 // MARK: - ViewModel
 @Observable
 final class BookmarksViewModel {
-    private(set) var isLoading = false
-    private(set) var bookmarkedQuizzes: [Quiz] = []
-
     @Injected @ObservationIgnored private var getBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase
     @Injected @ObservationIgnored private var userStore: UserStore
+    
+    private(set) var isLoading = false
+    private(set) var bookmarkedQuizzes: [Quiz] = []
 
     private var user: User?
 

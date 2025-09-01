@@ -69,8 +69,8 @@ struct DataDependencyGroup: DependencyGroup {
             BundleQuizRepository()
         }
         
-        container.register(DiscoverQuizzesRepository.self) {
-            RandomDiscoverQuizzesRepository()
+        container.register(GetDiscoverQuizzesUseCase.self) {
+            DefaultGetDiscoverQuizzesUseCase()
         }
     }
 }

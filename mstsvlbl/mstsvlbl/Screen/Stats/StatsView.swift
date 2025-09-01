@@ -9,17 +9,24 @@ import SwiftUI
 
 struct StatsView: View {
     var body: some View {
-        VStack(spacing: DesignBook.Spacing.lg) {
-            Text("Your Progress")
-                .font(DesignBook.Font.title2())
-
-            Text("Coming soon…")
-                .font(DesignBook.Font.subheadline())
-                .foregroundStyle(DesignBook.Color.Text.secondary)
+        ScrollView {
+            VStack(spacing: DesignBook.Spacing.lg) {
+                DesignBook.HeaderView(
+                    icon: "chart.bar.fill",
+                    title: "Your Progress",
+                    subtitle: "Track your quiz performance and achievements"
+                )
                 
-            Spacer()
+                VStack(spacing: DesignBook.Spacing.lg) {
+                    Text("Coming soon…")
+                        .font(DesignBook.Font.subheadline())
+                        .foregroundStyle(DesignBook.Color.Text.secondary)
+                        
+                    Spacer()
+                }
+            }
+            .padding(DesignBook.Spacing.xl)
         }
-        .padding(DesignBook.Spacing.lg)
         .navigationTitle("Stats")
     }
 }
