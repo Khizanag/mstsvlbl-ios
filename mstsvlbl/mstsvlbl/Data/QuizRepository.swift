@@ -68,9 +68,8 @@ struct LocalQuizRepository: QuizRepository {
         return []
     }
     
-    func get(by ids: [String]) async throws -> [Quiz] {
-        let all = try await getAll()
-        let set = Set(ids)
-        return all.filter { set.contains($0.id) }
+    func get(by ids: Set<String>) async throws -> [Quiz] {
+        try await getAll()
+            .filter { ids.contains($0.id) }
     }
 }
