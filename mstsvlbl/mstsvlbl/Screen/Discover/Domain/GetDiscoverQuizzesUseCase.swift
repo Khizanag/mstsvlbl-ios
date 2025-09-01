@@ -23,7 +23,7 @@ final class DefaultGetDiscoverQuizzesUseCase: GetDiscoverQuizzesUseCase {
         print("🔍 GetDiscoverQuizzesUseCase: Returning \(result.count) quizzes")
         
         for quiz in result {
-            print("🔍 GetDiscoverQuizzesUseCase: Quiz '\(quiz.title)' has coverUrl: \(quiz.coverUrl)")
+            print("🔍 GetDiscoverQuizzesUseCase: Quiz '\(quiz.title)' has coverUrl: \(quiz.coverUrl ?? "nil")")
         }
         
         return result
