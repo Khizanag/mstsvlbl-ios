@@ -11,6 +11,7 @@ enum Page: Hashable {
     case list
     case play(Quiz)
     case overview(Quiz)
+    case category(Category)
 }
 
 // MARK: - callAsFunction
@@ -37,6 +38,8 @@ extension Page: Identifiable {
             "play_\(quiz.id)"
         case .overview(let quiz):
             "overview_\(quiz.id)"
+        case .category(let category):
+            "category_\(category.rawValue)"
         }
     }
     
@@ -49,6 +52,8 @@ extension Page: Identifiable {
             QuizPlayView(quiz: quiz)
         case .overview(let quiz):
             QuizOverviewView(quiz: quiz)
+        case .category(let category):
+            CategoryPage(category: category)
         }
     }
 }

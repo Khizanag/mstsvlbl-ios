@@ -43,9 +43,15 @@ private extension DiscoverView {
     var categorySections: some View {
         LazyVStack(spacing: DesignBook.Spacing.xl) {
             ForEach(viewModel.categoryGroups) { categoryGroup in
-                CategorySectionView(categoryGroup: categoryGroup) { quiz in
-                    coordinator.fullScreenCover(.overview(quiz))
-                }
+                CategorySectionView(
+                    categoryGroup: categoryGroup,
+                    onQuizTap: { quiz in
+                        coordinator.fullScreenCover(.overview(quiz))
+                    },
+                    onCategoryTap: { category in
+                        coordinator.fullScreenCover(.category(category))
+                    }
+                )
             }
         }
     }

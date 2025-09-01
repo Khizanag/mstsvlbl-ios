@@ -9,18 +9,34 @@ import SwiftUI
 
 struct CategoryHeaderView: View {
     let category: Category
+    let onTap: (() -> Void)?
+    
+    init(category: Category, onTap: (() -> Void)? = nil) {
+        self.category = category
+        self.onTap = onTap
+    }
     
     var body: some View {
+        if let onTap {
+            Button(action: onTap){
+                buttonLabel
+            }
+        } else {
+            buttonLabel
+        }
+    }
+}
+
+// MARK: - Components
+private extension CategoryHeaderView {
+    var buttonLabel: some View {
         ZStack {
             backgroundGradient
             content
         }
         .shadow(.l)
     }
-}
-
-// MARK: - Components
-private extension CategoryHeaderView {
+    
     var backgroundGradient: some View {
         RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
             .fill(
@@ -55,7 +71,9 @@ private extension CategoryHeaderView {
             categoryIcon
             textContent
             Spacer()
-            chevronButton
+            if onTap != nil {
+                chevronButton
+            }
         }
         .padding(.horizontal, DesignBook.Spacing.xl)
         .padding(.vertical, DesignBook.Spacing.lg)
