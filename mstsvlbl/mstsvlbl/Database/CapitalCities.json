@@ -1,7 +1,7 @@
 {
     "title": "Capital Cities",
     "description": "Test your knowledge of world capitals and discover fascinating facts about major cities around the globe.",
-    "coverUrl": "https://i.ibb.co/8vKJ8Mp/cities.jpg",
+    "coverUrl": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 600,
     "questions": [
         { "id": "11111111-1111-1111-1111-111111111101", "text": "What is the capital of France?", "choices": [

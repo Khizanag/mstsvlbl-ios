@@ -65,8 +65,8 @@ struct NavigatorView<Root: View>: View {
     @State private var coordinator = Coordinator()
     
     // MARK: - Properties
-    @ViewBuilder private var root: () -> Root
     private let canBeDismissed: Bool
+    @ViewBuilder private var root: () -> Root
     
     // MARK: - Init
     init(

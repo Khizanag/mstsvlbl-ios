@@ -38,7 +38,6 @@ struct LocalQuizRepository: QuizRepository {
         print("🔍 QuizRepository: Found \(jsonFiles.count) JSON files directly in resources")
         
         var items: [Quiz] = []
-        var successfullyLoaded = 0
         
         // Load each JSON file
         for fileUrl in jsonFiles {
@@ -51,13 +50,11 @@ struct LocalQuizRepository: QuizRepository {
                 let quiz = try JSONDecoder().decode(Quiz.self, from: data)
                 print("🔍 QuizRepository: Successfully decoded quiz: \(quiz.title), coverUrl: \(quiz.coverUrl?.absoluteString ?? "nil")")
                 items.append(quiz)
-                successfullyLoaded += 1
             } catch {
                 print("❌ QuizRepository: Failed to process \(fileUrl.lastPathComponent): \(error)")
             }
         }
         
-        print("🔍 QuizRepository: Successfully loaded \(successfullyLoaded) quizzes out of \(jsonFiles.count) JSON files")
         return items
     }
     
