@@ -13,8 +13,8 @@ import AuthenticationServices
 struct mstsvlblApp: App {
     
     init() {
-        // Setup DI container
-        DIContainer.registerAllModules()
+        // Setup DI
+        DIBootstrap.bootstrap()
     }
     
     var body: some Scene {

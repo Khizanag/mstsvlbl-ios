@@ -121,7 +121,7 @@ private struct AssociatedKeys {
 struct Factory<T> {
     private let identifier: String
     
-    init(identifier: String = "") {
+    init(identifier: String) {
         self.identifier = identifier
     }
     
