@@ -66,7 +66,7 @@ struct DataDependencyGroup: DependencyGroup {
     func register(in container: DIContainer) {
         // Data layer
         container.register(QuizRepository.self) {
-            BundleQuizRepository()
+            LocalQuizRepository()
         }
         
         container.register(GetDiscoverQuizzesUseCase.self) {

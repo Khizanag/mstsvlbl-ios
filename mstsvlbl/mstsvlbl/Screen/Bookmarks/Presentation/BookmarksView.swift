@@ -29,11 +29,12 @@ private extension BookmarksView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         } else if viewModel.bookmarkedQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
-                DesignBook.HeaderView(
-                    icon: "bookmark.circle",
-                    title: "No bookmarks yet",
-                    subtitle: "Save your favorite quizzes to find them quickly"
-                )
+                                        HeaderView(
+                            icon: "bookmark.circle",
+                            title: "No bookmarks yet",
+                            subtitle: "Save your favorite quizzes to find them quickly"
+                        )
+                        .padding(.bottom, DesignBook.Spacing.lg)
                 
                 Spacer()
             }

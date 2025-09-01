@@ -11,11 +11,12 @@ struct StatsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: DesignBook.Spacing.lg) {
-                DesignBook.HeaderView(
-                    icon: "chart.bar.fill",
-                    title: "Your Progress",
-                    subtitle: "Track your quiz performance and achievements"
-                )
+                        HeaderView(
+            icon: "chart.bar.fill",
+            title: "Your Progress",
+            subtitle: "Track your quiz performance and achievements"
+        )
+        .padding(.bottom, DesignBook.Spacing.lg)
                 
                 VStack(spacing: DesignBook.Spacing.lg) {
                     Text("Coming soon…")

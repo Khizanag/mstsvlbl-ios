@@ -10,7 +10,7 @@ public enum DIBootstrap {
         DIContainer.configure { r in
             r.singleton(AuthService.self) { AuthService() }
             r.singleton(UserStore.self) { UserStore() }
-            r.factory(QuizRepository.self) { BundleQuizRepository() }
+            r.factory(QuizRepository.self) { LocalQuizRepository() }
             r.factory(GetDiscoverQuizzesUseCase.self) { DefaultGetDiscoverQuizzesUseCase() }
             r.factory(GetBookmarkedQuizzesUseCase.self) { DefaultGetBookmarkedQuizzesUseCase() }
             r.factory(BookmarksViewModel.self) { BookmarksViewModel() }

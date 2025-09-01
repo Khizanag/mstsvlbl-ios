@@ -14,11 +14,12 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: DesignBook.Spacing.lg) {
-                DesignBook.HeaderView(
-                    icon: "person.circle.fill",
-                    title: "Profile",
-                    subtitle: isSignedIn ? "Manage your account and preferences" : "Sign in to sync your progress"
-                )
+                        HeaderView(
+            icon: "person.circle.fill",
+            title: "Profile",
+            subtitle: isSignedIn ? "Manage your account and preferences" : "Sign in to sync your progress"
+        )
+        .padding(.bottom, DesignBook.Spacing.lg)
                 
                 if isSignedIn {
                     signedInContent

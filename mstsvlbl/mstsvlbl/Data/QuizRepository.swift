@@ -12,7 +12,7 @@ protocol QuizRepository {
     func get(by ids: [String]) async throws -> [Quiz]
 }
 
-struct BundleQuizRepository: QuizRepository {
+struct LocalQuizRepository: QuizRepository {
     private let resourceExtension = "json"
     private let databaseDirectoryName = "Database"
     

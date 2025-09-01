@@ -42,11 +42,12 @@ struct SettingsView: View {
 // MARK: - Components
 private extension SettingsView {
     var headerSection: some View {
-        DesignBook.HeaderView(
+        HeaderView(
             icon: "gear.circle.fill",
             title: "Settings",
             subtitle: "Customize your quiz experience"
         )
+        .padding(.bottom, DesignBook.Spacing.lg)
     }
     
     var gameplaySection: some View {
@@ -202,7 +203,12 @@ private extension SettingsView {
         .shadow(DesignBook.Shadow.s)
     }
     
-    func settingRow<Content: View>(title: String, description: String, icon: String, @ViewBuilder control: () -> Content) -> some View {
+    func settingRow<Content: View>(
+        title: String,
+        description: String,
+        icon: String,
+        @ViewBuilder control: () -> Content
+    ) -> some View {
         HStack {
             HStack(spacing: DesignBook.Spacing.sm) {
                 Image(systemName: icon)
@@ -274,4 +280,3 @@ private extension SettingsView {
         SettingsView()
     }
 }
- 

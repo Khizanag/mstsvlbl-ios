@@ -27,11 +27,12 @@ private extension DiscoverView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         } else if viewModel.discoverQuizzes.isEmpty {
             VStack(spacing: DesignBook.Spacing.lg) {
-                DesignBook.HeaderView(
-                    icon: "sparkles",
-                    title: "No recommendations right now",
-                    subtitle: "Check back soon for new featured quizzes"
-                )
+                                        HeaderView(
+                            icon: "sparkles",
+                            title: "No recommendations right now",
+                            subtitle: "Check back soon for new featured quizzes"
+                        )
+                        .padding(.bottom, DesignBook.Spacing.lg)
                 
                 Spacer()
             }
