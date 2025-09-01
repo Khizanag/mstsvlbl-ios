@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ObjectiveC
 
 // MARK: - Factory Protocol
 protocol DIFactory {

@@ -16,7 +16,7 @@ protocol GetBookmarkedQuizzesUseCase {
 final class DefaultGetBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase {
     private let repository: QuizRepository
     
-    init(repository: QuizRepository = BundleQuizRepository()) {
+    init(repository: QuizRepository) {
         self.repository = repository
     }
     

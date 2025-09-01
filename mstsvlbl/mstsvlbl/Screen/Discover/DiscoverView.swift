@@ -11,7 +11,7 @@ struct DiscoverView: View {
     @Environment(Coordinator.self) private var coordinator
     @State private var quizzes: [Quiz] = []
     @State private var isLoading = false
-    private let repository: DiscoverQuizzesRepository = RandomDiscoverQuizzesRepository()
+    @Injected private var repository: DiscoverQuizzesRepository
     
     // MARK: - Body
     var body: some View {
@@ -24,7 +24,7 @@ struct DiscoverView: View {
             .padding(DesignBook.Spacing.lg)
         }
         .navigationTitle("Discover")
-        .task { await loadIfNeeded() }
+        .task { [self] in await loadIfNeeded() }
     }
 }
 
@@ -52,7 +52,7 @@ private extension DiscoverView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: DesignBook.Spacing.lg) {
                     ForEach(quizzes) { quiz in
-                        banner(for: quiz)
+                        self.banner(for: quiz)
                     }
                 }
                 .padding(.horizontal, DesignBook.Spacing.lg)
@@ -62,7 +62,7 @@ private extension DiscoverView {
     }
     
     func banner(for quiz: Quiz) -> some View {
-        Button {
+        Button { [self] in
             coordinator.fullScreenCover(.overview(quiz))
         } label: {
             ZStack(alignment: .bottomLeading) {

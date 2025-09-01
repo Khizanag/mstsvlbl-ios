@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct BookmarksView: View {
     @Environment(Coordinator.self) private var coordinator
-    @Environment(UserStore.self) private var userStore
     @State private var viewModel = BookmarksViewModel()
     @State private var selectedItemId: String?
+    @Injected private var userStore: UserStore
 
     var body: some View {
         content
             .navigationTitle("Bookmarks")
-            .task { await viewModel.loadQuizzesIfNeeded(user: userStore.user) }
+            .task { [self] in await viewModel.loadQuizzesIfNeeded(user: userStore.user) }
     }
 }
 
@@ -48,7 +49,7 @@ private extension BookmarksView {
                         .foregroundStyle(DesignBook.Color.Text.secondary)
                 }
                 .swipeActions(edge: .trailing) {
-                    Button(role: .destructive) {
+                    Button(role: .destructive) { [self] in
                         withAnimation {
                             userStore.toggleBookmark(quizId: quiz.id)
                         }
@@ -57,7 +58,7 @@ private extension BookmarksView {
                     }
                 }
                 .contextMenu {
-                    Button {
+                    Button { [self] in
                         withAnimation {
                             userStore.toggleBookmark(quizId: quiz.id)
                         }
@@ -66,7 +67,7 @@ private extension BookmarksView {
                     }
                 }
             }
-            .onChange(of: selectedItemId) { (oldValue, newValue) in
+            .onChange(of: selectedItemId) { [self] (oldValue, newValue) in
                 guard let newValue, let quiz = viewModel.bookmarkedQuizzes.first(where: { $0.id == newValue }) else { return }
                 
                 coordinator.fullScreenCover(.overview(quiz))

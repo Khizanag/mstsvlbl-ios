@@ -9,7 +9,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-@MainActor
 @Observable
 final class QuizListViewModel {
     var quizzes: [Quiz] {
@@ -21,11 +20,7 @@ final class QuizListViewModel {
     var selectedSort: SortOption = .default
     
     private var originalQuizzes: [Quiz] = []
-    private let repository: QuizRepository
-
-    init(repository: QuizRepository = BundleQuizRepository()) {
-        self.repository = repository
-    }
+    @Injected @ObservationIgnored private var repository: QuizRepository
 
     func load() async {
         guard !isLoading else { return }

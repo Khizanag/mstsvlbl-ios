@@ -5,21 +5,19 @@
 //  Created by Giga Khizanishvili on 29.08.25.
 //
 
-import Observation
+import Foundation
 import SwiftUI
 
+// MARK: - ViewModel
 @Observable
 final class BookmarksViewModel {
     private(set) var isLoading = false
     private(set) var bookmarkedQuizzes: [Quiz] = []
 
-    private let getBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase
+    @Injected @ObservationIgnored private var getBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase
+    @Injected @ObservationIgnored private var userStore: UserStore
 
     private var user: User?
-
-    init(getBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase = DefaultGetBookmarkedQuizzesUseCase()) {
-        self.getBookmarkedQuizzesUseCase = getBookmarkedQuizzesUseCase
-    }
 
     @MainActor
     func loadQuizzesIfNeeded(user: User) async {

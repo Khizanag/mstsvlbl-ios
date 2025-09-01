@@ -8,14 +8,14 @@
 import Foundation
 
 // MARK: - Dependency Lifecycle
-enum DependencyLifecycle {
+public enum DependencyLifecycle {
     case singleton
     case transient
     case weak
 }
 
 // MARK: - Dependency Registration
-struct DependencyRegistration<T> {
+public struct DependencyRegistration<T> {
     let factory: () -> T
     let lifecycle: DependencyLifecycle
     let identifier: String
@@ -28,8 +28,8 @@ struct DependencyRegistration<T> {
 }
 
 // MARK: - Dependency Container
-final class DIContainer {
-    static let shared = DIContainer()
+public final class DIContainer {
+    public static let shared = DIContainer()
     
     private var registrations: [String: Any] = [:]
     private var singletons: [String: Any] = [:]
@@ -38,7 +38,7 @@ final class DIContainer {
     private init() {}
     
     // MARK: - Registration
-    func register<T>(
+    public func register<T>(
         _ type: T.Type,
         factory: @escaping () -> T,
         lifecycle: DependencyLifecycle = .transient,
@@ -49,7 +49,7 @@ final class DIContainer {
         registrations[key] = registration
     }
     
-    func register<T>(
+    public func register<T>(
         _ type: T.Type,
         instance: T,
         identifier: String = ""
@@ -59,7 +59,7 @@ final class DIContainer {
     }
     
     // MARK: - Resolution
-    func resolve<T>(_ type: T.Type, identifier: String = "") -> T {
+    public func resolve<T>(_ type: T.Type, identifier: String = "") -> T {
         let key = makeKey(for: type, identifier: identifier)
         
         // Check if we have a singleton instance
@@ -84,7 +84,9 @@ final class DIContainer {
         case .singleton:
             singletons[key] = instance
         case .weak:
-            weakReferences[key] = WeakReference(value: instance)
+            if let objectInstance = instance as? AnyObject {
+                weakReferences[key] = WeakReference(value: objectInstance)
+            }
         case .transient:
             break // Don't store transient instances
         }
@@ -92,7 +94,7 @@ final class DIContainer {
         return instance
     }
     
-    func resolveOptional<T>(_ type: T.Type, identifier: String = "") -> T? {
+    public func resolveOptional<T>(_ type: T.Type, identifier: String = "") -> T? {
         let key = makeKey(for: type, identifier: identifier)
         
         // Check singletons
@@ -117,7 +119,9 @@ final class DIContainer {
         case .singleton:
             singletons[key] = instance
         case .weak:
-            weakReferences[key] = WeakReference(value: instance)
+            if let objectInstance = instance as? AnyObject {
+                weakReferences[key] = WeakReference(value: objectInstance)
+            }
         case .transient:
             break
         }
@@ -126,13 +130,13 @@ final class DIContainer {
     }
     
     // MARK: - Container Management
-    func reset() {
+    public func reset() {
         registrations.removeAll()
         singletons.removeAll()
         weakReferences.removeAll()
     }
     
-    func remove<T>(_ type: T.Type, identifier: String = "") {
+    public func remove<T>(_ type: T.Type, identifier: String = "") {
         let key = makeKey(for: type, identifier: identifier)
         registrations.removeValue(forKey: key)
         singletons.removeValue(forKey: key)
@@ -140,7 +144,7 @@ final class DIContainer {
     }
     
     // MARK: - Helpers
-    private func makeKey<T>(for type: T.Type, identifier: String) -> String {
+    internal func makeKey<T>(for type: T.Type, identifier: String) -> String {
         let typeName = String(describing: type)
         return identifier.isEmpty ? typeName : "\(typeName)_\(identifier)"
     }
@@ -157,11 +161,11 @@ private class WeakReference {
 
 // MARK: - Container Extensions
 extension DIContainer {
-    func registerSingleton<T>(_ type: T.Type, factory: @escaping () -> T, identifier: String = "") {
+    public func registerSingleton<T>(_ type: T.Type, factory: @escaping () -> T, identifier: String = "") {
         register(type, factory: factory, lifecycle: .singleton, identifier: identifier)
     }
     
-    func registerWeak<T>(_ type: T.Type, factory: @escaping () -> T, identifier: String = "") {
+    public func registerWeak<T: AnyObject>(_ type: T.Type, factory: @escaping () -> T, identifier: String = "") {
         register(type, factory: factory, lifecycle: .weak, identifier: identifier)
     }
 }

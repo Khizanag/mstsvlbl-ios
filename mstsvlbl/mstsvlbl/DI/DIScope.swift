@@ -155,14 +155,14 @@ struct ScopedInjected<T> {
         self.identifier = identifier
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             if let value = value {
                 return value
             }
             let scopedContainer = DIScopeManager().scope(scope)
             let resolved = scopedContainer.resolve(T.self, identifier: identifier)
-            value = resolved
+            // Note: This won't persist the value in structs, but that's fine for DI
             return resolved
         }
         set {

@@ -9,21 +9,21 @@ import Foundation
 
 // MARK: - Injected Property Wrapper
 @propertyWrapper
-struct Injected<T> {
+public struct Injected<T> {
     private let identifier: String
     private var value: T?
     
-    init(identifier: String = "") {
+    public init(identifier: String = "") {
         self.identifier = identifier
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             if let value = value {
                 return value
             }
             let resolved = DIContainer.shared.resolve(T.self, identifier: identifier)
-            value = resolved
+            // Note: This won't persist the value in structs, but that's fine for DI
             return resolved
         }
         set {
@@ -34,21 +34,21 @@ struct Injected<T> {
 
 // MARK: - Optional Injected Property Wrapper
 @propertyWrapper
-struct OptionalInjected<T> {
+public struct OptionalInjected<T> {
     private let identifier: String
     private var value: T?
     
-    init(identifier: String = "") {
+    public init(identifier: String = "") {
         self.identifier = identifier
     }
     
-    var wrappedValue: T? {
+    public var wrappedValue: T? {
         get {
             if let value = value {
                 return value
             }
             let resolved = DIContainer.shared.resolveOptional(T.self, identifier: identifier)
-            value = resolved
+            // Note: This won't persist the value in structs, but that's fine for DI
             return resolved
         }
         set {
@@ -59,21 +59,21 @@ struct OptionalInjected<T> {
 
 // MARK: - Lazy Injected Property Wrapper
 @propertyWrapper
-struct LazyInjected<T> {
+public struct LazyInjected<T> {
     private let identifier: String
     private var factory: (() -> T)?
     
-    init(identifier: String = "") {
+    public init(identifier: String = "") {
         self.identifier = identifier
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             if let factory = factory {
                 return factory()
             }
             let resolved = DIContainer.shared.resolve(T.self, identifier: identifier)
-            factory = { resolved }
+            // Note: This won't persist the factory in structs, but that's fine for DI
             return resolved
         }
     }

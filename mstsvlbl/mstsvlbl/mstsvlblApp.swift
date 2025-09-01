@@ -11,14 +11,15 @@ import AuthenticationServices
 
 @main
 struct mstsvlblApp: App {
-    @State private var userStore = UserStore()
-    @State private var auth = AuthService()
+    
+    init() {
+        // Setup DI container
+        DIContainer.registerAllModules()
+    }
     
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .environment(userStore)
-                .environment(auth)
         }
     }
 }

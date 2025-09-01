@@ -9,7 +9,6 @@ import Foundation
 import AuthenticationServices
 import Observation
 
-@MainActor
 @Observable
 final class AuthService: NSObject {
     private(set) var state: State = .signedOut

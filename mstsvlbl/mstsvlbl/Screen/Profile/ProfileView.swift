@@ -9,7 +9,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct ProfileView: View {
-    @Environment(AuthService.self) private var auth
+    @Injected private var auth: AuthService
 
     var body: some View {
         VStack(spacing: DesignBook.Spacing.lg) {
@@ -38,7 +38,7 @@ private extension ProfileView {
         Text("Signed in")
             .font(DesignBook.Font.headline())
         
-        Button("Sign Out") { auth.signOut() }
+        Button("Sign Out") { [self] in auth.signOut() }
             .buttonStyle(.bordered)
     }
     
@@ -62,7 +62,7 @@ private extension ProfileView {
     }
 
     private var signInWithAppleButton: some View {
-        SignInWithAppleButtonView {
+        SignInWithAppleButtonView { [self] in
             auth.signInWithApple()
         }
         .frame(height: 50) // TODO: Consider adding height constants to DesignBook

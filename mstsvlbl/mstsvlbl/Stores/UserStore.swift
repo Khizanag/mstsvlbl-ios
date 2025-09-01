@@ -8,7 +8,6 @@
 import Foundation
 import Observation
 
-@MainActor
 @Observable
 final class UserStore {
     private let storageKey = "user_store_v1"

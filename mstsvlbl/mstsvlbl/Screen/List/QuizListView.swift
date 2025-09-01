@@ -10,7 +10,7 @@ import SwiftUI
 struct QuizListView: View {
     @State private var viewModel = QuizListViewModel()
     @Environment(Coordinator.self) private var coordinator
-    @Environment(UserStore.self) private var userStore
+    @Injected private var userStore: UserStore
     
     private let columns = [
         GridItem(
@@ -28,21 +28,21 @@ struct QuizListView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: DesignBook.Spacing.lg) {
                 ForEach(viewModel.quizzes) { quiz in
-                    makeItemView(quiz: quiz)
+                    self.makeItemView(quiz: quiz)
                 }
             }
             .padding(DesignBook.Spacing.lg)
         }
         .navigationTitle("Quizzes")
         .toolbar { toolbarContent }
-        .task { await viewModel.load() }
+        .task { [self] in await viewModel.load() }
     }
 }
 
 // MARK: - Components
 private extension QuizListView {
     func makeItemView(quiz: Quiz) -> some View {
-        Button {
+        Button { [self] in
             coordinator.fullScreenCover(.overview(quiz))
         } label: {
             QuizCardView(quiz: quiz)
@@ -80,7 +80,7 @@ private extension QuizListView {
     func makeToolbarItemButton(
         sort: QuizListViewModel.SortOption
     ) -> some View {
-        Button {
+        Button { [self] in
             viewModel.selectedSort = sort
         } label: {
             HStack {
@@ -106,7 +106,7 @@ private extension QuizListView {
     
     @ViewBuilder
     func itemContextMenu(quiz: Quiz) -> some View {
-        Button {
+        Button { [self] in
             userStore.toggleBookmark(quizId: quiz.id)
         } label: {
             Label(

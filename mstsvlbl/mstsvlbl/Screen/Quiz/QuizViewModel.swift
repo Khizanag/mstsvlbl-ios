@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Observation
 
-@MainActor
 @Observable
 final class QuizViewModel {
     private(set) var quiz: Quiz?
@@ -20,14 +19,11 @@ final class QuizViewModel {
     private(set) var remainingSeconds: Int = 0
     private var timer: Timer?
 
-    private let repository: QuizRepository
+    @Injected @ObservationIgnored private var repository: QuizRepository
 
-    init(repository: QuizRepository = BundleQuizRepository()) {
-        self.repository = repository
-    }
+    init() {}
 
-    init(quiz: Quiz, repository: QuizRepository = BundleQuizRepository()) {
-        self.repository = repository
+    init(quiz: Quiz) {
         self.quiz = quiz
         self.currentQuestionIndex = 0
         self.score = 0

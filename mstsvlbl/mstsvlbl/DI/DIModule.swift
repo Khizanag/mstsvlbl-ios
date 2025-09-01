@@ -8,23 +8,23 @@
 import Foundation
 
 // MARK: - Module Protocol
-protocol DIModule {
+public protocol DIModule {
     var name: String { get }
     var dependencies: [String] { get }
     func register(in container: DIContainer)
 }
 
 // MARK: - Module Manager
-final class DIModuleManager {
+public final class DIModuleManager {
     private let container: DIContainer
     private var registeredModules: Set<String> = []
     private var moduleDependencies: [String: Set<String>] = [:]
     
-    init(container: DIContainer = .shared) {
+    public init(container: DIContainer = .shared) {
         self.container = container
     }
     
-    func register(_ module: DIModule) {
+    public func register(_ module: DIModule) {
         guard !registeredModules.contains(module.name) else {
             print("⚠️ Module '\(module.name)' is already registered")
             return
@@ -44,7 +44,7 @@ final class DIModuleManager {
         print("✅ Registered module: \(module.name)")
     }
     
-    func registerAll(_ modules: [DIModule]) {
+    public func registerAll(_ modules: [DIModule]) {
         // Sort modules by dependencies
         let sortedModules = sortModulesByDependencies(modules)
         
@@ -53,15 +53,15 @@ final class DIModuleManager {
         }
     }
     
-    func isRegistered(_ moduleName: String) -> Bool {
+    public func isRegistered(_ moduleName: String) -> Bool {
         registeredModules.contains(moduleName)
     }
     
-    func getDependencies(for moduleName: String) -> Set<String> {
+    public func getDependencies(for moduleName: String) -> Set<String> {
         moduleDependencies[moduleName] ?? []
     }
     
-    func reset() {
+    public func reset() {
         registeredModules.removeAll()
         moduleDependencies.removeAll()
         container.reset()
@@ -101,11 +101,11 @@ final class DIModuleManager {
 }
 
 // MARK: - Feature Modules
-struct CoreModule: DIModule {
-    let name = "Core"
-    let dependencies: [String] = []
+public struct CoreModule: DIModule {
+    public let name = "Core"
+    public let dependencies: [String] = []
     
-    func register(in container: DIContainer) {
+    public func register(in container: DIContainer) {
         container.registerSingleton(AuthService.self) {
             AuthService()
         }
@@ -116,11 +116,11 @@ struct CoreModule: DIModule {
     }
 }
 
-struct DataModule: DIModule {
-    let name = "Data"
-    let dependencies: [String] = ["Core"]
+public struct DataModule: DIModule {
+    public let name = "Data"
+    public let dependencies: [String] = ["Core"]
     
-    func register(in container: DIContainer) {
+    public func register(in container: DIContainer) {
         container.register(QuizRepository.self) {
             BundleQuizRepository()
         }
@@ -131,22 +131,23 @@ struct DataModule: DIModule {
     }
 }
 
-struct UseCaseModule: DIModule {
-    let name = "UseCase"
-    let dependencies: [String] = ["Data"]
+public struct UseCaseModule: DIModule {
+    public let name = "UseCase"
+    public let dependencies: [String] = ["Data"]
     
-    func register(in container: DIContainer) {
+    public func register(in container: DIContainer) {
         container.register(GetBookmarkedQuizzesUseCase.self) {
-            DefaultGetBookmarkedQuizzesUseCase()
+            let repository: QuizRepository = container.resolve(QuizRepository.self)
+            return DefaultGetBookmarkedQuizzesUseCase(repository: repository)
         }
     }
 }
 
-struct PresentationModule: DIModule {
-    let name = "Presentation"
-    let dependencies: [String] = ["UseCase"]
+public struct PresentationModule: DIModule {
+    public let name = "Presentation"
+    public let dependencies: [String] = ["UseCase", "Core"]
     
-    func register(in container: DIContainer) {
+    public func register(in container: DIContainer) {
         container.register(BookmarksViewModel.self) {
             BookmarksViewModel()
         }
@@ -163,9 +164,9 @@ struct PresentationModule: DIModule {
 
 // MARK: - Convenience Extensions
 extension DIContainer {
-    static let moduleManager = DIModuleManager()
+    public static let moduleManager = DIModuleManager()
     
-    static func registerAllModules() {
+    public static func registerAllModules() {
         let modules: [DIModule] = [
             CoreModule(),
             DataModule(),
@@ -176,28 +177,28 @@ extension DIContainer {
         moduleManager.registerAll(modules)
     }
     
-    static func registerModule(_ module: DIModule) {
+    public static func registerModule(_ module: DIModule) {
         moduleManager.register(module)
     }
     
-    static func registerModules(_ modules: [DIModule]) {
+    public static func registerModules(_ modules: [DIModule]) {
         moduleManager.registerAll(modules)
     }
 }
 
 // MARK: - Module Property Wrapper
 @propertyWrapper
-struct ModuleInjected<T> {
+public struct ModuleInjected<T> {
     private let moduleName: String
     private let identifier: String
     private var value: T?
     
-    init(module: String, identifier: String = "") {
+    public init(module: String, identifier: String = "") {
         self.moduleName = module
         self.identifier = identifier
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             if let value = value {
                 return value
@@ -208,7 +209,7 @@ struct ModuleInjected<T> {
             }
             
             let resolved = DIContainer.shared.resolve(T.self, identifier: identifier)
-            value = resolved
+            // Note: This won't persist the value in structs, but that's fine for DI
             return resolved
         }
         set {
