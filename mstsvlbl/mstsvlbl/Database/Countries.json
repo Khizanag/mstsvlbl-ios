@@ -1,7 +1,7 @@
 {
     "title": "Countries",
     "description": "Explore the diverse nations of our world, their cultures, geography, and unique characteristics.",
-    "coverUrl": "https://images.unsplash.com/photo-1488746473181-7b1b0b1b1b1b?w=400&h=300&fit=crop&crop=center",
+    "coverUrl": "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 420,
     "questions": [
         {
