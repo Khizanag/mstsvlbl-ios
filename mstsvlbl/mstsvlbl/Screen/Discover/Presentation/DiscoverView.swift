@@ -24,7 +24,7 @@ private extension DiscoverView {
     var content: some View {
         if viewModel.isLoading {
             loadingStateView
-        } else if viewModel.discoverQuizzes.isEmpty {
+        } else if viewModel.categoryGroups.isEmpty {
             emptyStateView
         } else {
             loadedStateView
@@ -33,39 +33,41 @@ private extension DiscoverView {
 
     var header: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
-            Text("Featured Quizzes")
-                .font(DesignBook.Font.title2())
-            Text("Handpicked collections to get you started.")
+            Text("Explore curated collections organized by your interests")
                 .font(DesignBook.Font.subheadline())
                 .foregroundStyle(DesignBook.Color.Text.secondary)
         }
+        .padding(.horizontal, DesignBook.Spacing.lg)
     }
 
-    var banners: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: DesignBook.Spacing.lg) {
-                ForEach(viewModel.discoverQuizzes) { quiz in
-                    DiscoverQuizCardView(quiz: quiz) { [self] in
-                        coordinator.fullScreenCover(.overview(quiz))
-                    }
+    var categorySections: some View {
+        LazyVStack(spacing: DesignBook.Spacing.xl) {
+            ForEach(viewModel.categoryGroups) { categoryGroup in
+                CategorySectionView(categoryGroup: categoryGroup) { quiz in
+                    coordinator.fullScreenCover(.overview(quiz))
                 }
             }
-            .padding(.horizontal, DesignBook.Spacing.lg)
-            .padding(.vertical, DesignBook.Spacing.xs)
         }
     }
     
     var loadingStateView: some View {
-        ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        VStack(spacing: DesignBook.Spacing.lg) {
+            ProgressView()
+                .scaleEffect(1.2)
+            
+            Text("Discovering amazing quizzes...")
+                .font(DesignBook.Font.subheadline())
+                .foregroundStyle(DesignBook.Color.Text.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
     
     var emptyStateView: some View {
         VStack(spacing: DesignBook.Spacing.lg) {
             HeaderView(
                 icon: "sparkles",
-                title: "No recommendations right now",
-                subtitle: "Check back soon for new featured quizzes"
+                title: "No categories available",
+                subtitle: "Check back soon for new organized collections"
             )
             .padding(.bottom, DesignBook.Spacing.lg)
 
@@ -76,13 +78,11 @@ private extension DiscoverView {
     
     var loadedStateView: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DesignBook.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignBook.Spacing.xl) {
                 header
-                banners
-                    .padding(.horizontal, -DesignBook.Spacing.lg)
-                Spacer(minLength: 0)
+                categorySections
+                Spacer(minLength: DesignBook.Spacing.xl)
             }
-            .padding(DesignBook.Spacing.lg)
         }
     }
 }

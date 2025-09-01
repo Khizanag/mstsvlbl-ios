@@ -14,6 +14,7 @@ final class DiscoverViewModel {
     
     private(set) var isLoading = false
     private(set) var discoverQuizzes: [Quiz] = []
+    private(set) var categoryGroups: [CategoryGroup] = []
 
     @MainActor
     func loadQuizzesIfNeeded() async {
@@ -21,12 +22,8 @@ final class DiscoverViewModel {
         isLoading = true
         
         do {
-            discoverQuizzes = try await getDiscoverQuizzesUseCase.execute(limit: 5)
-
-            let test = URL(string: "https://picsum.photos/800/600?random=6")!
-            URLSession.shared.dataTask(with: test) { _, _, error in
-                print("Connectivity test:", error as Any)
-            }.resume()
+            discoverQuizzes = try await getDiscoverQuizzesUseCase.execute(limit: 20)
+            createCategoryGroups()
         } catch {
             print("Error loading discover quizzes: \(error)")
             discoverQuizzes = []
@@ -34,4 +31,26 @@ final class DiscoverViewModel {
         
         isLoading = false
     }
+    
+    private func createCategoryGroups() {
+        // Group quizzes by category
+        let groupedQuizzes = Dictionary(grouping: discoverQuizzes) { $0.category }
+        
+        // Filter out nil categories and create CategoryGroup objects
+        let validGroups = groupedQuizzes.compactMap { (category: Category?, quizzes: [Quiz]) -> CategoryGroup? in
+            guard let category = category, !quizzes.isEmpty else { return nil }
+            return CategoryGroup(category: category, quizzes: quizzes)
+        }
+        
+        // Randomly select up to 5 categories
+        let shuffledGroups = validGroups.shuffled()
+        categoryGroups = Array(shuffledGroups.prefix(5))
+    }
+}
+
+// MARK: - Category Group Model
+struct CategoryGroup: Identifiable {
+    let id = UUID()
+    let category: Category
+    let quizzes: [Quiz]
 }
