@@ -12,6 +12,7 @@ import Observation
 @Observable
 final class QuizViewModel {
     private(set) var quiz: Quiz?
+    private var questionsWithRandomizedChoices: [Question] = []
     private(set) var currentQuestionIndex = 0
     private(set) var score = 0
     private(set) var hasAnsweredCurrent = false
@@ -25,6 +26,7 @@ final class QuizViewModel {
 
     init(quiz: Quiz) {
         self.quiz = quiz
+        self.questionsWithRandomizedChoices = randomizeChoicesForQuestions(quiz.questions)
         self.currentQuestionIndex = 0
         self.score = 0
         self.hasAnsweredCurrent = false
@@ -39,7 +41,7 @@ final class QuizViewModel {
     }
 
     var totalQuestions: Int {
-        quiz?.questions.count ?? 0
+        questionsWithRandomizedChoices.count
     }
 
     var answeredCount: Int {
@@ -47,14 +49,12 @@ final class QuizViewModel {
     }
 
     var currentQuestion: Question? {
-        guard let quiz else { return nil }
-        guard currentQuestionIndex < quiz.questions.count else { return nil }
-        return quiz.questions[currentQuestionIndex]
+        guard currentQuestionIndex < questionsWithRandomizedChoices.count else { return nil }
+        return questionsWithRandomizedChoices[currentQuestionIndex]
     }
 
     var isOnLastQuestion: Bool {
-        guard let quiz else { return false }
-        return currentQuestionIndex == quiz.questions.count - 1
+        return currentQuestionIndex == questionsWithRandomizedChoices.count - 1
     }
 
     func select(choice: Choice) {
@@ -70,19 +70,21 @@ final class QuizViewModel {
     }
 
     func goToNextQuestion() {
-        guard let quiz else { return }
         guard hasAnsweredCurrent else { return }
 
-        if currentQuestionIndex < quiz.questions.count - 1 {
+        if currentQuestionIndex < questionsWithRandomizedChoices.count - 1 {
             currentQuestionIndex += 1
             hasAnsweredCurrent = false
             selectedChoice = nil
         } else {
-            currentQuestionIndex = quiz.questions.count
+            currentQuestionIndex = questionsWithRandomizedChoices.count
         }
     }
 
     func restart() {
+        if let quiz {
+            questionsWithRandomizedChoices = randomizeChoicesForQuestions(quiz.questions)
+        }
         currentQuestionIndex = 0
         score = 0
         hasAnsweredCurrent = false
@@ -119,5 +121,15 @@ final class QuizViewModel {
     func stopTimer() {
         timer?.invalidate()
         timer = nil
+    }
+    
+    private func randomizeChoicesForQuestions(_ questions: [Question]) -> [Question] {
+        questions.map { question in
+            Question(
+                id: question.id,
+                text: question.text,
+                choices: question.choices.shuffled()
+            )
+        }
     }
 }
