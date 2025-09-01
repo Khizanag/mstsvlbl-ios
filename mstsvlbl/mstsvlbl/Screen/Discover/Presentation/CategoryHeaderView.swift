@@ -15,18 +15,7 @@ struct CategoryHeaderView: View {
             backgroundGradient
             content
         }
-        .shadow(
-            color: category.color.opacity(0.15),
-            radius: 12,
-            x: 0,
-            y: 4
-        )
-        .shadow(
-            color: category.color.opacity(0.08),
-            radius: 20,
-            x: 0,
-            y: 8
-        )
+        .shadow(.l)
     }
 }
 
@@ -37,8 +26,8 @@ private extension CategoryHeaderView {
             .fill(
                 LinearGradient(
                     colors: [
+                        category.color.opacity(0.2),
                         category.color.opacity(0.08),
-                        category.color.opacity(0.03),
                         Color(.systemBackground)
                     ],
                     startPoint: .topLeading,
@@ -50,8 +39,8 @@ private extension CategoryHeaderView {
                     .stroke(
                         LinearGradient(
                             colors: [
-                                category.color.opacity(0.3),
-                                category.color.opacity(0.1)
+                                category.color.opacity(0.32),
+                                category.color.opacity(0.16)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing

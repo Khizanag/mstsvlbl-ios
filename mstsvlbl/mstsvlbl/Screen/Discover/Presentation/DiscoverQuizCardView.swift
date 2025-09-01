@@ -26,8 +26,10 @@ struct DiscoverQuizCardView: View {
 
 // MARK: - Private Extensions
 private extension DiscoverQuizCardView {
-    var cardWidth: CGFloat { 320 }
-    var cardHeight: CGFloat { 180 }
+    var cardWidth: CGFloat { 352 }
+    
+    var cardHeight: CGFloat { 192 }
+    
     var cardShape: some Shape {
         RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
     }
