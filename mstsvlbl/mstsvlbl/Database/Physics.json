@@ -3,6 +3,7 @@
     "description": "Explore the fundamental laws of nature, from motion and energy to light and quantum mechanics.",
     "coverUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 360,
+    "category": "science",
     "questions": [
         {
             "id": "55555555-5555-5555-5555-555555555501",

@@ -3,6 +3,7 @@
     "description": "Challenge your mathematical skills with numbers, equations, and problem-solving exercises.",
     "coverUrl": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 300,
+    "category": "mathematics",
     "questions": [
         {
             "id": "44444444-4444-4444-4444-444444444401",

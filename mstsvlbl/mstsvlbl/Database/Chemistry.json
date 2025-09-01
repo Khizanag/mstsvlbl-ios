@@ -3,6 +3,7 @@
     "description": "Dive into the fascinating world of atoms, molecules, and chemical reactions that shape our universe.",
     "coverUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 360,
+    "category": "science",
     "questions": [
         {
             "id": "66666666-6666-6666-6666-666666666601",

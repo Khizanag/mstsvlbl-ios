@@ -18,6 +18,7 @@ struct DiscoverView: View {
     }
 }
 
+// MARK: - Components
 private extension DiscoverView {
     @ViewBuilder
     var content: some View {

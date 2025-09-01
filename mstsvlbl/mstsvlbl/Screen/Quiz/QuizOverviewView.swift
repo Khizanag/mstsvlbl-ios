@@ -93,6 +93,10 @@ private extension QuizOverviewView {
             Text(quiz.title)
                 .font(DesignBook.Font.title2())
             
+            if let category = quiz.category {
+                categoryBadge(category)
+            }
+            
             if let description = quiz.description {
                 Text(description)
                     .font(DesignBook.Font.body())
@@ -111,6 +115,22 @@ private extension QuizOverviewView {
             .font(DesignBook.Font.subheadline())
             .foregroundStyle(DesignBook.Color.Text.secondary)
         }
+    }
+    
+    @ViewBuilder
+    private func categoryBadge(_ category: Category) -> some View {
+        HStack(spacing: DesignBook.Spacing.xs) {
+            Image(systemName: category.icon)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(category.color)
+            
+            Text(category.displayName)
+                .font(DesignBook.Font.subheadline())
+                .foregroundStyle(category.color)
+        }
+        .padding(.horizontal, DesignBook.Spacing.sm)
+        .padding(.vertical, DesignBook.Spacing.xs)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: DesignBook.Radius.sm, style: .continuous))
     }
 }
 

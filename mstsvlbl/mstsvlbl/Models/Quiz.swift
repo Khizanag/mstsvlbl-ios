@@ -14,6 +14,7 @@ struct Quiz: Codable, Identifiable {
     let createdAt: String?
     let coverUrl: URL?
     let maxTimeSeconds: Int?
+    let category: Category?
     let questions: [Question]
 }
 
@@ -41,6 +42,7 @@ extension Quiz {
             createdAt: nil,
             coverUrl: nil,
             maxTimeSeconds: 300,
+            category: .science,
             questions: []
         )
     }

@@ -82,6 +82,10 @@ private extension DiscoverQuizCardView {
     
     var contentInfo: some View {
         VStack(alignment: .leading, spacing: DesignBook.Spacing.sm) {
+            if let category = quiz.category {
+                categoryBadge(category)
+            }
+            
             Text(quiz.title)
                 .font(DesignBook.Font.title2())
                 .foregroundStyle(.white)
@@ -98,6 +102,22 @@ private extension DiscoverQuizCardView {
             .foregroundStyle(.white.opacity(0.9))
         }
         .padding(DesignBook.Spacing.lg)
+    }
+    
+    @ViewBuilder
+    private func categoryBadge(_ category: Category) -> some View {
+        HStack(spacing: DesignBook.Spacing.xs) {
+            Image(systemName: category.icon)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(category.color)
+            
+            Text(category.displayName)
+                .font(DesignBook.Font.caption())
+                .foregroundStyle(category.color)
+        }
+        .padding(.horizontal, DesignBook.Spacing.sm)
+        .padding(.vertical, DesignBook.Spacing.xs)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: DesignBook.Radius.sm, style: .continuous))
     }
     
     var noCoverImage: some View {

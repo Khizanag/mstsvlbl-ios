@@ -3,6 +3,7 @@
     "description": "Explore the vibrant culture, stunning architecture, and rich history of Barcelona, Spain's most enchanting city.",
     "coverUrl": "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 240,
+    "category": "travel",
     "questions": [
         {
             "id": "88888888-8888-8888-8888-888888888801",

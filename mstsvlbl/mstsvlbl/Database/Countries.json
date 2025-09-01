@@ -3,6 +3,7 @@
     "description": "Explore the diverse nations of our world, their cultures, geography, and unique characteristics.",
     "coverUrl": "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=400&h=300&fit=crop&crop=center",
     "maxTimeSeconds": 420,
+    "category": "geography",
     "questions": [
         {
             "id": "22222222-2222-2222-2222-222222222201",
