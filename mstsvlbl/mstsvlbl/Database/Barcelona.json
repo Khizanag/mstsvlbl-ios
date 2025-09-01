@@ -1,5 +1,7 @@
 {
     "title": "Barcelona",
+    "description": "Explore the vibrant culture, stunning architecture, and rich history of Barcelona, Spain's most enchanting city.",
+    "coverUrl": "https://i.ibb.co/VqKJ8Mp/barcelona.jpg",
     "maxTimeSeconds": 240,
     "questions": [
         {
@@ -22,5 +24,3 @@
         }
     ]
 }
-
-

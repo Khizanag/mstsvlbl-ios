@@ -1,5 +1,7 @@
 {
     "title": "Math",
+    "description": "Challenge your mathematical skills with numbers, equations, and problem-solving exercises.",
+    "coverUrl": "https://i.ibb.co/5vKJ8Mp/math.jpg",
     "maxTimeSeconds": 300,
     "questions": [
         {

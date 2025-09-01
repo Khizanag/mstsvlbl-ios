@@ -15,7 +15,17 @@ final class DefaultGetDiscoverQuizzesUseCase: GetDiscoverQuizzesUseCase {
     @Injected private var repository: QuizRepository
     
     func execute(limit: Int) async throws -> [Quiz] {
+        print("🔍 GetDiscoverQuizzesUseCase: Starting execution with limit: \(limit)")
         let all = try await repository.getAll()
-        return Array(all.shuffled().prefix(limit))
+        print("🔍 GetDiscoverQuizzesUseCase: Got \(all.count) quizzes from repository")
+        
+        let result = Array(all.shuffled().prefix(limit))
+        print("🔍 GetDiscoverQuizzesUseCase: Returning \(result.count) quizzes")
+        
+        for quiz in result {
+            print("🔍 GetDiscoverQuizzesUseCase: Quiz '\(quiz.title)' has coverUrl: \(quiz.coverUrl ?? "nil")")
+        }
+        
+        return result
     }
 }

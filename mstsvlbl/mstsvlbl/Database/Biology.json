@@ -1,5 +1,7 @@
 {
     "title": "Biology",
+    "description": "Discover the fascinating world of living organisms, from microscopic cells to complex ecosystems.",
+    "coverUrl": "https://i.ibb.co/9vKJ8Mp/biology.jpg",
     "maxTimeSeconds": 360,
     "questions": [
         {

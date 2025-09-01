@@ -18,19 +18,53 @@ struct LocalQuizRepository: QuizRepository {
     
     func getAll() async throws -> [Quiz] {
         let fm = FileManager.default
-        if let resourcesURL = Bundle.main.resourceURL,
-           let enumerator = fm.enumerator(at: resourcesURL, includingPropertiesForKeys: nil) {
-            var items: [Quiz] = []
-            for case let fileUrl as URL in enumerator {
-                guard fileUrl.pathExtension.lowercased() == resourceExtension else { continue }
-                if let data = try? Data(contentsOf: fileUrl),
-                   let quiz = try? JSONDecoder().decode(Quiz.self, from: data) {
-                    items.append(quiz)
-                }
-            }
-            if !items.isEmpty { return items }
+        print("🔍 QuizRepository: Starting to load quizzes...")
+        
+        guard let resourcesURL = Bundle.main.resourceURL else {
+            print("❌ QuizRepository: Failed to get resources URL")
+            return []
         }
         
+        let databaseURL = resourcesURL.appendingPathComponent(databaseDirectoryName)
+        print("🔍 QuizRepository: Resources URL: \(resourcesURL)")
+        print("🔍 QuizRepository: Database URL: \(databaseURL)")
+        
+        guard fm.fileExists(atPath: databaseURL.path) else {
+            print("❌ QuizRepository: Database directory does not exist at: \(databaseURL.path)")
+            return []
+        }
+        
+        if let enumerator = fm.enumerator(at: databaseURL, includingPropertiesForKeys: nil) {
+            var items: [Quiz] = []
+            var jsonFilesFound = 0
+            
+            while let fileUrl = enumerator.nextObject() as? URL {
+                if fileUrl.pathExtension.lowercased() == resourceExtension {
+                    jsonFilesFound += 1
+                    print("🔍 QuizRepository: Found JSON file: \(fileUrl.lastPathComponent)")
+                    
+                    if let data = try? Data(contentsOf: fileUrl) {
+                        print("🔍 QuizRepository: Loaded data for \(fileUrl.lastPathComponent), size: \(data.count) bytes")
+                        
+                        if let quiz = try? JSONDecoder().decode(Quiz.self, from: data) {
+                            print("🔍 QuizRepository: Successfully decoded quiz: \(quiz.title), coverUrl: \(quiz.coverUrl?.absoluteString ?? "nil")")
+                            items.append(quiz)
+                        } else {
+                            print("❌ QuizRepository: Failed to decode quiz from \(fileUrl.lastPathComponent)")
+                        }
+                    } else {
+                        print("❌ QuizRepository: Failed to load data from \(fileUrl.lastPathComponent)")
+                    }
+                }
+            }
+            
+            print("🔍 QuizRepository: Found \(jsonFilesFound) JSON files, successfully loaded \(items.count) quizzes")
+            if !items.isEmpty { return items }
+        } else {
+            print("❌ QuizRepository: Failed to create enumerator for database directory")
+        }
+        
+        print("❌ QuizRepository: No quizzes loaded, returning empty array")
         return []
     }
     

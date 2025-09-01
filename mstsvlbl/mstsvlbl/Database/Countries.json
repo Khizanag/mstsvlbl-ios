@@ -1,5 +1,7 @@
 {
     "title": "Countries",
+    "description": "Explore the diverse nations of our world, their cultures, geography, and unique characteristics.",
+    "coverUrl": "https://i.ibb.co/6vKJ8Mp/countries.jpg",
     "maxTimeSeconds": 420,
     "questions": [
         {

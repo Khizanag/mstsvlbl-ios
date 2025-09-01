@@ -12,7 +12,7 @@ struct Quiz: Codable, Identifiable {
     let title: String
     let description: String?
     let createdAt: String?
-    let coverName: String?
+    let coverUrl: URL?
     let maxTimeSeconds: Int?
     let questions: [Question]
 }
@@ -31,17 +31,18 @@ extension Quiz: Hashable {
     }
 }
 
-
+#if DEBUG
+// MARK: - Example
 extension Quiz {
     static var example: Quiz {
         .init(
-//            id: UUID(),
             title: "Example Quiz",
             description: "This is an example quiz.",
             createdAt: nil,
-            coverName: nil,
+            coverUrl: nil,
             maxTimeSeconds: 300,
             questions: []
         )
     }
 }
+#endif

@@ -1,5 +1,7 @@
 {
     "title": "USA States",
+    "description": "Test your knowledge of the 50 United States, their capitals, geography, and unique features.",
+    "coverUrl": "https://i.ibb.co/3vKJ8Mp/usa.jpg",
     "maxTimeSeconds": 480,
     "questions": [
         {

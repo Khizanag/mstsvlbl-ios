@@ -1,5 +1,7 @@
 {
     "title": "Physics",
+    "description": "Explore the fundamental laws of nature, from motion and energy to light and quantum mechanics.",
+    "coverUrl": "https://i.ibb.co/4vKJ8Mp/physics.jpg",
     "maxTimeSeconds": 360,
     "questions": [
         {
