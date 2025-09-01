@@ -14,11 +14,7 @@ protocol GetBookmarkedQuizzesUseCase {
 
 // MARK: - Default Implementation
 final class DefaultGetBookmarkedQuizzesUseCase: GetBookmarkedQuizzesUseCase {
-    private let repository: QuizRepository
-    
-    init(repository: QuizRepository) {
-        self.repository = repository
-    }
+    @Injected private var repository: QuizRepository
     
     func execute(for user: User) async throws -> [Quiz] {
         let allQuizzes = try await repository.getAll()

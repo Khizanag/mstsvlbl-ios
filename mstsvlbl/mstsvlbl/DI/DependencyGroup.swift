@@ -79,8 +79,7 @@ struct UseCaseDependencyGroup: DependencyGroup {
     func register(in container: DIContainer) {
         // Use cases
         container.register(GetBookmarkedQuizzesUseCase.self) {
-            let repository: QuizRepository = container.resolve(QuizRepository.self)
-            return DefaultGetBookmarkedQuizzesUseCase(repository: repository)
+            DefaultGetBookmarkedQuizzesUseCase()
         }
     }
 }
