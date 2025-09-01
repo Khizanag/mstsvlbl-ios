@@ -37,41 +37,35 @@ private extension QuizOverviewView {
                 .fill(DesignBook.Color.Background.muted)
                 .frame(height: 180) // TODO: Consider adding height constants to DesignBook
             
-            if let coverURL = quiz.coverUrl, let url = URL(string: coverURL) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                            .fill(DesignBook.Color.Background.muted)
-                            .overlay(
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            )
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .clipped()
-                    case .failure(_):
-                        RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                            .fill(DesignBook.Color.Background.muted)
-                            .overlay(
-                                Image(systemName: "photo")
-                                    .font(.system(size: 32))
-                                    .foregroundStyle(DesignBook.Color.Text.secondary)
-                            )
-                    @unknown default:
-                        RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
-                            .fill(DesignBook.Color.Background.muted)
-                    }
+            AsyncImage(url: quiz.coverUrl) { phase in
+                switch phase {
+                case .empty:
+                    RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
+                        .fill(DesignBook.Color.Background.muted)
+                        .overlay(
+                            ProgressView()
+                                .scaleEffect(0.8)
+                        )
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipped()
+                case .failure(_):
+                    RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
+                        .fill(DesignBook.Color.Background.muted)
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.system(size: 32))
+                                .foregroundStyle(DesignBook.Color.Text.secondary)
+                        )
+                @unknown default:
+                    RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous)
+                        .fill(DesignBook.Color.Background.muted)
                 }
-                .frame(height: 180) // TODO: Consider adding height constants to DesignBook
-                .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
-            } else {
-                Image(systemName: "square.grid.2x2")
-                    .font(.system(size: 48))
-                    .foregroundStyle(DesignBook.Color.Text.secondary)
             }
+            .frame(height: 180) // TODO: Consider adding height constants to DesignBook
+            .clipShape(RoundedRectangle(cornerRadius: DesignBook.Radius.lg, style: .continuous))
         }
         .shadow(DesignBook.Shadow.m)
     }
@@ -124,4 +118,3 @@ private extension QuizOverviewView {
 #Preview {
     QuizOverviewView(quiz: .example)
 }
- 

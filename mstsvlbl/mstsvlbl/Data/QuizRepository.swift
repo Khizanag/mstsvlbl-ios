@@ -9,7 +9,7 @@ import Foundation
 
 protocol QuizRepository {
     func getAll() async throws -> [Quiz]
-    func get(by ids: [String]) async throws -> [Quiz]
+    func get(by ids: Set<String>) async throws -> [Quiz]
 }
 
 struct LocalQuizRepository: QuizRepository {
