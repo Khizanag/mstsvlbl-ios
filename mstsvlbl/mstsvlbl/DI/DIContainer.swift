@@ -84,9 +84,8 @@ public final class DIContainer {
         case .singleton:
             singletons[key] = instance
         case .weak:
-            if let objectInstance = instance as? AnyObject {
-                weakReferences[key] = WeakReference(value: objectInstance)
-            }
+            // Weak references only work with reference types
+            weakReferences[key] = WeakReference(value: instance as AnyObject)
         case .transient:
             break // Don't store transient instances
         }
@@ -119,9 +118,8 @@ public final class DIContainer {
         case .singleton:
             singletons[key] = instance
         case .weak:
-            if let objectInstance = instance as? AnyObject {
-                weakReferences[key] = WeakReference(value: objectInstance)
-            }
+            // Weak references only work with reference types
+            weakReferences[key] = WeakReference(value: instance as AnyObject)
         case .transient:
             break
         }
