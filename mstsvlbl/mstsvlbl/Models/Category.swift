@@ -59,26 +59,26 @@ extension Category {
     
     var color: Color {
         switch self {
-        case .science: .blue
-        case .mathematics: .purple
-        case .geography: .green
-        case .history: .brown
-        case .literature: .orange
-        case .sports: .red
-        case .entertainment: .pink
-        case .technology: .cyan
-        case .art: .mint
-        case .music: .indigo
-        case .food: .yellow
-        case .travel: .teal
-        case .business: .gray
-        case .health: .green
-        case .nature: .mint
-        case .space: .purple
-        case .politics: .blue
-        case .fashion: .pink
-        case .automotive: .red
-        case .gaming: .orange
+        case .science: DesignBook.Color.Category.science
+        case .mathematics: DesignBook.Color.Category.mathematics
+        case .geography: DesignBook.Color.Category.geography
+        case .history: DesignBook.Color.Category.history
+        case .literature: DesignBook.Color.Category.literature
+        case .sports: DesignBook.Color.Category.sports
+        case .entertainment: DesignBook.Color.Category.entertainment
+        case .technology: DesignBook.Color.Category.technology
+        case .art: DesignBook.Color.Category.art
+        case .music: DesignBook.Color.Category.music
+        case .food: DesignBook.Color.Category.food
+        case .travel: DesignBook.Color.Category.travel
+        case .business: DesignBook.Color.Category.business
+        case .health: DesignBook.Color.Category.health
+        case .nature: DesignBook.Color.Category.nature
+        case .space: DesignBook.Color.Category.space
+        case .politics: DesignBook.Color.Category.politics
+        case .fashion: DesignBook.Color.Category.fashion
+        case .automotive: DesignBook.Color.Category.automotive
+        case .gaming: DesignBook.Color.Category.gaming
         }
     }
     

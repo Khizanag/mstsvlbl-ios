@@ -41,11 +41,14 @@ struct CategorySectionView: View {
     ]
     let categoryGroup = CategoryGroup(category: .science, quizzes: sampleQuizzes)
     
-    CategorySectionView(categoryGroup: categoryGroup, onQuizTap: { quiz in
-        print("Quiz tapped: \(quiz.title)")
-    }, onCategoryTap: { category in
-        print("Category tapped: \(category.displayName)")
-    })
+    CategorySectionView(
+        categoryGroup: categoryGroup,
+        onQuizTap: { quiz in
+            print("Quiz tapped: \(quiz.title)")
+        },
+        onCategoryTap: { category in
+            print("Category tapped: \(category.displayName)")
+        }
+    )
     .padding()
-    .background(Color(.systemBackground))
 }

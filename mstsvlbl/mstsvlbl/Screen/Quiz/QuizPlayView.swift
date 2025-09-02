@@ -88,7 +88,7 @@ private extension QuizPlayView {
                 
                 Text("Score: \(viewModel.score)/\(viewModel.totalQuestions)")
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(DesignBook.Color.Text.secondary)
             }
             
             if viewModel.shouldShowTimer {
@@ -96,7 +96,7 @@ private extension QuizPlayView {
                     Spacer()
                     Label("\(viewModel.remainingSeconds)s", systemImage: "timer")
                         .font(DesignBook.Font.subheadline())
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DesignBook.Color.Text.secondary)
                     Spacer()
                 }
             }
@@ -123,7 +123,7 @@ private extension QuizPlayView {
                     } label: {
                         HStack {
                             Text(choice.text)
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(DesignBook.Color.Text.primary)
                             Spacer()
                         }
                         .padding(DesignBook.Spacing.lg)

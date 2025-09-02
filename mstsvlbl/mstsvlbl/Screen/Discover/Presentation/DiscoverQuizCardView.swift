@@ -73,8 +73,8 @@ private extension DiscoverQuizCardView {
     var gradientOverlay: some View {
         LinearGradient(
             colors: [
-                .black.opacity(0.1),
-                .black.opacity(0.8)
+                DesignBook.Color.Generic.black.opacity(0.1),
+                DesignBook.Color.Generic.black.opacity(0.8)
             ],
             startPoint: .top,
             endPoint: .bottom
@@ -90,7 +90,7 @@ private extension DiscoverQuizCardView {
             
             Text(quiz.title)
                 .font(DesignBook.Font.title2())
-                .foregroundStyle(.white)
+                .foregroundStyle(DesignBook.Color.Generic.white)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
 
@@ -101,7 +101,7 @@ private extension DiscoverQuizCardView {
                 }
             }
             .font(DesignBook.Font.footnote())
-            .foregroundStyle(.white.opacity(0.9))
+            .foregroundStyle(DesignBook.Color.Generic.white.opacity(0.9))
         }
         .padding(DesignBook.Spacing.lg)
     }

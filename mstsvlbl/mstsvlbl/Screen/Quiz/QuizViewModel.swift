@@ -152,13 +152,13 @@ final class QuizViewModel {
 
     func backgroundColor(for choice: Choice) -> Color {
         guard hasAnsweredCurrent, let question = currentQuestion else {
-            return Color.gray.opacity(0.1)
+            return DesignBook.Color.Interaction.optionIdle
         }
         let isCorrect = question.choices.first(where: { $0.isCorrect }) == choice
         if selectedChoice == choice {
-            return isCorrect ? Color.green.opacity(0.25) : Color.red.opacity(0.25)
+            return isCorrect ? DesignBook.Color.Interaction.correct : DesignBook.Color.Interaction.incorrect
         }
-        return isCorrect ? Color.green.opacity(0.15) : Color.gray.opacity(0.1)
+        return isCorrect ? DesignBook.Color.Interaction.correctFaint : DesignBook.Color.Interaction.optionIdle
     }
 
     func startTimerIfNeeded() {

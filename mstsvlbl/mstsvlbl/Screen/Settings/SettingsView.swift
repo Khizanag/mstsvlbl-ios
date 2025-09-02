@@ -166,7 +166,7 @@ private extension SettingsView {
                 HStack {
                     HStack(spacing: DesignBook.Spacing.sm) {
                         Image(systemName: "heart.fill")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(DesignBook.Color.Status.error)
                         Text("Made with love")
                             .font(DesignBook.Font.body())
                             .fontWeight(.medium)
@@ -258,12 +258,12 @@ private extension SettingsView {
             VStack(spacing: DesignBook.Spacing.xs) {
                 Image(systemName: icon)
                     .font(.title2)
-                    .foregroundStyle(isSelected ? .white : DesignBook.Color.Text.primary)
+                    .foregroundStyle(isSelected ? DesignBook.Color.Generic.white : DesignBook.Color.Text.primary)
                 
                 Text(title)
                     .font(DesignBook.Font.caption())
                     .fontWeight(.medium)
-                    .foregroundStyle(isSelected ? .white : DesignBook.Color.Text.primary)
+                    .foregroundStyle(isSelected ? DesignBook.Color.Generic.white : DesignBook.Color.Text.primary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, DesignBook.Spacing.sm)

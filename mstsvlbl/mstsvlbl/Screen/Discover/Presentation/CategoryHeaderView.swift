@@ -44,7 +44,7 @@ private extension CategoryHeaderView {
                     colors: [
                         category.color.opacity(0.2),
                         category.color.opacity(0.08),
-                        Color(.systemBackground)
+                        DesignBook.Color.Background.primary
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -119,7 +119,7 @@ private extension CategoryHeaderView {
             )
             .background(
                 Circle()
-                    .fill(Color(.systemBackground))
+                    .fill(DesignBook.Color.Background.primary)
                     .frame(width: 20, height: 20)
             )
     }
@@ -189,5 +189,6 @@ private extension CategoryHeaderView {
         CategoryHeaderView(category: .technology)
     }
     .padding()
-    .background(Color(.systemBackground))
+    .background(DesignBook.Color.Background.primary)
 }
+   

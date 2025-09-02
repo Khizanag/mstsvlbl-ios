@@ -23,7 +23,7 @@ struct CategoryPage: View {
             }
             
         }
-        .background(Color(.systemBackground))
+        .background(DesignBook.Color.Background.primary)
         .task {
             await loadQuizzes()
         }
