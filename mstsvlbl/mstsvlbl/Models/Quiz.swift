@@ -7,27 +7,27 @@
 
 import Foundation
 
-struct Quiz: Codable, Identifiable {
-    var id: String { title }
-    let title: String
-    let description: String?
-    let createdAt: String?
-    let coverUrl: URL?
-    let maxTimeSeconds: Int?
-    let category: Category?
-    let questions: [Question]
+public struct Quiz: Codable, Identifiable {
+    public var id: String { title }
+    public let title: String
+    public let description: String?
+    public let createdAt: String?
+    public let coverUrl: URL?
+    public let maxTimeSeconds: Int?
+    public let category: Category?
+    public let questions: [Question]
 }
 
 // MARK: - Equatable
 extension Quiz: Equatable {
-    static func == (lhs: Quiz, rhs: Quiz) -> Bool { 
+    public static func == (lhs: Quiz, rhs: Quiz) -> Bool { 
         lhs.id == rhs.id 
     }
 }
 
 // MARK: - Hashable
 extension Quiz: Hashable {
-    func hash(into hasher: inout Hasher) { 
+    public func hash(into hasher: inout Hasher) { 
         hasher.combine(id) 
     }
 }
@@ -35,7 +35,7 @@ extension Quiz: Hashable {
 #if DEBUG
 // MARK: - Example
 extension Quiz {
-    static var example: Quiz {
+    public static var example: Quiz {
         .init(
             title: "Example Quiz",
             description: "This is an example quiz.",

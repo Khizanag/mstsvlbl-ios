@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @Bindable var navigationCoordinator: DeepLinkNavigationCoordinator
+    @ObservedObject var navigationCoordinator: DeepLinkNavigationCoordinator
     
     var body: some View {
         TabView(selection: $navigationCoordinator.selectedTab) {
@@ -50,8 +50,12 @@ struct MainTabView: View {
         }
         .onChange(of: navigationCoordinator.deepLinkDestination) { destination in
             if let destination = destination {
+                print("🎯 MainTabView: Deep link destination changed to: \(destination.displayName)")
                 handleDeepLinkDestination(destination)
             }
+        }
+        .onChange(of: navigationCoordinator.selectedTab) { newTab in
+            print("🎯 MainTabView: Tab changed to: \(newTab)")
         }
     }
     
@@ -68,6 +72,7 @@ private extension MainTabView {
     var quizzesTab: some View {
         NavigatorView(canBeDismissed: false) {
             QuizListView()
+                .environment(\.deepLinkNavigationCoordinator, navigationCoordinator)
         }
     }
 

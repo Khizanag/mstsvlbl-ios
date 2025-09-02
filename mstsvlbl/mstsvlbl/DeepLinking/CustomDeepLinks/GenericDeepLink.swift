@@ -17,7 +17,8 @@ public struct GenericDeepLink: DeepLink {
         let path = url.path.lowercased()
         let queryItems = components?.queryItems ?? []
         
-        let parameters = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap { item in
+        let parameters = Dictionary<String, String>(
+            uniqueKeysWithValues: queryItems.compactMap { item in
             guard let value = item.value else { return nil }
             return (item.name, value)
         })

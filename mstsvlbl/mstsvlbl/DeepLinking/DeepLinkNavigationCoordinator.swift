@@ -10,13 +10,17 @@ import Foundation
 
 // MARK: - Deep Link Navigation Coordinator
 @MainActor
-@Observable
-public final class DeepLinkNavigationCoordinator {
+public final class DeepLinkNavigationCoordinator: ObservableObject {
     
-    public var navigationPath = NavigationPath()
-    public var selectedTab: Int = 0 // Use index instead of Page enum
-    public var shouldNavigate = false
-    public var deepLinkDestination: DeepLinkDestination?
+    @Published public var navigationPath = NavigationPath()
+    @Published public var selectedTab: Int = 0 // Use index instead of Page enum
+    @Published public var shouldNavigate = false
+    @Published public var deepLinkDestination: DeepLinkDestination?
+    
+    // MARK: - Deep Link Specific Properties
+    @Published public var quizToNavigate: Quiz?
+    @Published public var shouldNavigateToQuiz = false
+    @Published public var quizId: String?
     
     public init() {}
     
@@ -55,8 +59,12 @@ public final class DeepLinkNavigationCoordinator {
     // MARK: - Navigation Handlers
     private func handleQuizNavigation(id: String, action: String) {
         selectedTab = 1 // Quiz tab index
-        // You can add specific navigation logic here
-        // For example, navigate to a specific quiz
+        
+        // Set the quiz ID and trigger navigation
+        quizId = id
+        shouldNavigateToQuiz = true
+        
+        print("🎯 Deep link: Navigating to quiz with ID: \(id), action: \(action)")
     }
     
     private func handleCategoryNavigation(name: String) {

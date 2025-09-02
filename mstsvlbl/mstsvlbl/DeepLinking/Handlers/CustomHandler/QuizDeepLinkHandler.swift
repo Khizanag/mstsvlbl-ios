@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Quiz Deep Link Handler
 public final class QuizDeepLinkHandler: DeepLinkHandler {
     public typealias LinkType = QuizDeepLink
     
@@ -26,9 +25,14 @@ public final class QuizDeepLinkHandler: DeepLinkHandler {
     }
     
     public func handle(_ deepLink: QuizDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
-        // Implementation would navigate to quiz with specific action
-        // For now, return success
-        .success(deepLink)
+        // The actual navigation is handled by DeepLinkManager through the navigation coordinator
+        // This handler validates and processes the deep link, but navigation is coordinated elsewhere
+        
+        // Log the deep link for debugging
+        print("🎯 QuizDeepLinkHandler: Processing quiz deep link - ID: \(deepLink.id), Action: \(deepLink.action)")
+        
+        // Return success - the DeepLinkManager will handle the actual navigation
+        return .success(deepLink)
     }
     
     public func validate(_ deepLink: QuizDeepLink) -> DeepLinkError? {

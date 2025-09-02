@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Choice: Codable, Identifiable, Equatable {
-    let id: UUID
-    let text: String
-    let isCorrect: Bool
+public struct Choice: Codable, Identifiable, Equatable {
+    public let id: UUID
+    public let text: String
+    public let isCorrect: Bool
 }

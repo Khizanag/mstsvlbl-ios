@@ -16,7 +16,7 @@ public final class DeepLinkManager {
     public private(set) var lastProcessedDeepLink: (any DeepLink)?
     public private(set) var processingCount = 0
     
-    private var subscribers: [DeepLinkSubscriber] = []
+    private var subscribers: [any DeepLinkSubscriber] = []
     private let parser: DeepLinkParser
     private let router: DeepLinkRouter
     private let analyticsService: DeepLinkAnalyticsService
@@ -42,12 +42,7 @@ public final class DeepLinkManager {
         
         switch result {
         case .success(let deepLink):
-            // Route the deep link to get destination
-            if let destination = router.route(deepLink) {
-                await MainActor.run {
-                    navigationCoordinator?.navigate(to: destination)
-                }
-            }
+            print("✅ Deep link processed successfully: \(deepLink)")
         case .failure(let error):
             print("❌ Deep link processing failed: \(error)")
         case .ignored(let deepLink):
@@ -71,23 +66,39 @@ public final class DeepLinkManager {
         // Notify subscribers
         await notifySubscribers(deepLink, context: context)
         
-        // Route the deep link
-        let routingResult = router.route(deepLink)
+        // Route the deep link to get destination
+        let destination = router.route(deepLink)
+        print("🔍 DeepLinkManager: Router returned destination: \(String(describing: destination))")
         
         // Update last processed
         lastProcessedDeepLink = deepLink
+        
+        // If we have a destination, trigger navigation
+        if let destination = destination {
+            print("🎯 DeepLinkManager: Triggering navigation to: \(destination)")
+            await MainActor.run {
+                if let coordinator = navigationCoordinator {
+                    print("✅ DeepLinkManager: Navigation coordinator found, calling navigate")
+                    coordinator.navigate(to: destination)
+                } else {
+                    print("❌ DeepLinkManager: Navigation coordinator is nil!")
+                }
+            }
+        } else {
+            print("❌ DeepLinkManager: No destination returned from router")
+        }
         
         return .success(deepLink)
     }
     
     /// Subscribe to deep link events
-    public func subscribe(_ subscriber: DeepLinkSubscriber) {
+    public func subscribe(_ subscriber: any DeepLinkSubscriber) {
         guard !subscribers.contains(where: { $0.id == subscriber.id }) else { return }
         subscribers.append(subscriber)
     }
     
     /// Unsubscribe from deep link events
-    public func unsubscribe(_ subscriber: DeepLinkSubscriber) {
+    public func unsubscribe(_ subscriber: any DeepLinkSubscriber) {
         subscribers.removeAll { $0.id == subscriber.id }
     }
     
@@ -97,18 +108,23 @@ public final class DeepLinkManager {
     }
     
     /// Get all active subscribers
-    public func getAllSubscribers() -> [DeepLinkSubscriber] {
+    public func getAllSubscribers() -> [any DeepLinkSubscriber] {
         subscribers
     }
     
     /// Check if a subscriber is registered
-    public func isSubscribed(_ subscriber: DeepLinkSubscriber) -> Bool {
+    public func isSubscribed(_ subscriber: any DeepLinkSubscriber) -> Bool {
         subscribers.contains { $0.id == subscriber.id }
     }
     
     /// Clear all subscribers
     public func clearSubscribers() {
         subscribers.removeAll()
+    }
+    
+    /// Set the navigation coordinator
+    public func setNavigationCoordinator(_ coordinator: DeepLinkNavigationCoordinator) {
+        self.navigationCoordinator = coordinator
     }
     
     /// Get analytics summary
@@ -204,11 +220,6 @@ public extension DeepLinkManager {
     func process(_ urlStrings: [String], source: DeepLinkSource = .customScheme) async -> [DeepLinkResult] {
         let urls = urlStrings.compactMap { URL(string: $0) }
         return await process(urls, source: source)
-    }
-    
-    /// Set the navigation coordinator
-    func setNavigationCoordinator(_ coordinator: DeepLinkNavigationCoordinator) {
-        self.navigationCoordinator = coordinator
     }
     
     /// Register handlers from a registry

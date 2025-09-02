@@ -7,15 +7,17 @@
 
 import Foundation
 
-protocol QuizRepository {
+public protocol QuizRepository {
     func getAll() async throws -> [Quiz]
     func get(by ids: Set<String>) async throws -> [Quiz]
 }
 
-struct LocalQuizRepository: QuizRepository {
+public struct LocalQuizRepository: QuizRepository {
     private let resourceExtension = "json"
     
-    func getAll() async throws -> [Quiz] {
+    public init() {}
+    
+    public func getAll() async throws -> [Quiz] {
         let fm = FileManager.default
         print("🔍 QuizRepository: Starting to load quizzes...")
         
@@ -57,8 +59,15 @@ struct LocalQuizRepository: QuizRepository {
         return items
     }
     
-    func get(by ids: Set<String>) async throws -> [Quiz] {
-        try await getAll()
-            .filter { ids.contains($0.id) }
+    public func get(by ids: Set<String>) async throws -> [Quiz] {
+        print("🔍 QuizRepository.get(by:): Looking for quiz IDs: \(ids)")
+        let allQuizzes = try await getAll()
+        print("🔍 QuizRepository.get(by:): Loaded \(allQuizzes.count) quizzes")
+        print("🔍 QuizRepository.get(by:): Available quiz IDs: \(allQuizzes.map { $0.id })")
+        
+        let filteredQuizzes = allQuizzes.filter { ids.contains($0.id) }
+        print("🔍 QuizRepository.get(by:): Found \(filteredQuizzes.count) matching quizzes")
+        
+        return filteredQuizzes
     }
 }

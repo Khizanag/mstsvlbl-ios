@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct Question: Codable, Identifiable {
-    let id: UUID
-    let text: String
-    let choices: [Choice]
+public struct Question: Codable, Identifiable {
+    public let id: UUID
+    public let text: String
+    public let choices: [Choice]
 }
 
 // MARK: - Hashable
 extension Question: Hashable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }

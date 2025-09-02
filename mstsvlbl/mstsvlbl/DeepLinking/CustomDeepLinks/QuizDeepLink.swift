@@ -18,13 +18,17 @@ public struct QuizDeepLink: DeepLink {
         let path = url.path.lowercased()
         let queryItems = components?.queryItems ?? []
         
-        let parameters = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap { item in
-            guard let value = item.value else { return nil }
-            return (item.name, value)
-        })
+        let parameters = Dictionary<String, String>(
+            uniqueKeysWithValues: queryItems.compactMap { item in
+                guard let value = item.value else { return nil }
+                return (item.name, value)
+            }
+        )
         
         let action = parameters["action"] ?? "view"
-        let quizId = parameters["id"] ?? UUID().uuidString
+        let quizId = parameters["id"] ?? ""
+        
+        guard !quizId.isEmpty else { return nil }
         
         self.id = quizId
         self.path = path
@@ -33,7 +37,10 @@ public struct QuizDeepLink: DeepLink {
     }
     
     public init?(from path: String, parameters: [String: String]) {
-        self.id = parameters["id"] ?? UUID().uuidString
+        let quizId = parameters["id"] ?? ""
+        guard !quizId.isEmpty else { return nil }
+        
+        self.id = quizId
         self.path = path
         self.parameters = parameters
         self.action = parameters["action"] ?? "view"
