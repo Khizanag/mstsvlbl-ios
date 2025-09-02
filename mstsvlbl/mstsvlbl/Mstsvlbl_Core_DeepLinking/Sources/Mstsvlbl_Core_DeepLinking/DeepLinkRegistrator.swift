@@ -1,6 +1,6 @@
 //
 //  DeepLinkRegistrator.swift
-//  Mstsvlbl_DeepLinking
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
@@ -24,16 +24,15 @@ public final class DeepLinkRegistrator {
             deepLinkManager.subscribe(subscriber)
             print("🔗 DeepLinkRegistrator: \(type(of: subscriber)) registered (\(index + 1)/\(subscriberFactories.count))")
         }
-        
         print("🔗 DeepLinkRegistrator: All subscribers registered successfully")
     }
     
     public func getRegisteredSubscriberCount() -> Int {
-        subscriberFactories.count
+        return subscriberFactories.count
     }
     
     public func listRegisteredSubscribers() -> [String] {
-        subscriberFactories.map { _ in
+        return subscriberFactories.map { _ in
             "Subscriber Factory"
         }
     }

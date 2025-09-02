@@ -7,7 +7,7 @@
 
 import UIKit
 import SwiftUI
-import Mstsvlbl_DeepLinking
+import Mstsvlbl_Core_DeepLinking
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -70,35 +70,35 @@ private extension AppDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func createSubscriberFactories() -> [() async -> any Mstsvlbl_DeepLinking.DeepLinkSubscriber] {
+    func createSubscriberFactories() -> [() async -> any Mstsvlbl_Core_DeepLinking.DeepLinkSubscriber] {
         return [
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.QuizDeepLinkSubscriber(navigationHandler: coordinator, dataProvider: LocalQuizRepository())
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.QuizDeepLinkSubscriber(navigationHandler: window, dataProvider: LocalQuizRepository())
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.CategoryDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.CategoryDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.ProfileDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.ProfileDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.SettingsDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.SettingsDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.StatsDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.StatsDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.DiscoverDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.DiscoverDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
-                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
-                return await Mstsvlbl_DeepLinking.BookmarksDeepLinkSubscriber(navigationHandler: coordinator)
+                guard let window = self?.window else { fatalError("Window not available") }
+                return await Mstsvlbl_Core_DeepLinking.BookmarksDeepLinkSubscriber(navigationHandler: window)
             }
         ]
     }

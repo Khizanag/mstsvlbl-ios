@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Mstsvlbl_DeepLinking",
+    name: "Mstsvlbl_Core_DeepLinking",
     platforms: [
         .iOS(.v18),
         .macOS(.v14)
@@ -12,17 +12,16 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "Mstsvlbl_DeepLinking",
-            targets: ["Mstsvlbl_DeepLinking"]),
+            name: "Mstsvlbl_Core_DeepLinking",
+            targets: ["Mstsvlbl_Core_DeepLinking"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Mstsvlbl_DeepLinking"),
+            name: "Mstsvlbl_Core_DeepLinking"),
         .testTarget(
-            name: "Mstsvlbl_DeepLinkingTests",
-            dependencies: ["Mstsvlbl_DeepLinking"]
-        ),
+            name: "Mstsvlbl_Core_DeepLinkingTests",
+            dependencies: ["Mstsvlbl_Core_DeepLinking"]),
     ]
 )

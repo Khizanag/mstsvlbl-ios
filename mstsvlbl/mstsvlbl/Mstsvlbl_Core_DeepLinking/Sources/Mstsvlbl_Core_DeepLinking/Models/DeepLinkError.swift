@@ -1,14 +1,13 @@
 //
 //  DeepLinkError.swift
-//  mstsvlbl
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
 import Foundation
 
-// MARK: - DeepLink Error
-public enum DeepLinkError: LocalizedError {
+public enum DeepLinkError: LocalizedError, Sendable {
     case invalidURL
     case unsupportedScheme
     case invalidPath

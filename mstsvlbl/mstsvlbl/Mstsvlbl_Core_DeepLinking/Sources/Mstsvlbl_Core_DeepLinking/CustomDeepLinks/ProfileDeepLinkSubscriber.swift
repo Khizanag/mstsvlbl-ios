@@ -1,18 +1,20 @@
 //
 //  ProfileDeepLinkSubscriber.swift
-//  Mstsvlbl_DeepLinking
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
+import UIKit
+
 @MainActor
-public final class ProfileDeepLinkSubscriber<NavigationHandler>: NavigationOnlyDeepLinkSubscriber {
+public final class ProfileDeepLinkSubscriber: DeepLinkSubscriber {
     public let id = "ProfileDeepLinkSubscriber"
     public let subscribedPath = "profile"
     
-    public let navigationHandler: NavigationHandler
+    public let navigationHandler: UIWindow
     
-    public init(navigationHandler: NavigationHandler) async {
+    public init(navigationHandler: UIWindow) async {
         self.navigationHandler = navigationHandler
     }
     
@@ -26,5 +28,10 @@ public final class ProfileDeepLinkSubscriber<NavigationHandler>: NavigationOnlyD
         print("🎯 ProfileDeepLinkSubscriber: Processing profile deep link with path: \(deepLink.path)")
         print("🎯 ProfileDeepLinkSubscriber: Parameters: \(deepLink.parameters)")
         print("🎯 ProfileDeepLinkSubscriber: Navigation handler: \(type(of: navigationHandler))")
+        
+        // Example of how to add content directly over the window
+        print("🎯 ProfileDeepLinkSubscriber: Opening profile")
+        // Here you can add a view controller or view directly to the window
+        // For example: navigationHandler.addSubview(someView)
     }
 }

@@ -1,18 +1,20 @@
 //
 //  DiscoverDeepLinkSubscriber.swift
-//  Mstsvlbl_DeepLinking
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
+import UIKit
+
 @MainActor
-public final class DiscoverDeepLinkSubscriber<NavigationHandler>: NavigationOnlyDeepLinkSubscriber {
+public final class DiscoverDeepLinkSubscriber: DeepLinkSubscriber {
     public let id = "DiscoverDeepLinkSubscriber"
     public let subscribedPath = "discover"
     
-    public let navigationHandler: NavigationHandler
+    public let navigationHandler: UIWindow
     
-    public init(navigationHandler: NavigationHandler) async {
+    public init(navigationHandler: UIWindow) async {
         self.navigationHandler = navigationHandler
     }
     
@@ -26,5 +28,10 @@ public final class DiscoverDeepLinkSubscriber<NavigationHandler>: NavigationOnly
         print("🎯 DiscoverDeepLinkSubscriber: Processing discover deep link with path: \(deepLink.path)")
         print("🎯 DiscoverDeepLinkSubscriber: Parameters: \(deepLink.parameters)")
         print("🎯 DiscoverDeepLinkSubscriber: Navigation handler: \(type(of: navigationHandler))")
+        
+        // Example of how to add content directly over the window
+        print("🎯 DiscoverDeepLinkSubscriber: Opening discover")
+        // Here you can add a view controller or view directly to the window
+        // For example: navigationHandler.addSubview(someView)
     }
 }

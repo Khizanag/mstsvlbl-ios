@@ -1,18 +1,20 @@
 //
 //  CategoryDeepLinkSubscriber.swift
-//  Mstsvlbl_DeepLinking
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
+import UIKit
+
 @MainActor
-public final class CategoryDeepLinkSubscriber<NavigationHandler>: NavigationOnlyDeepLinkSubscriber {
+public final class CategoryDeepLinkSubscriber: DeepLinkSubscriber {
     public let id = "CategoryDeepLinkSubscriber"
     public let subscribedPath = "category"
     
-    public let navigationHandler: NavigationHandler
+    public let navigationHandler: UIWindow
     
-    public init(navigationHandler: NavigationHandler) async {
+    public init(navigationHandler: UIWindow) async {
         self.navigationHandler = navigationHandler
     }
     
@@ -26,5 +28,12 @@ public final class CategoryDeepLinkSubscriber<NavigationHandler>: NavigationOnly
         print("🎯 CategoryDeepLinkSubscriber: Processing category deep link with path: \(deepLink.path)")
         print("🎯 CategoryDeepLinkSubscriber: Parameters: \(deepLink.parameters)")
         print("🎯 CategoryDeepLinkSubscriber: Navigation handler: \(type(of: navigationHandler))")
+        
+        // Example of how to add content directly over the window
+        if let categoryId = deepLink.parameters["id"] {
+            print("🎯 CategoryDeepLinkSubscriber: Opening category with ID: \(categoryId)")
+            // Here you can add a view controller or view directly to the window
+            // For example: navigationHandler.addSubview(someView)
+        }
     }
 }

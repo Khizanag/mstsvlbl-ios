@@ -1,6 +1,6 @@
 //
 //  DeepLinkExamples.swift
-//  Mstsvlbl_DeepLinking
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
@@ -12,7 +12,7 @@ import Foundation
 @MainActor
 public final class ExampleDeepLinkSubscriber: DeepLinkSubscriber {
     public let id = "ExampleDeepLinkSubscriber"
-    public let subscribedPath = "example"
+    public let subscribedPath = "example" // Example path
     
     public init() {}
     
