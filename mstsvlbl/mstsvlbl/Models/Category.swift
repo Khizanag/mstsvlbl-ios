@@ -2,7 +2,7 @@
 //  Category.swift
 //  mstsvlbl
 //
-//  Created by Assistant on 2024-12-19.
+//  Created by Giga Khizanishvili on 02.09.25.
 //
 
 import SwiftUI
