@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		72370C082E67A5EE00E53D59 /* Mstsvlbl_DeepLinking in Frameworks */ = {isa = PBXBuildFile; productRef = 72370C072E67A5EE00E53D59 /* Mstsvlbl_DeepLinking */; };
+		72370C0E2E67A64F00E53D59 /* Mstsvlbl_DeepLinking in Frameworks */ = {isa = PBXBuildFile; productRef = 72370C0D2E67A64F00E53D59 /* Mstsvlbl_DeepLinking */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7228F7422E61BC2400E59D6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72370C0E2E67A64F00E53D59 /* Mstsvlbl_DeepLinking in Frameworks */,
+				72370C082E67A5EE00E53D59 /* Mstsvlbl_DeepLinking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,8 @@
 			);
 			name = mstsvlbl;
 			packageProductDependencies = (
+				72370C072E67A5EE00E53D59 /* Mstsvlbl_DeepLinking */,
+				72370C0D2E67A64F00E53D59 /* Mstsvlbl_DeepLinking */,
 			);
 			productName = mstsvlbl;
 			productReference = 7228F7302E61BC2300E59D6F /* mstsvlbl.app */;
@@ -208,6 +217,9 @@
 			);
 			mainGroup = 7228F7272E61BC2300E59D6F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				72370C0C2E67A64F00E53D59 /* XCLocalSwiftPackageReference "mstsvlbl/Packages/Mstsvlbl_DeepLinking" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7228F7312E61BC2300E59D6F /* Products */;
 			projectDirPath = "";
@@ -608,6 +620,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		72370C0C2E67A64F00E53D59 /* XCLocalSwiftPackageReference "mstsvlbl/Packages/Mstsvlbl_DeepLinking" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = mstsvlbl/Packages/Mstsvlbl_DeepLinking;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		72370C072E67A5EE00E53D59 /* Mstsvlbl_DeepLinking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Mstsvlbl_DeepLinking;
+		};
+		72370C0D2E67A64F00E53D59 /* Mstsvlbl_DeepLinking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Mstsvlbl_DeepLinking;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7228F7282E61BC2300E59D6F /* Project object */;
 }

@@ -15,6 +15,7 @@ public enum DeepLinkError: LocalizedError {
     case missingRequiredParameters
     case parsingFailed
     case routingFailed
+    case unsupportedPath
     
     public var errorDescription: String? {
         switch self {
@@ -30,6 +31,8 @@ public enum DeepLinkError: LocalizedError {
             "Failed to parse deep link"
         case .routingFailed:
             "Failed to route deep link"
+        case .unsupportedPath:
+            "Unsupported deep link path"
         }
     }
 }

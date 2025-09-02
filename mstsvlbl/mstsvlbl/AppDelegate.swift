@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Mstsvlbl_DeepLinking
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -19,16 +20,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
         print("🔗 AppDelegate: didFinishLaunchingWithOptions called")
-        
-        // Setup DI
         DIBootstrap.bootstrap()
-        
-        setupDeepLinking()
-        
+        Task {
+            await setupDeepLinking()
+        }
         setupUIWindow()
-        
         return true
     }
     
@@ -37,10 +34,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        print("🔗 AppDelegate: openUrl called with: \(url)")
-        Task {
-            await deepLinkManager.handle(url: url)
-        }
+        print("🔗 AppDelegate: open URL called with: \(url)")
+        Task { await deepLinkManager.handle(url: url) }
         return true
     }
     
@@ -49,36 +44,62 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
     ) -> Bool {
-        print("🔗 AppDelegate: continue userActivity called with: \(userActivity)")
+        print("🔗 AppDelegate: continue userActivity called")
         if let url = userActivity.webpageURL {
-            Task {
-                await deepLinkManager.handle(url: url)
-            }
-            return true
+            Task { await deepLinkManager.handle(url: url) }
         }
-        return false
+        return true
     }
 }
 
-// MARK: - Private Methods
 private extension AppDelegate {
-    func setupDeepLinking() {
+    func setupDeepLinking() async {
         coordinator = Coordinator()
-        
         deepLinkRegistrator = DeepLinkRegistrator(
             deepLinkManager: deepLinkManager,
-            coordinator: coordinator!
+            subscriberFactories: createSubscriberFactories()
         )
-        
-        // Register all subscribers through the registrator
-        deepLinkRegistrator?.registerAllSubscribers()
+        await deepLinkRegistrator?.registerAllSubscribers()
     }
     
     func setupUIWindow() {
-        let window = UIWindow(frame: UIScreen.main.bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         let contentView = MainTabView()
-        window.rootViewController = UIHostingController(rootView: contentView)
-        self.window = window
-        window.makeKeyAndVisible()
+        let hostingController = UIHostingController(rootView: contentView)
+        window?.rootViewController = hostingController
+        window?.makeKeyAndVisible()
+    }
+    
+    func createSubscriberFactories() -> [() async -> any Mstsvlbl_DeepLinking.DeepLinkSubscriber] {
+        return [
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.QuizDeepLinkSubscriber(navigationHandler: coordinator, dataProvider: LocalQuizRepository())
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.CategoryDeepLinkSubscriber(navigationHandler: coordinator)
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.ProfileDeepLinkSubscriber(navigationHandler: coordinator)
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.SettingsDeepLinkSubscriber(navigationHandler: coordinator)
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.StatsDeepLinkSubscriber(navigationHandler: coordinator)
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.DiscoverDeepLinkSubscriber(navigationHandler: coordinator)
+            },
+            { [weak self] in
+                guard let coordinator = self?.coordinator else { fatalError("Coordinator not available") }
+                return await Mstsvlbl_DeepLinking.BookmarksDeepLinkSubscriber(navigationHandler: coordinator)
+            }
+        ]
     }
 }

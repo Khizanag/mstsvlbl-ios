@@ -1,24 +1,18 @@
 //
 //  DeepLinkContext.swift
-//  mstsvlbl
+//  Mstsvlbl_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
 import Foundation
 
-public struct DeepLinkContext {
+public struct DeepLinkContext: Sendable {
     public let source: DeepLinkSource
     public let timestamp: Date
-    public var userInfo: [String: Any]
     
-    public init(
-        source: DeepLinkSource,
-        timestamp: Date = Date(),
-        userInfo: [String: Any] = [:]
-    ) {
+    public init(source: DeepLinkSource, timestamp: Date = Date()) {
         self.source = source
         self.timestamp = timestamp
-        self.userInfo = userInfo
     }
 }
