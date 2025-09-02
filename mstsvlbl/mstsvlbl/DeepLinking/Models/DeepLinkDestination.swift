@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Destination
 public enum DeepLinkDestination {
     case quiz(id: String, action: String)
     case category(name: String)

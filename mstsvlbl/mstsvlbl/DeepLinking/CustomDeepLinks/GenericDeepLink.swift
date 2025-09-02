@@ -1,5 +1,5 @@
 //
-//  QuizDeepLink.swift
+//  GenericDeepLink.swift
 //  mstsvlbl
 //
 //  Created by Giga Khizanishvili on 02.09.25.
@@ -7,12 +7,10 @@
 
 import Foundation
 
-// MARK: - Quiz Deep Link
-public struct QuizDeepLink: DeepLink {
+public struct GenericDeepLink: DeepLink {
     public let id: String
     public let path: String
     public let parameters: [String: String]
-    public let action: String
     
     public init?(from url: URL) {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -24,37 +22,28 @@ public struct QuizDeepLink: DeepLink {
             return (item.name, value)
         })
         
-        let action = parameters["action"] ?? "view"
-        let quizId = parameters["id"] ?? UUID().uuidString
-        
-        self.id = quizId
+        self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
-        self.action = action
     }
     
     public init?(from path: String, parameters: [String: String]) {
-        self.id = parameters["id"] ?? UUID().uuidString
+        self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
-        self.action = parameters["action"] ?? "view"
     }
     
-    public init(id: String, action: String, parameters: [String: String] = [:]) {
+    public init(id: String, path: String, parameters: [String: String] = [:]) {
         self.id = id
-        self.path = "quiz"
+        self.path = path
         self.parameters = parameters
-        self.action = action
     }
     
     public func toURL() -> URL? {
         var components = URLComponents()
         components.scheme = "mstsvlbl"
-        components.host = "quiz"
-        components.queryItems = [
-            URLQueryItem(name: "id", value: id),
-            URLQueryItem(name: "action", value: action)
-        ] + parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+        components.host = path
+        components.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
         
         return components.url
     }

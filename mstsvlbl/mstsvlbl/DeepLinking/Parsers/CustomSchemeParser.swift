@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Custom Scheme Parser
 public final class CustomSchemeParser: DeepLinkURLParser {
     public init() {}
     
@@ -24,24 +23,23 @@ public final class CustomSchemeParser: DeepLinkURLParser {
             return (item.name, value)
         })
         
-        // Parse based on host
-        switch host {
+        return switch host {
         case "quiz":
-            return QuizDeepLink(from: host, parameters: parameters)
+            QuizDeepLink(from: host, parameters: parameters)
         case "category":
-            return CategoryDeepLink(from: host, parameters: parameters)
+            CategoryDeepLink(from: host, parameters: parameters)
         case "profile":
-            return ProfileDeepLink(from: host, parameters: parameters)
+            ProfileDeepLink(from: host, parameters: parameters)
         case "settings":
-            return SettingsDeepLink(from: host, parameters: parameters)
+            SettingsDeepLink(from: host, parameters: parameters)
         case "discover":
-            return DiscoverDeepLink(from: host, parameters: parameters)
+            DiscoverDeepLink(from: host, parameters: parameters)
         case "bookmarks":
-            return BookmarksDeepLink(from: host, parameters: parameters)
+            BookmarksDeepLink(from: host, parameters: parameters)
         case "stats":
-            return StatsDeepLink(from: host, parameters: parameters)
+            StatsDeepLink(from: host, parameters: parameters)
         default:
-            return CustomDeepLink(from: host, parameters: parameters)
+            CustomDeepLink(from: host, parameters: parameters)
         }
     }
     

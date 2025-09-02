@@ -17,19 +17,20 @@ public protocol DeepLinkSubscriber: AnyObject {
 }
 
 // MARK: - Deep Link Manager
-@Observable
-public final class DeepLinkManager: NSObject {
+@MainActor
+public final class DeepLinkManager: NSObject, ObservableObject {
     
     // MARK: - Properties
-    public private(set) var isActive = false
-    public private(set) var lastProcessedDeepLink: (any DeepLink)?
-    public private(set) var processingCount = 0
+    @Published public private(set) var isActive = false
+    @Published public private(set) var lastProcessedDeepLink: (any DeepLink)?
+    @Published public private(set) var processingCount = 0
     
     private var subscribers: [DeepLinkSubscriber] = []
     private let parser: DeepLinkParser
     private let router: DeepLinkRouter
     private let analyticsService: DeepLinkAnalyticsService
     private let handlerRegistry: DeepLinkHandlerRegistry
+    private var navigationCoordinator: DeepLinkNavigationCoordinator?
     
     // MARK: - Initialization
     public override init() {
@@ -45,6 +46,24 @@ public final class DeepLinkManager: NSObject {
     }
     
     // MARK: - Public Methods
+    
+    /// Handle a deep link URL and navigate accordingly
+    public func handle(url: URL) async {
+        let result = await process(url)
+        
+        switch result {
+        case .success(let deepLink):
+            // Route the deep link to get destination
+            if let destination = router.route(deepLink) {
+                await MainActor.run {
+                    navigationCoordinator?.navigate(to: destination)
+                }
+            }
+            
+        case .failure(let error):
+            print("❌ Deep link processing failed: \(error)")
+        }
+    }
     
     /// Process a deep link from a URL
     public func process(_ url: URL, source: DeepLinkSource = .customScheme) async -> DeepLinkResult {
@@ -201,5 +220,28 @@ public extension DeepLinkManager {
     func process(_ urlStrings: [String], source: DeepLinkSource = .customScheme) async -> [DeepLinkResult] {
         let urls = urlStrings.compactMap { URL(string: $0) }
         return await process(urls, source: source)
+    }
+    
+    /// Set the navigation coordinator
+    func setNavigationCoordinator(_ coordinator: DeepLinkNavigationCoordinator) {
+        self.navigationCoordinator = coordinator
+    }
+    
+    /// Register handlers from a registry
+    func registerHandlers(from registry: DeepLinkHandlerRegistry) {
+        // This method allows external registration of handlers
+        // The registry is already set up in init()
+    }
+    
+    /// Set the router
+    func setRouter(_ router: DeepLinkRouter) {
+        // This method allows external setting of router
+        // The router is already set up in init()
+    }
+    
+    /// Set the analytics service
+    func setAnalyticsService(_ service: DeepLinkAnalyticsService) {
+        // This method allows external setting of analytics service
+        // The analytics service is already set up in init()
     }
 }

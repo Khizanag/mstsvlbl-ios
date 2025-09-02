@@ -1,5 +1,5 @@
 //
-//  GenericDeepLink.swift
+//  ProfileDeepLink.swift
 //  mstsvlbl
 //
 //  Created by Giga Khizanishvili on 02.09.25.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-// MARK: - Generic Deep Link
-public struct GenericDeepLink: DeepLink {
+public struct ProfileDeepLink: DeepLink {
     public let id: String
     public let path: String
     public let parameters: [String: String]
+    public let action: String
     
     public init?(from url: URL) {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -23,28 +23,35 @@ public struct GenericDeepLink: DeepLink {
             return (item.name, value)
         })
         
+        let action = parameters["action"] ?? "view"
+        
         self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
+        self.action = action
     }
     
     public init?(from path: String, parameters: [String: String]) {
         self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
+        self.action = parameters["action"] ?? "view"
     }
     
-    public init(id: String, path: String, parameters: [String: String] = [:]) {
+    public init(id: String, action: String, parameters: [String: String] = [:]) {
         self.id = id
-        self.path = path
+        self.path = "profile"
         self.parameters = parameters
+        self.action = action
     }
     
     public func toURL() -> URL? {
         var components = URLComponents()
         components.scheme = "mstsvlbl"
-        components.host = path
-        components.queryItems = parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+        components.host = "profile"
+        components.queryItems = [
+            URLQueryItem(name: "action", value: action)
+        ] + parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
         
         return components.url
     }

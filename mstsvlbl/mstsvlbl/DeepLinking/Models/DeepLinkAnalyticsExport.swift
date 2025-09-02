@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Analytics Export Format
 public struct DeepLinkAnalyticsExport {
     public let exportDate: Date
     public let analytics: [DeepLinkAnalytics]

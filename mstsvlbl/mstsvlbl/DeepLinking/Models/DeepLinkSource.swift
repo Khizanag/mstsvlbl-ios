@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Source
 public enum DeepLinkSource: String, CaseIterable {
     case appLaunch = "app_launch"
     case universalLink = "universal_link"

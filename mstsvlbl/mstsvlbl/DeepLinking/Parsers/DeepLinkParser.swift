@@ -41,9 +41,3 @@ public final class DeepLinkParser {
         parsers.values.flatMap { $0.getSupportedPaths() }
     }
 }
-
-// MARK: - DeepLink URL Parser Protocol
-public protocol DeepLinkURLParser {
-    func parse(_ url: URL) -> (any DeepLink)?
-    func getSupportedPaths() -> [String]
-}

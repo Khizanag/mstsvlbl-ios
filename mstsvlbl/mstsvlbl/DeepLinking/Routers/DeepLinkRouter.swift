@@ -25,15 +25,12 @@ public final class DeepLinkRouter {
     }
     
     public func route(_ deepLink: any DeepLink) -> DeepLinkDestination? {
-        let path = deepLink.path
-        
-        // Try to find a specific route
-        if let route = routes[path] {
-            return route.route(deepLink)
+        if let route = routes[deepLink.path] {
+            route.route(deepLink)
         } else if let fallbackRoute = fallbackRoute {
-            return fallbackRoute.route(deepLink)
+            fallbackRoute.route(deepLink)
         } else {
-            return nil
+            nil
         }
     }
     

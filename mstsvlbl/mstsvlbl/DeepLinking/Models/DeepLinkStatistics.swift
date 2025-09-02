@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Statistics
 public struct DeepLinkStatistics {
     public let totalDeepLinks: Int
     public let successfulDeepLinks: Int

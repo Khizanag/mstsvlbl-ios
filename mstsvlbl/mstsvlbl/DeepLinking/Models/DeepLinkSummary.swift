@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Summary
 public struct DeepLinkSummary {
     public let period: ClosedRange<Date>
     public let totalDeepLinks: Int

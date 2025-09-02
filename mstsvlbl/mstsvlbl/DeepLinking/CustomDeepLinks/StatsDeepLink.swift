@@ -1,5 +1,5 @@
 //
-//  ProfileDeepLink.swift
+//  StatsDeepLink.swift
 //  mstsvlbl
 //
 //  Created by Giga Khizanishvili on 02.09.25.
@@ -7,12 +7,11 @@
 
 import Foundation
 
-// MARK: - Profile Deep Link
-public struct ProfileDeepLink: DeepLink {
+public struct StatsDeepLink: DeepLink {
     public let id: String
     public let path: String
     public let parameters: [String: String]
-    public let action: String
+    public let period: String
     
     public init?(from url: URL) {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -24,34 +23,34 @@ public struct ProfileDeepLink: DeepLink {
             return (item.name, value)
         })
         
-        let action = parameters["action"] ?? "view"
+        let period = parameters["period"] ?? "all"
         
         self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
-        self.action = action
+        self.period = period
     }
     
     public init?(from path: String, parameters: [String: String]) {
         self.id = UUID().uuidString
         self.path = path
         self.parameters = parameters
-        self.action = parameters["action"] ?? "view"
+        self.period = parameters["period"] ?? "all"
     }
     
-    public init(id: String, action: String, parameters: [String: String] = [:]) {
+    public init(id: String, period: String, parameters: [String: String] = [:]) {
         self.id = id
-        self.path = "profile"
+        self.path = "stats"
         self.parameters = parameters
-        self.action = action
+        self.period = period
     }
     
     public func toURL() -> URL? {
         var components = URLComponents()
         components.scheme = "mstsvlbl"
-        components.host = "profile"
+        components.host = "stats"
         components.queryItems = [
-            URLQueryItem(name: "action", value: action)
+            URLQueryItem(name: "period", value: period)
         ] + parameters.map { URLQueryItem(name: $0.key, value: $0.value) }
         
         return components.url
