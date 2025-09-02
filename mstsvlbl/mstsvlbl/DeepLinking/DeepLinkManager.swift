@@ -18,26 +18,19 @@ public final class DeepLinkManager {
     
     private var subscribers: [any DeepLinkSubscriber] = []
     private let parser: DeepLinkParser
-    private let router: DeepLinkRouter
     private let analyticsService: DeepLinkAnalyticsService
-    private let handlerRegistry: DeepLinkHandlerRegistry
-    private var navigationCoordinator: DeepLinkNavigationCoordinator?
     
     // MARK: - Initialization
     public init() {
         self.parser = DeepLinkParser()
-        self.router = DeepLinkRouter()
         self.analyticsService = DeepLinkAnalyticsService()
-        self.handlerRegistry = DeepLinkHandlerRegistry()
-        
-        setupDefaultHandlers()
-        setupDefaultRoutes()
     }
     
     // MARK: - Public Methods
     
-    /// Handle a deep link URL and navigate accordingly
+    /// Handle a deep link URL and notify subscribers
     public func handle(url: URL) async {
+        print("✅ Deep link process")
         let result = await process(url)
         
         switch result {
@@ -63,30 +56,11 @@ public final class DeepLinkManager {
         // Create context
         let context = DeepLinkContext(source: source)
         
-        // Notify subscribers
+        // Notify subscribers - they handle their own navigation
         await notifySubscribers(deepLink, context: context)
-        
-        // Route the deep link to get destination
-        let destination = router.route(deepLink)
-        print("🔍 DeepLinkManager: Router returned destination: \(String(describing: destination))")
         
         // Update last processed
         lastProcessedDeepLink = deepLink
-        
-        // If we have a destination, trigger navigation
-        if let destination = destination {
-            print("🎯 DeepLinkManager: Triggering navigation to: \(destination)")
-            await MainActor.run {
-                if let coordinator = navigationCoordinator {
-                    print("✅ DeepLinkManager: Navigation coordinator found, calling navigate")
-                    coordinator.navigate(to: destination)
-                } else {
-                    print("❌ DeepLinkManager: Navigation coordinator is nil!")
-                }
-            }
-        } else {
-            print("❌ DeepLinkManager: No destination returned from router")
-        }
         
         return .success(deepLink)
     }
@@ -95,16 +69,19 @@ public final class DeepLinkManager {
     public func subscribe(_ subscriber: any DeepLinkSubscriber) {
         guard !subscribers.contains(where: { $0.id == subscriber.id }) else { return }
         subscribers.append(subscriber)
+        print("🔗 DeepLinkManager: Subscriber '\(subscriber.id)' registered for path '\(subscriber.subscribedPath)'")
     }
     
     /// Unsubscribe from deep link events
     public func unsubscribe(_ subscriber: any DeepLinkSubscriber) {
         subscribers.removeAll { $0.id == subscriber.id }
+        print("🔗 DeepLinkManager: Subscriber '\(subscriber.id)' unregistered")
     }
     
     /// Unsubscribe by ID
     public func unsubscribe(id: String) {
         subscribers.removeAll { $0.id == id }
+        print("🔗 DeepLinkManager: Subscriber with ID '\(id)' unregistered")
     }
     
     /// Get all active subscribers
@@ -120,11 +97,7 @@ public final class DeepLinkManager {
     /// Clear all subscribers
     public func clearSubscribers() {
         subscribers.removeAll()
-    }
-    
-    /// Set the navigation coordinator
-    public func setNavigationCoordinator(_ coordinator: DeepLinkNavigationCoordinator) {
-        self.navigationCoordinator = coordinator
+        print("🔗 DeepLinkManager: All subscribers cleared")
     }
     
     /// Get analytics summary
@@ -139,47 +112,17 @@ public final class DeepLinkManager {
         return analyticsService.exportData()
     }
     
-    // MARK: - Testing Methods
-    
-    /// Get all registered handlers (for testing)
-    public func getAllHandlers() -> [any DeepLinkHandler] {
-        handlerRegistry.getAllHandlers()
-    }
-    
-    /// Get all registered routes (for testing)
-    public func getRegisteredRoutes() -> [String] {
-        router.getRegisteredRoutes()
-    }
-    
     // MARK: - Private Methods
-    
-    private func setupDefaultHandlers() {
-        handlerRegistry.register(QuizDeepLinkHandler())
-        handlerRegistry.register(CategoryDeepLinkHandler())
-        handlerRegistry.register(ProfileDeepLinkHandler())
-        handlerRegistry.register(SettingsDeepLinkHandler())
-        handlerRegistry.register(DiscoverDeepLinkHandler())
-        handlerRegistry.register(BookmarksDeepLinkHandler())
-        handlerRegistry.register(StatsDeepLinkHandler())
-        handlerRegistry.register(CustomDeepLinkHandler())
-    }
-    
-    private func setupDefaultRoutes() {
-        router.register(QuizDeepLinkRoute(), for: "quiz")
-        router.register(CategoryDeepLinkRoute(), for: "category")
-        router.register(ProfileDeepLinkRoute(), for: "profile")
-        router.register(SettingsDeepLinkRoute(), for: "settings")
-        router.register(DiscoverDeepLinkRoute(), for: "discover")
-        router.register(BookmarksDeepLinkRoute(), for: "bookmarks")
-        router.register(StatsDeepLinkRoute(), for: "stats")
-    }
     
     private func notifySubscribers(_ deepLink: any DeepLink, context: DeepLinkContext) async {
         let relevantSubscribers = subscribers.filter { subscriber in
             subscriber.canHandleDeepLink(deepLink)
         }
         
+        print("🔗 DeepLinkManager: Notifying \(relevantSubscribers.count) subscribers for deep link: \(deepLink.path)")
+        
         for subscriber in relevantSubscribers {
+            print("🔗 DeepLinkManager: Notifying subscriber '\(subscriber.id)' for path '\(subscriber.subscribedPath)'")
             await MainActor.run {
                 subscriber.didReceiveDeepLink(deepLink, context: context)
             }
@@ -220,23 +163,5 @@ public extension DeepLinkManager {
     func process(_ urlStrings: [String], source: DeepLinkSource = .customScheme) async -> [DeepLinkResult] {
         let urls = urlStrings.compactMap { URL(string: $0) }
         return await process(urls, source: source)
-    }
-    
-    /// Register handlers from a registry
-    func registerHandlers(from registry: DeepLinkHandlerRegistry) {
-        // This method allows external registration of handlers
-        // The registry is already set up in init()
-    }
-    
-    /// Set the router
-    func setRouter(_ router: DeepLinkRouter) {
-        // This method allows external setting of router
-        // The router is already set up in init()
-    }
-    
-    /// Set the analytics service
-    func setAnalyticsService(_ service: DeepLinkAnalyticsService) {
-        // This method allows external setting of analytics service
-        // The analytics service is already set up in init()
     }
 }

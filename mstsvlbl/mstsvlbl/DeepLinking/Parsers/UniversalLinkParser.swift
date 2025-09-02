@@ -46,7 +46,7 @@ public final class UniversalLinkParser: DeepLinkURLParser {
         case "/stats":
             StatsDeepLink(from: path, parameters: parameters)
         default:
-            CustomDeepLink(from: path, parameters: parameters)
+            nil // Return nil for unknown paths instead of CustomDeepLink
         }
     }
     

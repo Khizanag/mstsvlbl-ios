@@ -45,76 +45,54 @@ public struct DeepLinkExamples {
 
 // MARK: - Example Deep Link Subscriber
 public final class ExampleDeepLinkSubscriber: DeepLinkSubscriber {
-    public let id: String
-    public let name: String
+    public let id = "ExampleDeepLinkSubscriber"
+    public let subscribedPath = "example"
     
-    public init(id: String, name: String) {
-        self.id = id
-        self.name = name
-    }
+    public init() {}
     
     public func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) {
-        print("📱 [\(name)] Received deep link: \(deepLink.path) with ID: \(deepLink.id)")
-        print("📱 [\(name)] Source: \(context.source.displayName)")
-        print("📱 [\(name)] Timestamp: \(context.timestamp)")
-    }
-    
-    public func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool {
-        // This example subscriber can handle all deep links
-        true
+        print("📱 ExampleDeepLinkSubscriber: Received deep link: \(deepLink.path) with ID: \(deepLink.id)")
+        print("📱 ExampleDeepLinkSubscriber: Source: \(context.source.displayName)")
+        print("📱 ExampleDeepLinkSubscriber: Timestamp: \(context.timestamp)")
     }
 }
 
-// MARK: - DeepLink Manager Extensions for Testing
-public extension DeepLinkManager {
+// MARK: - Testing Methods
+public extension DeepLinkExamples {
     
-    /// Test method to simulate deep link processing
-    func testDeepLink(_ urlString: String) async -> DeepLinkResult {
-        guard let url = URL(string: urlString) else {
-            return .failure(.invalidURL)
+    /// Test deep link parsing
+    static func testDeepLinkParsing() {
+        print("🧪 Testing Deep Link Parsing...")
+        
+        for example in exampleURLs {
+            if URL(string: example) != nil {
+                print("  ✅ Valid URL: \(example)")
+            } else {
+                print("  ❌ Invalid URL: \(example)")
+            }
         }
-        return await process(url, source: .customScheme)
     }
     
-    /// Test method to get all registered handlers
-    func testGetAllHandlers() -> [any DeepLinkHandler] {
-        getAllHandlers()
-    }
-    
-    /// Test method to get all registered routes
-    func testGetAllRoutes() -> [String] {
-        getRegisteredRoutes()
-    }
-}
-
-// MARK: - DeepLink Builder
-public struct DeepLinkBuilder {
-    
-    public static func quiz(id: String, action: String = "view") -> URL? {
-        QuizDeepLink(id: id, action: action).toURL()
-    }
-    
-    public static func category(name: String) -> URL? {
-        CategoryDeepLink(id: name).toURL()
-    }
-    
-    public static func profile(action: String) -> URL? {
-        ProfileDeepLink(id: "profile", action: action).toURL()
-    }
-    
-    public static func settings(section: String) -> URL? {
-        SettingsDeepLink(id: "settings", section: section).toURL()
-    }
-    
-    public static func discover(filter: String? = nil, sort: String? = nil) -> URL? {
-        DiscoverDeepLink(id: "discover", filter: filter, sort: sort).toURL()
-    }
-    
-    public static func bookmarks(filter: String? = nil) -> URL? {
-        BookmarksDeepLink(id: "bookmarks", filter: filter).toURL()
-    }
-    
-    public static func stats(period: String) -> URL? {
-        StatsDeepLink(id: "stats", period: period).toURL()
+    @MainActor
+    static func testSubscriberRegistration() async {
+        print("🧪 Testing Subscriber Registration...")
+        
+        let manager = DeepLinkManager()
+        let subscriber = ExampleDeepLinkSubscriber()
+        
+        // Test subscription
+        manager.subscribe(subscriber)
+        print("  ✅ Subscriber registered")
+        
+        // Test getting all subscribers
+        let allSubscribers = manager.getAllSubscribers()
+        print("  📊 Total subscribers: \(allSubscribers.count)")
+        
+        // Test unsubscription
+        manager.unsubscribe(subscriber)
+        print("  ✅ Subscriber unregistered")
+        
+        let remainingSubscribers = manager.getAllSubscribers()
+        print("  📊 Remaining subscribers: \(remainingSubscribers.count)")
     }
 }

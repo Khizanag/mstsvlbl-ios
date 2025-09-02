@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @ObservedObject var navigationCoordinator: DeepLinkNavigationCoordinator
+    @State private var selectedTab = 0
     
     var body: some View {
-        TabView(selection: $navigationCoordinator.selectedTab) {
+        TabView(selection: $selectedTab) {
             discoverTab
                 .tabItem {
                     Label("Discover", systemImage: "sparkles")
@@ -48,22 +48,6 @@ struct MainTabView: View {
                 }
                 .tag(5)
         }
-        .onChange(of: navigationCoordinator.deepLinkDestination) { destination in
-            if let destination = destination {
-                print("🎯 MainTabView: Deep link destination changed to: \(destination.displayName)")
-                handleDeepLinkDestination(destination)
-            }
-        }
-        .onChange(of: navigationCoordinator.selectedTab) { newTab in
-            print("🎯 MainTabView: Tab changed to: \(newTab)")
-        }
-    }
-    
-    private func handleDeepLinkDestination(_ destination: DeepLinkDestination) {
-        // Handle specific deep link destinations
-        // This is where you can add custom navigation logic
-        // For example, navigate to specific views within tabs
-        print("🎯 Deep link destination: \(destination.displayName)")
     }
 }
 
@@ -72,7 +56,6 @@ private extension MainTabView {
     var quizzesTab: some View {
         NavigatorView(canBeDismissed: false) {
             QuizListView()
-                .environment(\.deepLinkNavigationCoordinator, navigationCoordinator)
         }
     }
 
@@ -109,5 +92,5 @@ private extension MainTabView {
 
 // MARK: - Preview
 #Preview {
-    MainTabView(navigationCoordinator: DeepLinkNavigationCoordinator())
+    MainTabView()
 }

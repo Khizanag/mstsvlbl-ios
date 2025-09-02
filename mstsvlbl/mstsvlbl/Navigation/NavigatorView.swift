@@ -9,16 +9,17 @@ import SwiftUI
 import Observation
 import Combine
 
+// MARK: - Coordinator
 @MainActor
 @Observable
-final class Coordinator {
+public final class Coordinator {
     fileprivate var path: [Page] = []
     fileprivate var sheet: Page?
     fileprivate var fullScreenCoverPage: Page?
     
     private let shouldDismissSubject = PassthroughSubject<Void, Never>()
     
-    fileprivate init() { }
+    public init() { }
 
     func push(_ page: Page) {
         path.append(page)

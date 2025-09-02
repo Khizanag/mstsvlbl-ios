@@ -9,23 +9,25 @@ import Foundation
 
 // MARK: - Deep Link Subscriber Protocol
 public protocol DeepLinkSubscriber: Identifiable {
+    
+    /// Unique identifier for the subscriber
     var id: String { get }
+    
+    /// The deep link path this subscriber is interested in
+    var subscribedPath: String { get }
     
     /// Check if this subscriber can handle the given deep link
     func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool
     
-    /// Called when a deep link is received
+    /// Handle the received deep link - subscriber is responsible for its own navigation
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext)
 }
 
 // MARK: - Default Implementation
 public extension DeepLinkSubscriber {
-    func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool {
-        // Default implementation accepts all deep links
-        return true
-    }
     
-    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) {
-        // Default implementation does nothing
+    /// Default implementation: check if the deep link path matches the subscribed path
+    func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool {
+        deepLink.path.lowercased() == subscribedPath.lowercased()
     }
 }

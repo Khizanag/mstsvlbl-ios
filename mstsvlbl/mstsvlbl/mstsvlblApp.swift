@@ -2,64 +2,32 @@
 //  mstsvlblApp.swift
 //  mstsvlbl
 //
-//  Created by Giga Khizanishvili on 29.08.25.
+//  Created by Giga Khizanishvili on 02.09.25.
 //
 
 import SwiftUI
-import SwiftData
-import AuthenticationServices
 
 @main
 struct mstsvlblApp: App {
-
-    private let deepLinkManager = DeepLinkManager()
-    @StateObject private var navigationCoordinator = DeepLinkNavigationCoordinator()
-    
-    init() {
-        // Setup DI
-        DIBootstrap.bootstrap()
-        
-        // Setup Deep Linking
-        setupDeepLinking()
-    }
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(navigationCoordinator: navigationCoordinator)
+            MainTabView()
                 .onOpenURL { url in
+                    print("🔗 SwiftUI App: Received URL: \(url)")
                     Task {
-                        await deepLinkManager.handle(url: url)
+                        await appDelegate.deepLinkManager.handle(url: url)
+                    }
+                }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+                    print("🔗 SwiftUI App: Received user activity: \(userActivity)")
+                    if let url = userActivity.webpageURL {
+                        Task {
+                            await appDelegate.deepLinkManager.handle(url: url)
+                        }
                     }
                 }
         }
-    }
-    
-    private func setupDeepLinking() {
-        // Connect navigation coordinator
-        deepLinkManager.setNavigationCoordinator(navigationCoordinator)
-        
-        // Register all deep link handlers
-        let handlerRegistry = DeepLinkHandlerRegistry()
-        
-        // Register handlers
-        handlerRegistry.register(CategoryDeepLinkHandler())
-        handlerRegistry.register(QuizDeepLinkHandler())
-        handlerRegistry.register(ProfileDeepLinkHandler())
-        handlerRegistry.register(SettingsDeepLinkHandler())
-        handlerRegistry.register(StatsDeepLinkHandler())
-        handlerRegistry.register(CustomDeepLinkHandler())
-        handlerRegistry.register(DiscoverDeepLinkHandler())
-        handlerRegistry.register(BookmarksDeepLinkHandler())
-        
-        // Register handlers with the manager
-        deepLinkManager.registerHandlers(from: handlerRegistry)
-        
-        // Setup routes
-        let router = DeepLinkRouter()
-        deepLinkManager.setRouter(router)
-        
-        // Setup analytics
-        let analyticsService = DeepLinkAnalyticsService()
-        deepLinkManager.setAnalyticsService(analyticsService)
     }
 }

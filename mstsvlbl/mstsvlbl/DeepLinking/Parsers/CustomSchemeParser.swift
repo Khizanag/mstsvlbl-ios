@@ -18,10 +18,12 @@ public final class CustomSchemeParser: DeepLinkURLParser {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let queryItems = components?.queryItems ?? []
         
-        let parameters = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap { item in
-            guard let value = item.value else { return nil }
-            return (item.name, value)
-        })
+        let parameters = Dictionary<String, String>(
+            uniqueKeysWithValues: queryItems.compactMap { item in
+                guard let value = item.value else { return nil }
+                return (item.name, value)
+            }
+        )
         
         return switch host {
         case "quiz":
@@ -39,7 +41,7 @@ public final class CustomSchemeParser: DeepLinkURLParser {
         case "stats":
             StatsDeepLink(from: host, parameters: parameters)
         default:
-            CustomDeepLink(from: host, parameters: parameters)
+            nil // Return nil for unknown hosts instead of CustomDeepLink
         }
     }
     
