@@ -64,26 +64,26 @@ extension DesignBook {
         }
         
         enum Category {
-            static let science: SwiftUI.Color = .blue
-            static let mathematics: SwiftUI.Color = .purple
+            static let art: SwiftUI.Color = .mint
+            static let automotive: SwiftUI.Color = .red
+            static let business: SwiftUI.Color = .gray
+            static let entertainment: SwiftUI.Color = .pink
+            static let fashion: SwiftUI.Color = .pink
+            static let food: SwiftUI.Color = .yellow
+            static let gaming: SwiftUI.Color = .orange
             static let geography: SwiftUI.Color = .green
+            static let health: SwiftUI.Color = .green
             static let history: SwiftUI.Color = .brown
             static let literature: SwiftUI.Color = .orange
-            static let sports: SwiftUI.Color = .red
-            static let entertainment: SwiftUI.Color = .pink
-            static let technology: SwiftUI.Color = .cyan
-            static let art: SwiftUI.Color = .mint
+            static let mathematics: SwiftUI.Color = .purple
             static let music: SwiftUI.Color = .indigo
-            static let food: SwiftUI.Color = .yellow
-            static let travel: SwiftUI.Color = .teal
-            static let business: SwiftUI.Color = .gray
-            static let health: SwiftUI.Color = .green
             static let nature: SwiftUI.Color = .mint
-            static let space: SwiftUI.Color = .purple
             static let politics: SwiftUI.Color = .blue
-            static let fashion: SwiftUI.Color = .pink
-            static let automotive: SwiftUI.Color = .red
-            static let gaming: SwiftUI.Color = .orange
+            static let science: SwiftUI.Color = .blue
+            static let space: SwiftUI.Color = .purple
+            static let sports: SwiftUI.Color = .red
+            static let technology: SwiftUI.Color = .cyan
+            static let travel: SwiftUI.Color = .teal
         }
         
         enum Generic {
