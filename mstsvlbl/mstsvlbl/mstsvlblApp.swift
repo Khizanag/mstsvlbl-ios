@@ -11,9 +11,9 @@ import AuthenticationServices
 
 @main
 struct mstsvlblApp: App {
-    
-    @StateObject private var deepLinkManager = DeepLinkManager()
-    @StateObject private var navigationCoordinator = DeepLinkNavigationCoordinator()
+
+    @State private var deepLinkManager = DeepLinkManager()
+    @State private var navigationCoordinator = DeepLinkNavigationCoordinator()
     
     init() {
         // Setup DI

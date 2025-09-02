@@ -10,12 +10,13 @@ import Foundation
 
 // MARK: - Deep Link Navigation Coordinator
 @MainActor
-public final class DeepLinkNavigationCoordinator: ObservableObject {
+@Observable
+public final class DeepLinkNavigationCoordinator {
     
-    @Published public var navigationPath = NavigationPath()
-    @Published public var selectedTab: Int = 0 // Use index instead of Page enum
-    @Published public var shouldNavigate = false
-    @Published public var deepLinkDestination: DeepLinkDestination?
+    public var navigationPath = NavigationPath()
+    public var selectedTab: Int = 0 // Use index instead of Page enum
+    public var shouldNavigate = false
+    public var deepLinkDestination: DeepLinkDestination?
     
     public init() {}
     

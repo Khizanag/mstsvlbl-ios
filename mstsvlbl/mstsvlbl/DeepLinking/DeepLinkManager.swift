@@ -7,23 +7,14 @@
 
 import Foundation
 
-// MARK: - Deep Link Subscriber Protocol
-public protocol DeepLinkSubscriber: AnyObject {
-    var id: String { get }
-    var name: String { get }
-    
-    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext)
-    func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool
-}
-
-// MARK: - Deep Link Manager
 @MainActor
-public final class DeepLinkManager: NSObject, ObservableObject {
-    
+@Observable
+public final class DeepLinkManager {
+
     // MARK: - Properties
-    @Published public private(set) var isActive = false
-    @Published public private(set) var lastProcessedDeepLink: (any DeepLink)?
-    @Published public private(set) var processingCount = 0
+    public private(set) var isActive = false
+    public private(set) var lastProcessedDeepLink: (any DeepLink)?
+    public private(set) var processingCount = 0
     
     private var subscribers: [DeepLinkSubscriber] = []
     private let parser: DeepLinkParser
@@ -33,13 +24,11 @@ public final class DeepLinkManager: NSObject, ObservableObject {
     private var navigationCoordinator: DeepLinkNavigationCoordinator?
     
     // MARK: - Initialization
-    public override init() {
+    public init() {
         self.parser = DeepLinkParser()
         self.router = DeepLinkRouter()
         self.analyticsService = DeepLinkAnalyticsService()
         self.handlerRegistry = DeepLinkHandlerRegistry()
-        
-        super.init()
         
         setupDefaultHandlers()
         setupDefaultRoutes()
@@ -59,10 +48,8 @@ public final class DeepLinkManager: NSObject, ObservableObject {
                     navigationCoordinator?.navigate(to: destination)
                 }
             }
-            
         case .failure(let error):
             print("❌ Deep link processing failed: \(error)")
-            
         case .ignored(let deepLink):
             print("⏭️ Deep link ignored: \(deepLink)")
         }
@@ -72,31 +59,25 @@ public final class DeepLinkManager: NSObject, ObservableObject {
     public func process(_ url: URL, source: DeepLinkSource = .customScheme) async -> DeepLinkResult {
         processingCount += 1
         
-        do {
-            // Parse the URL into a DeepLink object
-            guard let deepLink = parser.parse(url) else {
-                let error = DeepLinkError.parsingFailed
-                return .failure(error)
-            }
-            
-            // Create context
-            let context = DeepLinkContext(source: source)
-            
-            // Notify subscribers
-            await notifySubscribers(deepLink, context: context)
-            
-            // Route the deep link
-            let routingResult = router.route(deepLink)
-            
-            // Update last processed
-            lastProcessedDeepLink = deepLink
-            
-            return .success(deepLink)
-            
-        } catch {
-            let deepLinkError = error as? DeepLinkError ?? DeepLinkError.parsingFailed
-            return .failure(deepLinkError)
+        // Parse the URL into a DeepLink object
+        guard let deepLink = parser.parse(url) else {
+            let error = DeepLinkError.parsingFailed
+            return .failure(error)
         }
+        
+        // Create context
+        let context = DeepLinkContext(source: source)
+        
+        // Notify subscribers
+        await notifySubscribers(deepLink, context: context)
+        
+        // Route the deep link
+        let routingResult = router.route(deepLink)
+        
+        // Update last processed
+        lastProcessedDeepLink = deepLink
+        
+        return .success(deepLink)
     }
     
     /// Subscribe to deep link events

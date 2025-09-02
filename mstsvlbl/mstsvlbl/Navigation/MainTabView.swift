@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @ObservedObject var navigationCoordinator: DeepLinkNavigationCoordinator
+    @Bindable var navigationCoordinator: DeepLinkNavigationCoordinator
     
     var body: some View {
         TabView(selection: $navigationCoordinator.selectedTab) {
