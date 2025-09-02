@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Analytics
 public struct DeepLinkAnalytics {
     public let deepLinkId: String
     public let timestamp: Date

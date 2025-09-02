@@ -7,9 +7,11 @@
 
 import Foundation
 
-// MARK: - Universal Link Parser
 public final class UniversalLinkParser: DeepLinkURLParser {
-    private let supportedDomains = ["mstsvlbl.com", "www.mstsvlbl.com"]
+    private let supportedDomains = [
+        "mstsvlbl.com",
+        "www.mstsvlbl.com",
+    ]
     
     public init() {}
     
