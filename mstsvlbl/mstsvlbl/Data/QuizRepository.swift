@@ -39,7 +39,6 @@ struct LocalQuizRepository: QuizRepository {
         
         var items: [Quiz] = []
         
-        // Load each JSON file
         for fileUrl in jsonFiles {
             print("🔍 QuizRepository: Processing JSON file: \(fileUrl.lastPathComponent)")
             
