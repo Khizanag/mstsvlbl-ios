@@ -28,11 +28,11 @@ public final class DiscoverDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: DiscoverDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to discover with filters and sorting
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: DiscoverDeepLink) -> DeepLinkError? {
         // No validation required for discover links
-        return nil
+        nil
     }
 }

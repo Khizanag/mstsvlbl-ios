@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
-// MARK: - Category Deep Link Handler
 public final class CategoryDeepLinkHandler: DeepLinkHandler {
     public typealias LinkType = CategoryDeepLink
     
@@ -28,13 +25,10 @@ public final class CategoryDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: CategoryDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to category page
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: CategoryDeepLink) -> DeepLinkError? {
-        guard !deepLink.id.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.id.isEmpty ? .missingRequiredParameters : nil
     }
 }

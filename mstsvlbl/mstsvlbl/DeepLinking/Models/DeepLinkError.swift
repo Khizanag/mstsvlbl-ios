@@ -19,17 +19,17 @@ public enum DeepLinkError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return "Invalid deep link URL"
+            "Invalid deep link URL"
         case .unsupportedScheme:
-            return "Unsupported deep link scheme"
+            "Unsupported deep link scheme"
         case .invalidPath:
-            return "Invalid deep link path"
+            "Invalid deep link path"
         case .missingRequiredParameters:
-            return "Missing required parameters for deep link"
+            "Missing required parameters for deep link"
         case .parsingFailed:
-            return "Failed to parse deep link"
+            "Failed to parse deep link"
         case .routingFailed:
-            return "Failed to route deep link"
+            "Failed to route deep link"
         }
     }
 }

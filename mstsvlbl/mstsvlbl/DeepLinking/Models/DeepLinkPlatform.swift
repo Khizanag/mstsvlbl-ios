@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
-// MARK: - DeepLink Platform
 public enum DeepLinkPlatform: String, CaseIterable {
     case iOS = "ios"
     case macOS = "macos"
@@ -16,10 +13,10 @@ public enum DeepLinkPlatform: String, CaseIterable {
     
     public var displayName: String {
         switch self {
-        case .iOS: return "iOS"
-        case .macOS: return "macOS"
-        case .watchOS: return "watchOS"
-        case .tvOS: return "tvOS"
+        case .iOS: "iOS"
+        case .macOS: "macOS"
+        case .watchOS: "watchOS"
+        case .tvOS: "tvOS"
         }
     }
 }

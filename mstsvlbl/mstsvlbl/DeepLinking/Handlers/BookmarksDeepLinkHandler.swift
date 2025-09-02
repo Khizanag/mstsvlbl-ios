@@ -28,11 +28,11 @@ public final class BookmarksDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: BookmarksDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to bookmarks with optional filter
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: BookmarksDeepLink) -> DeepLinkError? {
         // No validation required for bookmarks links
-        return nil
+        nil
     }
 }

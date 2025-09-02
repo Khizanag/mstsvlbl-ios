@@ -18,12 +18,12 @@ public enum DeepLinkSource: String, CaseIterable {
     
     public var displayName: String {
         switch self {
-        case .appLaunch: return "App Launch"
-        case .universalLink: return "Universal Link"
-        case .customScheme: return "Custom Scheme"
-        case .pushNotification: return "Push Notification"
-        case .background: return "Background"
-        case .foreground: return "Foreground"
+        case .appLaunch: "App Launch"
+        case .universalLink: "Universal Link"
+        case .customScheme: "Custom Scheme"
+        case .pushNotification: "Push Notification"
+        case .background: "Background"
+        case .foreground: "Foreground"
         }
     }
 }

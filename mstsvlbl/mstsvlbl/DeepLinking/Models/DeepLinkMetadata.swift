@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
-// MARK: - DeepLink Metadata
 public struct DeepLinkMetadata {
     public let id: String
     public let type: String

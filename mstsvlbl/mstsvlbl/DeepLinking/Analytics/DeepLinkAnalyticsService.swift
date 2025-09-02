@@ -11,7 +11,7 @@ import Foundation
 public final class DeepLinkAnalyticsService {
     private var analytics: [DeepLinkAnalytics] = []
     
-    public init() {}
+    public init() { }
     
     public func track(_ analytics: DeepLinkAnalytics) {
         self.analytics.append(analytics)

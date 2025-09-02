@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Bookmarks Deep Link
 public struct BookmarksDeepLink: DeepLink {
     public let id: String
     public let path: String

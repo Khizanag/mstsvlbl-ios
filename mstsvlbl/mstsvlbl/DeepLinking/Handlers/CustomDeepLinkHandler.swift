@@ -28,13 +28,10 @@ public final class CustomDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: CustomDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would handle custom deep link logic
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: CustomDeepLink) -> DeepLinkError? {
-        guard !deepLink.path.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.path.isEmpty ? .missingRequiredParameters : nil
     }
 }

@@ -28,13 +28,10 @@ public final class QuizDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: QuizDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to quiz with specific action
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: QuizDeepLink) -> DeepLinkError? {
-        guard !deepLink.id.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.id.isEmpty ? .missingRequiredParameters : nil
     }
 }

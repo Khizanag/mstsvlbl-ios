@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Settings Deep Link
 public struct SettingsDeepLink: DeepLink {
     public let id: String
     public let path: String

@@ -28,14 +28,20 @@ public enum DeepLinkDestination {
             return "Profile - \(action)"
         case .settings(let section):
             return "Settings - \(section)"
-        case .discover(let filter, let sort):
+        case .discover(let filter, let sort): 
             var name = "Discover"
-            if let filter = filter { name += " (Filter: \(filter))" }
-            if let sort = sort { name += " (Sort: \(sort))" }
+            if let filter = filter { 
+                name += " (Filter: \(filter))" 
+            }
+            if let sort = sort { 
+                name += " (Sort: \(sort))" 
+            }
             return name
         case .bookmarks(let filter):
             var name = "Bookmarks"
-            if let filter = filter { name += " (Filter: \(filter))" }
+            if let filter = filter { 
+                name += " (Filter: \(filter))" 
+            }
             return name
         case .stats(let period):
             return "Stats - \(period)"

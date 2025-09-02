@@ -28,24 +28,23 @@ public final class UniversalLinkParser: DeepLinkURLParser {
             return (item.name, value)
         })
         
-        // Parse based on path
-        switch path {
+        return switch path {
         case "/quiz":
-            return QuizDeepLink(from: path, parameters: parameters)
+            QuizDeepLink(from: path, parameters: parameters)
         case "/category":
-            return CategoryDeepLink(from: path, parameters: parameters)
+            CategoryDeepLink(from: path, parameters: parameters)
         case "/profile":
-            return ProfileDeepLink(from: path, parameters: parameters)
+            ProfileDeepLink(from: path, parameters: parameters)
         case "/settings":
-            return SettingsDeepLink(from: path, parameters: parameters)
+            SettingsDeepLink(from: path, parameters: parameters)
         case "/discover":
-            return DiscoverDeepLink(from: path, parameters: parameters)
+            DiscoverDeepLink(from: path, parameters: parameters)
         case "/bookmarks":
-            return BookmarksDeepLink(from: path, parameters: parameters)
+            BookmarksDeepLink(from: path, parameters: parameters)
         case "/stats":
-            return StatsDeepLink(from: path, parameters: parameters)
+            StatsDeepLink(from: path, parameters: parameters)
         default:
-            return CustomDeepLink(from: path, parameters: parameters)
+            CustomDeepLink(from: path, parameters: parameters)
         }
     }
     

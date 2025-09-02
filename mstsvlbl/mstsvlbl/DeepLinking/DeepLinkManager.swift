@@ -117,7 +117,7 @@ public final class DeepLinkManager: NSObject {
     
     /// Export analytics data
     public func exportAnalytics() -> DeepLinkAnalyticsExport {
-        analyticsService.exportData()
+        return analyticsService.exportData()
     }
     
     // MARK: - Testing Methods

@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
-// MARK: - Discover Deep Link Route
 public final class DiscoverDeepLinkRoute: DeepLinkRoute {
     public init() {}
     

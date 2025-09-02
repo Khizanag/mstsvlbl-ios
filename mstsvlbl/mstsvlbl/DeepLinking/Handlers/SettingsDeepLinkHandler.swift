@@ -28,13 +28,10 @@ public final class SettingsDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: SettingsDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to settings with specific section
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: SettingsDeepLink) -> DeepLinkError? {
-        guard !deepLink.section.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.section.isEmpty ? .missingRequiredParameters : nil
     }
 }

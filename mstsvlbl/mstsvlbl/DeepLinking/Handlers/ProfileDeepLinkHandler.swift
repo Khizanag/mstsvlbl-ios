@@ -28,13 +28,10 @@ public final class ProfileDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: ProfileDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to profile with specific action
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: ProfileDeepLink) -> DeepLinkError? {
-        guard !deepLink.action.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.action.isEmpty ? .missingRequiredParameters : nil
     }
 }

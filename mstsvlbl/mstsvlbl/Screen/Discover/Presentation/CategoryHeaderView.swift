@@ -191,4 +191,3 @@ private extension CategoryHeaderView {
     .padding()
     .background(DesignBook.Color.Background.primary)
 }
-   

@@ -28,13 +28,10 @@ public final class StatsDeepLinkHandler: DeepLinkHandler {
     public func handle(_ deepLink: StatsDeepLink, context: DeepLinkContext) async -> DeepLinkResult {
         // Implementation would navigate to stats with specific period
         // For now, return success
-        return .success(deepLink)
+        .success(deepLink)
     }
     
     public func validate(_ deepLink: StatsDeepLink) -> DeepLinkError? {
-        guard !deepLink.period.isEmpty else {
-            return .missingRequiredParameters
-        }
-        return nil
+        deepLink.period.isEmpty ? .missingRequiredParameters : nil
     }
 }

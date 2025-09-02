@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
-// MARK: - Profile Deep Link Route
 public final class ProfileDeepLinkRoute: DeepLinkRoute {
     public init() {}
     

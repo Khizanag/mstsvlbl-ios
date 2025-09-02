@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - DeepLink Performance Metrics
 public struct DeepLinkPerformanceMetrics {
     public let averageSuccessTime: TimeInterval
     public let averageFailureTime: TimeInterval

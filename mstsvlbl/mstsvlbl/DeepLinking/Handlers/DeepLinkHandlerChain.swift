@@ -27,8 +27,10 @@ public final class DeepLinkHandlerChain {
                 let result = try await executeHandler(handler, with: deepLink, context: context)
                 if result.isSuccess || result.isFailure {
                     return result
+                } else {
+                    // Continue to next handler if ignored
+                    continue
                 }
-                // Continue to next handler if ignored
             } catch {
                 return .failure(.routingFailed)
             }
@@ -37,7 +39,11 @@ public final class DeepLinkHandlerChain {
         return .failure(.routingFailed)
     }
     
-    private func executeHandler<T: DeepLinkHandler>(_ handler: T, with deepLink: any DeepLink, context: DeepLinkContext) async throws -> DeepLinkResult {
+    private func executeHandler<T: DeepLinkHandler>(
+        _ handler: T,
+        with deepLink: any DeepLink,
+        context: DeepLinkContext
+    ) async throws -> DeepLinkResult {
         guard let typedDeepLink = deepLink as? T.LinkType else {
             throw DeepLinkError.routingFailed
         }
@@ -45,12 +51,12 @@ public final class DeepLinkHandlerChain {
         // Validate
         if let error = handler.validate(typedDeepLink) {
             return .failure(error)
+        } else {
+            // Preprocess
+            let processedContext = await handler.preprocess(typedDeepLink, context: context)
+            
+            // Handle
+            return await handler.handle(typedDeepLink, context: processedContext)
         }
-        
-        // Preprocess
-        let processedContext = await handler.preprocess(typedDeepLink, context: context)
-        
-        // Handle
-        return await handler.handle(typedDeepLink, context: processedContext)
     }
 }
