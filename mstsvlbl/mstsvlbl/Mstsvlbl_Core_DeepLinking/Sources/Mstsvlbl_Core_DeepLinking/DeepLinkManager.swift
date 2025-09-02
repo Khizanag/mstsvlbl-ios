@@ -11,8 +11,11 @@ import Foundation
 public final class DeepLinkManager {
     
     private var subscribers: [any DeepLinkSubscriber] = []
+    private let parser: DeepLinkParser
     
-    public init() {}
+    public init(parser: DeepLinkParser = DeepLinkParser()) {
+        self.parser = parser
+    }
     
     public func subscribe(_ subscriber: any DeepLinkSubscriber) {
         subscribers.append(subscriber)
@@ -27,88 +30,53 @@ public final class DeepLinkManager {
     public func handle(url: URL) async -> DeepLinkResult {
         print("🔗 DeepLinkManager: Processing URL: \(url)")
         
-        do {
-            let deepLink = try parseDeepLink(from: url)
-            return await process(deepLink, source: .customScheme)
-        } catch {
-            print("🔗 DeepLinkManager: Failed to parse URL: \(error)")
-            return .failure(.parsingFailed)
+        guard let deepLink = parser.parse(url) else {
+            let error = DeepLinkError.parsingFailed
+            return .failure(error)
         }
+        
+        let result = await process(deepLink, source: .customScheme)
+        return result
     }
     
     public func handle(userActivity: NSUserActivity) async -> DeepLinkResult {
         print("🔗 DeepLinkManager: Processing user activity")
         
         guard let url = userActivity.webpageURL else {
-            print("🔗 DeepLinkManager: No webpage URL in user activity")
-            return .failure(.invalidURL)
+            let error = DeepLinkError.invalidURL
+            return .failure(error)
         }
         
-        do {
-            let deepLink = try parseDeepLink(from: url)
-            return await process(deepLink, source: .userActivity)
-        } catch {
-            print("🔗 DeepLinkManager: Failed to parse user activity URL: \(error)")
-            return .failure(.parsingFailed)
-        }
-    }
-    
-    private func parseDeepLink(from url: URL) throws -> any DeepLink {
-        // Simple parsing - extract path and query parameters
-        let path = url.pathComponents.dropFirst().joined(separator: "/")
-        var parameters: [String: String] = [:]
-        
-        if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
-            for item in queryItems {
-                if let value = item.value {
-                    parameters[item.name] = value
-                }
-            }
+        guard let deepLink = parser.parse(url) else {
+            let error = DeepLinkError.parsingFailed
+            return .failure(error)
         }
         
-        // Create a simple deep link
-        return SimpleDeepLink(path: path, parameters: parameters)
+        let result = await process(deepLink, source: .userActivity)
+        return result
     }
     
     private func process(_ deepLink: any DeepLink, source: DeepLinkSource) async -> DeepLinkResult {
-        print("🔗 DeepLinkManager: Processing deep link: \(deepLink.path)")
+        print("🔗 DeepLinkManager: Processing deep link with path: \(deepLink.path)")
         
-        let context = DeepLinkContext(source: source)
-        var handled = false
+        let matchingSubscribers = subscribers.filter { $0.canHandleDeepLink(deepLink) }
         
-        for subscriber in subscribers {
-            if subscriber.canHandleDeepLink(deepLink) {
-                print("🔗 DeepLinkManager: \(type(of: subscriber)) can handle this deep link")
-                await subscriber.didReceiveDeepLink(deepLink, context: context)
-                handled = true
-            }
-        }
-        
-        if handled {
-            print("🔗 DeepLinkManager: Deep link processed successfully")
-            return .success
-        } else {
-            print("🔗 DeepLinkManager: No subscriber found for deep link: \(deepLink.path)")
+        if matchingSubscribers.isEmpty {
+            print("🔗 DeepLinkManager: No subscribers found for path: \(deepLink.path)")
             return .failure(.unsupportedPath)
         }
+        
+        print("🔗 DeepLinkManager: Found \(matchingSubscribers.count) subscriber(s) for path: \(deepLink.path)")
+        
+        let context = DeepLinkContext(source: source)
+        
+        for subscriber in matchingSubscribers {
+            print("🔗 DeepLinkManager: Notifying subscriber: \(type(of: subscriber))")
+            await subscriber.didReceiveDeepLink(deepLink, context: context)
+        }
+        
+        return .success
     }
 }
 
-// MARK: - Simple Deep Link Implementation
 
-private struct SimpleDeepLink: DeepLink {
-    typealias ID = String
-    let id = UUID().uuidString
-    let path: String
-    let parameters: [String: String]
-    
-    // Conformance to Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(path)
-        hasher.combine(parameters)
-    }
-    
-    static func == (lhs: SimpleDeepLink, rhs: SimpleDeepLink) -> Bool {
-        lhs.path == rhs.path && lhs.parameters == rhs.parameters
-    }
-}

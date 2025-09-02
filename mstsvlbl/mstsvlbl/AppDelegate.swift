@@ -74,31 +74,31 @@ private extension AppDelegate {
         return [
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.QuizDeepLinkSubscriber(navigationHandler: window, dataProvider: LocalQuizRepository())
+                return await QuizDeepLinkSubscriber(navigationHandler: window, dataProvider: LocalQuizRepository())
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.CategoryDeepLinkSubscriber(navigationHandler: window)
+                return await CategoryDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.ProfileDeepLinkSubscriber(navigationHandler: window)
+                return await ProfileDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.SettingsDeepLinkSubscriber(navigationHandler: window)
+                return await SettingsDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.StatsDeepLinkSubscriber(navigationHandler: window)
+                return await StatsDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.DiscoverDeepLinkSubscriber(navigationHandler: window)
+                return await DiscoverDeepLinkSubscriber(navigationHandler: window)
             },
             { [weak self] in
                 guard let window = self?.window else { fatalError("Window not available") }
-                return await Mstsvlbl_Core_DeepLinking.BookmarksDeepLinkSubscriber(navigationHandler: window)
+                return await BookmarksDeepLinkSubscriber(navigationHandler: window)
             }
         ]
     }

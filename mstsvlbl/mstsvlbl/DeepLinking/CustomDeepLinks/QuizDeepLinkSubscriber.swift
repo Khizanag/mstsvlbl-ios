@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 public final class QuizDeepLinkSubscriber<DataProvider>: DeepLinkSubscriber {

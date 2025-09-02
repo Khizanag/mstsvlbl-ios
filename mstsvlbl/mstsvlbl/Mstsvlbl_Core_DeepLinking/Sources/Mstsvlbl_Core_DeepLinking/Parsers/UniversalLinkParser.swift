@@ -1,6 +1,6 @@
 //
 //  UniversalLinkParser.swift
-//  mstsvlbl
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
@@ -8,49 +8,32 @@
 import Foundation
 
 public final class UniversalLinkParser: DeepLinkURLParser {
-    private let supportedDomains = [
-        "mstsvlbl.com",
-        "www.mstsvlbl.com",
-    ]
-    
     public init() {}
     
     public func parse(_ url: URL) -> (any DeepLink)? {
-        guard let host = url.host?.lowercased(),
-              supportedDomains.contains(host) else {
+        let pathComponents = url.pathComponents.filter { $0 != "/" }
+        guard let firstPath = pathComponents.first else {
             return nil
         }
         
-        let path = url.path.lowercased()
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let queryItems = components?.queryItems ?? []
         
-        let parameters = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap { item in
-            guard let value = item.value else { return nil }
-            return (item.name, value)
-        })
+        let parameters = Dictionary<String, String>(
+            uniqueKeysWithValues: queryItems.compactMap { item in
+                guard let value = item.value else { return nil }
+                return (item.name, value)
+            }
+        )
         
-        return switch path {
-        case "/quiz":
-            QuizDeepLink(from: path, parameters: parameters)
-        case "/category":
-            CategoryDeepLink(from: path, parameters: parameters)
-        case "/profile":
-            ProfileDeepLink(from: path, parameters: parameters)
-        case "/settings":
-            SettingsDeepLink(from: path, parameters: parameters)
-        case "/discover":
-            DiscoverDeepLink(from: path, parameters: parameters)
-        case "/bookmarks":
-            BookmarksDeepLink(from: path, parameters: parameters)
-        case "/stats":
-            StatsDeepLink(from: path, parameters: parameters)
-        default:
-            nil // Return nil for unknown paths instead of CustomDeepLink
-        }
+        // Create a generic deep link where the first path component becomes the path
+        // Note: This parser cannot create concrete deep link instances
+        // Applications should implement their own parsing logic
+        return nil
     }
     
     public func getSupportedPaths() -> [String] {
-        ["/quiz", "/category", "/profile", "/settings", "/discover", "/bookmarks", "/stats"]
+        // Return empty array since we support any path dynamically
+        []
     }
 }

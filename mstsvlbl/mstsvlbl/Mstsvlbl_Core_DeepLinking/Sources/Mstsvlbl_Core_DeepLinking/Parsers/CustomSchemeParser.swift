@@ -1,6 +1,6 @@
 //
 //  CustomSchemeParser.swift
-//  mstsvlbl
+//  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
@@ -25,27 +25,14 @@ public final class CustomSchemeParser: DeepLinkURLParser {
             }
         )
         
-        return switch host {
-        case "quiz":
-            QuizDeepLink(from: host, parameters: parameters)
-        case "category":
-            CategoryDeepLink(from: host, parameters: parameters)
-        case "profile":
-            ProfileDeepLink(from: host, parameters: parameters)
-        case "settings":
-            SettingsDeepLink(from: host, parameters: parameters)
-        case "discover":
-            DiscoverDeepLink(from: host, parameters: parameters)
-        case "bookmarks":
-            BookmarksDeepLink(from: host, parameters: parameters)
-        case "stats":
-            StatsDeepLink(from: host, parameters: parameters)
-        default:
-            nil // Return nil for unknown hosts instead of CustomDeepLink
-        }
+        // Create a generic deep link where the host becomes the path
+        // Note: This parser cannot create concrete deep link instances
+        // Applications should implement their own parsing logic
+        return nil
     }
     
     public func getSupportedPaths() -> [String] {
-        ["quiz", "category", "profile", "settings", "discover", "bookmarks", "stats"]
+        // Return empty array since we support any host dynamically
+        []
     }
 }
