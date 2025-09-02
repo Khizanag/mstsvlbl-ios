@@ -104,5 +104,5 @@ private extension MainTabView {
 
 // MARK: - Preview
 #Preview {
-    MainTabView()
+    MainTabView(navigationCoordinator: DeepLinkNavigationCoordinator())
 }

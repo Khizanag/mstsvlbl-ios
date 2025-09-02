@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum DeepLinkDestination {
+public enum DeepLinkDestination: Equatable {
     case quiz(id: String, action: String)
     case category(name: String)
     case profile(action: String)
@@ -46,6 +46,34 @@ public enum DeepLinkDestination {
             return "Stats - \(period)"
         case .custom(let path, _):
             return "Custom - \(path)"
+        }
+    }
+}
+
+// MARK: - Equatable
+extension DeepLinkDestination {
+    public static func == (lhs: DeepLinkDestination, rhs: DeepLinkDestination) -> Bool {
+        switch (lhs, rhs) {
+        case (.quiz(let lhsId, let lhsAction), .quiz(let rhsId, let rhsAction)):
+            return lhsId == rhsId && lhsAction == rhsAction
+        case (.category(let lhsName), .category(let rhsName)):
+            return lhsName == rhsName
+        case (.profile(let lhsAction), .profile(let rhsAction)):
+            return lhsAction == rhsAction
+        case (.settings(let lhsSection), .settings(let rhsSection)):
+            return lhsSection == rhsSection
+        case (.discover(let lhsFilter, let lhsSort), .discover(let rhsFilter, let rhsSort)):
+            return lhsFilter == rhsFilter && lhsSort == rhsSort
+        case (.bookmarks(let lhsFilter), .bookmarks(let rhsFilter)):
+            return lhsFilter == rhsFilter
+        case (.stats(let lhsPeriod), .stats(let rhsPeriod)):
+            return lhsPeriod == rhsPeriod
+        case (.custom(let lhsPath, let lhsParams), .custom(let rhsPath, let rhsParams)):
+            // For custom parameters, we'll compare the path and check if parameters have the same keys
+            // This is a simplified comparison since [String: Any] doesn't conform to Equatable
+            return lhsPath == rhsPath && lhsParams.keys.sorted() == rhsParams.keys.sorted()
+        default:
+            return false
         }
     }
 }

@@ -62,6 +62,9 @@ public final class DeepLinkManager: NSObject, ObservableObject {
             
         case .failure(let error):
             print("❌ Deep link processing failed: \(error)")
+            
+        case .ignored(let deepLink):
+            print("⏭️ Deep link ignored: \(deepLink)")
         }
     }
     
