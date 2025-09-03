@@ -5,39 +5,51 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import UIKit
 import Mstsvlbl_Core_DeepLinking
+import SwiftUI
+import UIKit
 
 @MainActor
-public final class QuizDeepLinkSubscriber<DataProvider>: DeepLinkSubscriber {
-    public let id = "QuizDeepLinkSubscriber"
-    public let subscribedPath = "quiz"
+final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
+    @Injected private var repository: QuizRepository
     
-    public let navigationHandler: UIWindow
-    public let dataProvider: DataProvider
+    var id: String { String(describing: type(of: self)) }
+    let subscribedPath = "quiz"
     
-    public init(navigationHandler: UIWindow, dataProvider: DataProvider) async {
-        self.navigationHandler = navigationHandler
-        self.dataProvider = dataProvider
-    }
-    
-    public func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
-        print("🎯 QuizDeepLinkSubscriber: Handling quiz deep link")
+    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
+        guard let quizId = deepLink.parameters["id"] else { return }
         
-        await handleQuizDeepLink(deepLink)
-    }
-    
-    private func handleQuizDeepLink(_ deepLink: any DeepLink) async {
-        print("🎯 QuizDeepLinkSubscriber: Processing quiz deep link with path: \(deepLink.path)")
-        print("🎯 QuizDeepLinkSubscriber: Parameters: \(deepLink.parameters)")
-        print("🎯 QuizDeepLinkSubscriber: Navigation handler: \(type(of: navigationHandler))")
-        print("🎯 QuizDeepLinkSubscriber: Data provider: \(type(of: dataProvider))")
-        
-        // Example of how to add content directly over the window
-        if let quizId = deepLink.parameters["id"] {
-            print("🎯 QuizDeepLinkSubscriber: Opening quiz with ID: \(quizId)")
-            // Here you can add a view controller or view directly to the window
-            // For example: navigationHandler.addSubview(someView)
+        do {
+            let quizzes = try await repository.get(by: [quizId])
+            guard let quiz = quizzes.first else { return }
+            
+            let action = deepLink.parameters["action"] ?? "overview"
+            
+            let page: Page
+            switch action {
+            case "start", "play":
+                page = .play(quiz)
+            case "overview":
+                page = .overview(quiz)
+            default:
+                page = .overview(quiz)
+            }
+            
+            let navigatorView = NavigatorView {
+                page()
+            }
+            
+            let hostingController = UIHostingController(rootView: navigatorView)
+            hostingController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            
+            if let topmostViewController = UIApplication.shared.keyWindow?.topmostViewController {
+                topmostViewController.present(hostingController, animated: true)
+            } else if let keyWindow = UIApplication.shared.keyWindow {
+                keyWindow.rootViewController = hostingController
+                keyWindow.makeKeyAndVisible()
+            }
+        } catch {
+            print("❌ QuizDeepLinkSubscriber: Failed to fetch quiz: \(error)")
         }
     }
 }

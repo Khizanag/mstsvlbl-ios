@@ -13,6 +13,7 @@ public final class UniversalLinkParser: DeepLinkURLParser {
     public func parse(_ url: URL) -> (any DeepLink)? {
         let pathComponents = url.pathComponents.filter { $0 != "/" }
         guard let firstPath = pathComponents.first else {
+            print("🔗 UniversalLinkParser: No path components found in URL: \(url)")
             return nil
         }
         
@@ -26,14 +27,14 @@ public final class UniversalLinkParser: DeepLinkURLParser {
             }
         )
         
-        // Create a generic deep link where the first path component becomes the path
-        // Note: This parser cannot create concrete deep link instances
-        // Applications should implement their own parsing logic
-        return nil
+        print("🔗 UniversalLinkParser: Parsed URL - Path: \(firstPath), Parameters: \(parameters)")
+        
+        // Create and return the deep link
+        return AppDeepLink(path: firstPath, parameters: parameters)
     }
     
     public func getSupportedPaths() -> [String] {
-        // Return empty array since we support any path dynamically
-        []
+        // Return all the paths that this parser can handle
+        return ["quiz", "category", "profile", "settings", "stats", "discover", "bookmarks"]
     }
 }

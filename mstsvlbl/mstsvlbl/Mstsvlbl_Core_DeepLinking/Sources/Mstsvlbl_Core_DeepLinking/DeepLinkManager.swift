@@ -31,12 +31,12 @@ public final class DeepLinkManager {
         print("🔗 DeepLinkManager: Processing URL: \(url)")
         
         guard let deepLink = parser.parse(url) else {
+            print("🔗 DeepLinkManager: parse failed")
             let error = DeepLinkError.parsingFailed
             return .failure(error)
         }
         
-        let result = await process(deepLink, source: .customScheme)
-        return result
+        return await process(deepLink, source: .customScheme)
     }
     
     public func handle(userActivity: NSUserActivity) async -> DeepLinkResult {

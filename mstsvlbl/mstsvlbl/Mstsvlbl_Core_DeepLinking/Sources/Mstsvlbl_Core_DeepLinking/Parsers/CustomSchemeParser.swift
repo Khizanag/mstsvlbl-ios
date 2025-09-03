@@ -8,13 +8,26 @@
 import Foundation
 
 public final class CustomSchemeParser: DeepLinkURLParser {
-    public init() {}
+    private let scheme: String
+    
+    public init(scheme: String) {
+        self.scheme = scheme
+    }
     
     public func parse(_ url: URL) -> (any DeepLink)? {
-        guard let host = url.host?.lowercased() else {
+        // Verify the URL scheme matches our expected scheme
+        guard url.scheme?.lowercased() == scheme.lowercased() else {
+            print("🔗 CustomSchemeParser: URL scheme '\(url.scheme ?? "nil")' doesn't match expected scheme '\(scheme)'")
             return nil
         }
         
+        // Extract the host as the path (e.g., "quiz" from "mstsvlbl://quiz?id=123")
+        guard let host = url.host?.lowercased() else {
+            print("🔗 CustomSchemeParser: No host found in URL: \(url)")
+            return nil
+        }
+        
+        // Parse query parameters
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let queryItems = components?.queryItems ?? []
         
@@ -25,14 +38,14 @@ public final class CustomSchemeParser: DeepLinkURLParser {
             }
         )
         
-        // Create a generic deep link where the host becomes the path
-        // Note: This parser cannot create concrete deep link instances
-        // Applications should implement their own parsing logic
-        return nil
+        print("🔗 CustomSchemeParser: Parsed URL - Path: \(host), Parameters: \(parameters)")
+        
+        // Create and return the deep link
+        return AppDeepLink(path: host, parameters: parameters)
     }
     
     public func getSupportedPaths() -> [String] {
-        // Return empty array since we support any host dynamically
-        []
+        // Return all the paths that this parser can handle
+        return ["quiz", "category", "profile", "settings", "stats", "discover", "bookmarks"]
     }
 }

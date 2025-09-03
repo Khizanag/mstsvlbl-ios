@@ -12,8 +12,6 @@ public protocol DeepLinkURLParser {
     func getSupportedPaths() -> [String]
 }
 
-
-
 public final class DeepLinkParser {
     private var parsers: [String: DeepLinkURLParser] = [:]
     
@@ -22,28 +20,36 @@ public final class DeepLinkParser {
     }
     
     private func setupDefaultParsers() {
-        register(UniversalLinkParser(), for: "https")
-        register(CustomSchemeParser(), for: "mstsvlbl")
-    }
-    
-    public func register(_ parser: DeepLinkURLParser, for scheme: String) {
-        parsers[scheme] = parser
+        // Register custom scheme parser with the app's scheme
+        let customSchemeParser = CustomSchemeParser(scheme: "mstsvlbl")
+        parsers["custom"] = customSchemeParser
+        
+        // Register universal link parser
+        let universalLinkParser = UniversalLinkParser()
+        parsers["universal"] = universalLinkParser
     }
     
     public func parse(_ url: URL) -> (any DeepLink)? {
-        guard let scheme = url.scheme?.lowercased(),
-              let parser = parsers[scheme] else {
-            return nil
+        // Try custom scheme first (e.g., mstsvlbl://quiz?id=123)
+        if let customSchemeParser = parsers["custom"],
+           let deepLink = customSchemeParser.parse(url) {
+            print("🔗 DeepLinkParser: Successfully parsed custom scheme URL")
+            return deepLink
         }
         
-        return parser.parse(url)
+        // Try universal link (e.g., https://mstsvlbl.com/quiz?id=123)
+        if let universalLinkParser = parsers["universal"],
+           let deepLink = universalLinkParser.parse(url) {
+            print("🔗 DeepLinkParser: Successfully parsed universal link URL")
+            return deepLink
+        }
+        
+        print("🔗 DeepLinkParser: Failed to parse URL with any parser: \(url)")
+        return nil
     }
     
-    public func getSupportedSchemes() -> [String] {
-        Array(parsers.keys)
-    }
-    
-    public func getSupportedPaths() -> [String] {
-        parsers.values.flatMap { $0.getSupportedPaths() }
+    public func registerParser(_ parser: DeepLinkURLParser, for key: String) {
+        parsers[key] = parser
+        print("🔗 DeepLinkParser: Registered parser '\(key)' with supported paths: \(parser.getSupportedPaths())")
     }
 }

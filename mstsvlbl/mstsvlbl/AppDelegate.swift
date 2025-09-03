@@ -70,35 +70,28 @@ private extension AppDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func createSubscriberFactories() -> [() async -> any Mstsvlbl_Core_DeepLinking.DeepLinkSubscriber] {
+    func createSubscriberFactories() -> [() -> any Mstsvlbl_Core_DeepLinking.DeepLinkSubscriber] {
         return [
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await QuizDeepLinkSubscriber(navigationHandler: window, dataProvider: LocalQuizRepository())
+            {
+                QuizDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await CategoryDeepLinkSubscriber(navigationHandler: window)
+            {
+                CategoryDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await ProfileDeepLinkSubscriber(navigationHandler: window)
+            {
+                ProfileDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await SettingsDeepLinkSubscriber(navigationHandler: window)
+            {
+                SettingsDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await StatsDeepLinkSubscriber(navigationHandler: window)
+            {
+                StatsDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await DiscoverDeepLinkSubscriber(navigationHandler: window)
+            {
+                DiscoverDeepLinkSubscriber()
             },
-            { [weak self] in
-                guard let window = self?.window else { fatalError("Window not available") }
-                return await BookmarksDeepLinkSubscriber(navigationHandler: window)
+            {
+                BookmarksDeepLinkSubscriber()
             }
         ]
     }
