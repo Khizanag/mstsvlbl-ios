@@ -78,5 +78,3 @@ public final class DeepLinkManager {
         return .success
     }
 }
-
-

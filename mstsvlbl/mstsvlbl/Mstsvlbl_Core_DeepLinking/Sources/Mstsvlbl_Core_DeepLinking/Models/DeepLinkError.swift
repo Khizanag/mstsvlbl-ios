@@ -15,7 +15,9 @@ public enum DeepLinkError: LocalizedError, Sendable {
     case parsingFailed
     case routingFailed
     case unsupportedPath
-    
+}
+
+extension DeepLinkError {
     public var errorDescription: String? {
         switch self {
         case .invalidURL:

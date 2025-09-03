@@ -5,9 +5,6 @@
 //  Created by Giga Khizanishvili on 01.09.25.
 //
 
-import Foundation
-
-// MARK: - Fluent Configuration DSL
 extension DIContainer {
     public struct Registrar {
         private let container: DIContainer
@@ -34,5 +31,3 @@ extension DIContainer {
         build(registrar)
     }
 }
-
-

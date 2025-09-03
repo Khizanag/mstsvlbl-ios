@@ -19,7 +19,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        print("🔗 AppDelegate: didFinishLaunchingWithOptions called")
         DIBootstrap.bootstrap()
         setupDeepLinking()
         setupUIWindow()
@@ -49,14 +48,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: - DeepLinking
+// MARK: - Private
 private extension AppDelegate {
     func setupDeepLinking() {
-        deepLinkRegistrator = DeepLinkRegistrator(
-            deepLinkManager: deepLinkManager,
-            subscriberFactories: makeSubscriberFactories()
+        let deepLinkRegistrator = DeepLinkRegistrator(
+            deepLinkManager: deepLinkManager
         )
-        deepLinkRegistrator?.registerAllSubscribers()
+        deepLinkRegistrator.register()
+        self.deepLinkRegistrator = deepLinkRegistrator
     }
     
     func setupUIWindow() {
@@ -65,17 +64,5 @@ private extension AppDelegate {
         let hostingController = UIHostingController(rootView: contentView)
         window?.rootViewController = hostingController
         window?.makeKeyAndVisible()
-    }
-    
-    func makeSubscriberFactories() -> [() -> any DeepLinkSubscriber] {
-        [
-            { QuizDeepLinkSubscriber() },
-            { CategoryDeepLinkSubscriber() },
-            { ProfileDeepLinkSubscriber() },
-            { SettingsDeepLinkSubscriber() },
-            { StatsDeepLinkSubscriber() },
-            { DiscoverDeepLinkSubscriber() },
-            { BookmarksDeepLinkSubscriber() },
-        ]
     }
 }

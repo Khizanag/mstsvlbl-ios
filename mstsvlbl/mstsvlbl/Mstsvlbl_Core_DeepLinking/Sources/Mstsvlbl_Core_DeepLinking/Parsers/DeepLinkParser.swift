@@ -7,10 +7,6 @@
 
 import Foundation
 
-public protocol DeepLinkURLParser {
-    func parse(_ url: URL) -> DeepLink?
-}
-
 public final class DeepLinkParser {
     private var parsers: [String: DeepLinkURLParser] = [:]
     
