@@ -7,28 +7,23 @@
 
 import Foundation
 
-public protocol DeepLink: Hashable, Identifiable, Sendable {
-    var path: String { get }
-    var parameters: [String: String] { get }
-}
-
-public struct AppDeepLink: DeepLink {
+public struct DeepLink: Hashable, Identifiable, Sendable {
     public let id = UUID().uuidString
-    public let path: String
+    public let name: String
     public let parameters: [String: String]
     
-    public init(path: String, parameters: [String: String]) {
-        self.path = path
+    public init(name: String, parameters: [String: String]) {
+        self.name = name
         self.parameters = parameters
     }
     
     // MARK: - Hashable
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(path)
+        hasher.combine(name)
         hasher.combine(parameters)
     }
     
-    public static func == (lhs: AppDeepLink, rhs: AppDeepLink) -> Bool {
-        lhs.path == rhs.path && lhs.parameters == rhs.parameters
+    public static func == (lhs: DeepLink, rhs: DeepLink) -> Bool {
+        lhs.name == rhs.name && lhs.parameters == rhs.parameters
     }
 }

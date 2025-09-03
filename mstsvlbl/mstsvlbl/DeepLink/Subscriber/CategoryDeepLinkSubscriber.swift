@@ -9,10 +9,9 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class CategoryDeepLinkSubscriber: DeepLinkSubscriber {
-//    var id: String { String(describing: type(of: self)) }
     let subscribedPath = "category"
     
-    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
+    func didReceiveDeepLink(_ deepLink: DeepLink, context: DeepLinkContext) async {
         guard let categoryId = deepLink.parameters["id"],
               let category = Category(rawValue: categoryId.lowercased()) else { return }
         

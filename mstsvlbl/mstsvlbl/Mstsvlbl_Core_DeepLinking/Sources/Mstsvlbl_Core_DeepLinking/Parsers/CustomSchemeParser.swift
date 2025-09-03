@@ -14,14 +14,14 @@ public final class CustomSchemeParser: DeepLinkURLParser {
         self.scheme = scheme
     }
     
-    public func parse(_ url: URL) -> (any DeepLink)? {
+    public func parse(_ url: URL) -> DeepLink? {
         // Verify the URL scheme matches our expected scheme
         guard url.scheme?.lowercased() == scheme.lowercased() else {
             print("🔗 CustomSchemeParser: URL scheme '\(url.scheme ?? "nil")' doesn't match expected scheme '\(scheme)'")
             return nil
         }
         
-        // Extract the host as the path (e.g., "quiz" from "mstsvlbl://quiz?id=123")
+        // Extract the host as the name (e.g., "quiz" from "mstsvlbl://quiz?id=123")
         guard let host = url.host?.lowercased() else {
             print("🔗 CustomSchemeParser: No host found in URL: \(url)")
             return nil
@@ -38,14 +38,7 @@ public final class CustomSchemeParser: DeepLinkURLParser {
             }
         )
         
-        print("🔗 CustomSchemeParser: Parsed URL - Path: \(host), Parameters: \(parameters)")
-        
         // Create and return the deep link
-        return AppDeepLink(path: host, parameters: parameters)
-    }
-    
-    public func getSupportedPaths() -> [String] {
-        // Return all the paths that this parser can handle
-        return ["quiz", "category", "profile", "settings", "stats", "discover", "bookmarks"]
+        return DeepLink(name: host, parameters: parameters)
     }
 }

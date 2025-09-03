@@ -11,7 +11,7 @@ import Mstsvlbl_Core_DeepLinking
 final class BookmarksDeepLinkSubscriber: DeepLinkSubscriber {
     let subscribedPath = "bookmarks"
     
-    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
+    func didReceiveDeepLink(_ deepLink: DeepLink, context: DeepLinkContext) async {
         presentViewOnTop(BookmarksView())
     }
 }

@@ -56,17 +56,17 @@ public final class DeepLinkManager {
         return result
     }
     
-    private func process(_ deepLink: any DeepLink, source: DeepLinkSource) async -> DeepLinkResult {
-        print("🔗 DeepLinkManager: Processing deep link with path: \(deepLink.path)")
+    private func process(_ deepLink: DeepLink, source: DeepLinkSource) async -> DeepLinkResult {
+        print("🔗 DeepLinkManager: Processing deep link with name: \(deepLink.name)")
         
         let matchingSubscribers = subscribers.filter { $0.canHandleDeepLink(deepLink) }
         
         if matchingSubscribers.isEmpty {
-            print("🔗 DeepLinkManager: No subscribers found for path: \(deepLink.path)")
+            print("🔗 DeepLinkManager: No subscribers found for name: \(deepLink.name)")
             return .failure(.unsupportedPath)
         }
         
-        print("🔗 DeepLinkManager: Found \(matchingSubscribers.count) subscriber(s) for path: \(deepLink.path)")
+        print("🔗 DeepLinkManager: Found \(matchingSubscribers.count) subscriber(s) for name: \(deepLink.name)")
         
         let context = DeepLinkContext(source: source)
         

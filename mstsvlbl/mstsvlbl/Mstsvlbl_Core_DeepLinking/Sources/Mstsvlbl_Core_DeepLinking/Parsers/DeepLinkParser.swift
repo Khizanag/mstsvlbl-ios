@@ -8,8 +8,7 @@
 import Foundation
 
 public protocol DeepLinkURLParser {
-    func parse(_ url: URL) -> (any DeepLink)?
-    func getSupportedPaths() -> [String]
+    func parse(_ url: URL) -> DeepLink?
 }
 
 public final class DeepLinkParser {
@@ -29,27 +28,24 @@ public final class DeepLinkParser {
         parsers["universal"] = universalLinkParser
     }
     
-    public func parse(_ url: URL) -> (any DeepLink)? {
-        // Try custom scheme first (e.g., mstsvlbl://quiz?id=123)
-        if let customSchemeParser = parsers["custom"],
-           let deepLink = customSchemeParser.parse(url) {
-            print("🔗 DeepLinkParser: Successfully parsed custom scheme URL")
-            return deepLink
-        }
-        
-        // Try universal link (e.g., https://mstsvlbl.com/quiz?id=123)
+    public func parse(_ url: URL) -> DeepLink? {
         if let universalLinkParser = parsers["universal"],
-           let deepLink = universalLinkParser.parse(url) {
-            print("🔗 DeepLinkParser: Successfully parsed universal link URL")
+           let deepLink = universalLinkParser.parse(url)
+        {
             return deepLink
         }
         
-        print("🔗 DeepLinkParser: Failed to parse URL with any parser: \(url)")
+        if let customSchemeParser = parsers["custom"],
+           let deepLink = customSchemeParser.parse(url)
+        {
+            return deepLink
+        }
+        
+        
         return nil
     }
     
     public func registerParser(_ parser: DeepLinkURLParser, for key: String) {
         parsers[key] = parser
-        print("🔗 DeepLinkParser: Registered parser '\(key)' with supported paths: \(parser.getSupportedPaths())")
     }
 }

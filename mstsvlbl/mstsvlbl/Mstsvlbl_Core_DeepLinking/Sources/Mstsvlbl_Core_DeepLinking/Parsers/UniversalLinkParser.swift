@@ -10,7 +10,7 @@ import Foundation
 public final class UniversalLinkParser: DeepLinkURLParser {
     public init() {}
     
-    public func parse(_ url: URL) -> (any DeepLink)? {
+    public func parse(_ url: URL) -> DeepLink? {
         let pathComponents = url.pathComponents.filter { $0 != "/" }
         guard let firstPath = pathComponents.first else {
             print("🔗 UniversalLinkParser: No path components found in URL: \(url)")
@@ -27,14 +27,9 @@ public final class UniversalLinkParser: DeepLinkURLParser {
             }
         )
         
-        print("🔗 UniversalLinkParser: Parsed URL - Path: \(firstPath), Parameters: \(parameters)")
+        print("🔗 UniversalLinkParser: Parsed URL - Name: \(firstPath), Parameters: \(parameters)")
         
         // Create and return the deep link
-        return AppDeepLink(path: firstPath, parameters: parameters)
-    }
-    
-    public func getSupportedPaths() -> [String] {
-        // Return all the paths that this parser can handle
-        return ["quiz", "category", "profile", "settings", "stats", "discover", "bookmarks"]
+        return DeepLink(name: firstPath, parameters: parameters)
     }
 }

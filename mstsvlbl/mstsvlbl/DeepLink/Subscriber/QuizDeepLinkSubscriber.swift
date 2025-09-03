@@ -13,7 +13,7 @@ final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
     
     let subscribedPath = "quiz"
     
-    func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
+    func didReceiveDeepLink(_ deepLink: DeepLink, context: DeepLinkContext) async {
         guard let quizId = deepLink.parameters["id"] else { return }
         
         do {
@@ -32,19 +32,7 @@ final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
                 page = .overview(quiz)
             }
             
-            let navigatorView = NavigatorView {
-                page()
-            }
-            
-            let hostingController = UIHostingController(rootView: navigatorView)
-            hostingController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-            
-            if let topmostViewController = UIApplication.shared.keyWindow?.topmostViewController {
-                topmostViewController.present(hostingController, animated: true)
-            } else if let keyWindow = UIApplication.shared.keyWindow {
-                keyWindow.rootViewController = hostingController
-                keyWindow.makeKeyAndVisible()
-            }
+            presentViewOnTop(page())
         } catch {
             print("❌ QuizDeepLinkSubscriber: Failed to fetch quiz: \(error)")
         }
