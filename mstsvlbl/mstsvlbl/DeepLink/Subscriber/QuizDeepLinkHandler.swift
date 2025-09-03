@@ -1,6 +1,6 @@
 //
-//  QuizDeepLinkSubscriber.swift
-//  Mstsvlbl_Core_DeepLinking
+//  QuizDeepLinkHandler.swift
+//  mstsvlbl
 //
 //  Created by Giga Khizanishvili on 02.09.25.
 //
@@ -8,12 +8,12 @@
 import Mstsvlbl_Core_DeepLinking
 
 @MainActor
-final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
+final class QuizDeepLinkHandler: DeepLinkHandler {
     @Injected private var repository: QuizRepository
     
     let subscribedPath = "quiz"
     
-    func didReceiveDeepLink(_ deepLink: DeepLink, context: DeepLinkContext) async {
+    func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         guard let quizId = deepLink.parameters["id"] else { return }
         
         do {
@@ -34,7 +34,7 @@ final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
             
             presentViewOnTop(page())
         } catch {
-            print("❌ QuizDeepLinkSubscriber: Failed to fetch quiz: \(error)")
+            print("❌ QuizDeepLinkHandler: Failed to fetch quiz: \(error)")
         }
     }
 }

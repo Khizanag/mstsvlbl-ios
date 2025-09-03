@@ -11,7 +11,7 @@ import Mstsvlbl_Core_DeepLinking
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     @Injected private var deepLinkManager: DeepLinkManager
-    private let deepLinkRegistrator = DeepLinkSubscriberRegistrator()
+    private let deepLinkRegistrator = DeepLinkHandlerRegistrator()
     var window: UIWindow?
     
     func application(

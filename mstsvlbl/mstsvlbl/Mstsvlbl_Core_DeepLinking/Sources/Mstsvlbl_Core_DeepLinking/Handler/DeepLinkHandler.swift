@@ -1,18 +1,18 @@
 //
-//  DeepLinkSubscriber.swift
+//  DeepLinkHandler.swift
 //  Mstsvlbl_Core_DeepLinking
 //
-//  Created by Giga Khizanishvili on 02.09.25.
+// Created by Giga Khizanishvili on 02.09.25.
 //
 
-public protocol DeepLinkSubscriber: Identifiable, Sendable {
+public protocol DeepLinkHandler: Identifiable, Sendable {
     var id: String { get }
     var subscribedPath: String { get }
     func canHandleDeepLink(_ deepLink: DeepLink) -> Bool
-    func didReceiveDeepLink(_ deepLink: DeepLink, context: DeepLinkContext) async
+    func handle(_ deepLink: DeepLink, context: DeepLinkContext) async
 }
 
-public extension DeepLinkSubscriber {
+public extension DeepLinkHandler {
     var id: String { String(describing: type(of: self)) }
     
     func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {

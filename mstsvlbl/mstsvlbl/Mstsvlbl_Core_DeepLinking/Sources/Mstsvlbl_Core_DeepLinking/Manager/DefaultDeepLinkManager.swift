@@ -10,12 +10,12 @@ import Foundation
 @MainActor
 public final class DefaultDeepLinkManager: DeepLinkManager {
     
-    private var subscribers: [any DeepLinkSubscriber] = []
+    private var handlers: [any DeepLinkHandler] = []
     private nonisolated let parser: DeepLinkParser
     
     public nonisolated init(parser: DeepLinkParser = DeepLinkParser()) {
         self.parser = parser
-        self.subscribers = []
+        self.handlers = []
     }
     
     public func handle(url: URL) async {
@@ -36,14 +36,14 @@ public final class DefaultDeepLinkManager: DeepLinkManager {
         await process(deepLink, source: .userActivity)
     }
     
-    public func register(_ subscriber: any DeepLinkSubscriber) async {
-        subscribers.append(subscriber)
-        print("🔗 DefaultDeepLinkManager: Registered subscriber: \(type(of: subscriber))")
+    public func register(_ handler: any DeepLinkHandler) async {
+        handlers.append(handler)
+        print("🔗 DefaultDeepLinkManager: Registered handler: \(type(of: handler))")
     }
     
-    public func unregister(_ subscriber: any DeepLinkSubscriber) async {
-        subscribers.removeAll { $0.id == subscriber.id }
-        print("🔗 DefaultDeepLinkManager: Unregistered subscriber: \(type(of: subscriber))")
+    public func unregister(_ handler: any DeepLinkHandler) async {
+        handlers.removeAll { $0.id == handler.id }
+        print("🔗 DefaultDeepLinkManager: Unregistered handler: \(type(of: handler))")
     }
 }
 
@@ -52,20 +52,20 @@ private extension DefaultDeepLinkManager {
     func process(_ deepLink: DeepLink, source: DeepLinkSource) async {
         print("🔗 DefaultDeepLinkManager: Processing deep link with name: \(deepLink.name)")
         
-        let matchingSubscribers = subscribers.filter { $0.canHandleDeepLink(deepLink) }
+        let matchingHandlers = handlers.filter { $0.canHandleDeepLink(deepLink) }
         
-        if matchingSubscribers.isEmpty {
-            print("🔗 DefaultDeepLinkManager: No subscribers found for name: \(deepLink.name)")
+        if matchingHandlers.isEmpty {
+            print("🔗 DefaultDeepLinkManager: No handlers found for name: \(deepLink.name)")
             return
         }
         
-        print("🔗 DefaultDeepLinkManager: Found \(matchingSubscribers.count) subscriber(s) for name: \(deepLink.name)")
+        print("🔗 DefaultDeepLinkManager: Found \(matchingHandlers.count) handler(s) for name: \(deepLink.name)")
         
         let context = DeepLinkContext(source: source)
         
-        for subscriber in matchingSubscribers {
-            print("🔗 DefaultDeepLinkManager: Notifying subscriber: \(type(of: subscriber))")
-            await subscriber.didReceiveDeepLink(deepLink, context: context)
+        for handler in matchingHandlers {
+            print("🔗 DefaultDeepLinkManager: Notifying handler: \(type(of: handler))")
+            await handler.handle(deepLink, context: context)
         }
     }
 }
