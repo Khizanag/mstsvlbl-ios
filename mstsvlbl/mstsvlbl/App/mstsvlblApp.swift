@@ -21,13 +21,13 @@ struct mstsvlblApp: App {
                         await deepLinkManager.handle(url: url)
                     }
                 }
-                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
-                    if let url = userActivity.webpageURL {
-                        Task {
-                            await deepLinkManager.handle(universalLink: url)
-                        }
-                    }
-                }
+//                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+//                    if let url = userActivity.webpageURL {
+//                        Task {
+//                            await deepLinkManager.handle(universalLink: url)
+//                        }
+//                    }
+//                }
         }
     }
 }

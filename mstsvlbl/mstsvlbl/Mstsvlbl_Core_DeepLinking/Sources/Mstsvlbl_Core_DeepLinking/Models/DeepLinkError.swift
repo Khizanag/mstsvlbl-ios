@@ -15,6 +15,7 @@ public enum DeepLinkError: LocalizedError, Sendable {
     case parsingFailed
     case routingFailed
     case unsupportedPath
+    case loginRequired
 }
 
 extension DeepLinkError {
@@ -34,6 +35,8 @@ extension DeepLinkError {
             "Failed to route deep link"
         case .unsupportedPath:
             "Unsupported deep link path"
+        case .loginRequired:
+            "Login required"
         }
     }
 }

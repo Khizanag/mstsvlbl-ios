@@ -7,34 +7,55 @@
 
 import Mstsvlbl_Core_DeepLinking
 
+struct QuizDeepLinkParameters {
+    let id: String
+    let action: Action
+
+    enum Action: String {
+        case start
+        case play
+        case overview
+    }
+}
+
 @MainActor
 final class QuizDeepLinkHandler: DeepLinkHandler {
+    typealias Parameters = QuizDeepLinkParameters
+
     @Injected private var repository: QuizRepository
     
     let host = "quiz"
     
-    func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
-        guard let quizId = deepLink.parameters["id"] else { return }
+    func handle(_ parameters: [String: String], context: DeepLinkContext) async -> DeepLinkResult {
+        guard let quizDeepLink = mapParametersToDeepLinkParameters(parameters) else {
+            return .failure(.missingRequiredParameters)
+        }
         
         do {
-            let quizzes = try await repository.get(by: [quizId])
-            guard let quiz = quizzes.first else { return }
+            let quizzes = try await repository.get(by: [quizDeepLink.id])
+            guard let quiz = quizzes.first else { return .failure(.routingFailed) }
             
-            let action = deepLink.parameters["action"] ?? "overview"
-            
-            let page: Page
-            switch action {
-            case "start", "play":
-                page = .play(quiz)
-            case "overview":
-                page = .overview(quiz)
-            default:
-                page = .overview(quiz)
+            let page: Page = switch quizDeepLink.action {
+            case .start, .play:
+                .play(quiz)
+            case .overview:
+                .overview(quiz)
             }
             
             presentViewOnTop(page())
+            return .success
         } catch {
             print("❌ QuizDeepLinkHandler: Failed to fetch quiz: \(error)")
+            return .failure(.routingFailed)
         }
+    }
+    
+    func mapParametersToDeepLinkParameters(_ parameters: [String: String]) -> Parameters? {
+        guard let id = parameters["id"],
+              let actionRawValue = parameters["action"],
+              let action = Parameters.Action(rawValue: actionRawValue)
+        else { return nil }
+        
+        return Parameters(id: id, action: action)
     }
 }

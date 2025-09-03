@@ -10,7 +10,7 @@ import Foundation
 public final class DeepLinkParser: Sendable {
     private let parsers: [DeepLinkURLParser] = [
         UniversalLinkParser(),
-        CustomSchemeParser(scheme: "tbc-uz"),
+        CustomSchemeParser(scheme: "mstsvlbl"),
     ]
     
     public init() { }

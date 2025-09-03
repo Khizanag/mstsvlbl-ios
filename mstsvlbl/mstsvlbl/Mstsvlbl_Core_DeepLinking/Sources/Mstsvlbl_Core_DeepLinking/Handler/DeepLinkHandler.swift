@@ -6,16 +6,19 @@
 //
 
 public protocol DeepLinkHandler: Identifiable, Sendable {
+    associatedtype Parameters
     var host: String { get }
-    func canHandleDeepLink(_ deepLink: DeepLink) -> Bool
-    func handle(_ deepLink: DeepLink, context: DeepLinkContext) async
+    func handle(_ parameters: [String: String], context: DeepLinkContext) async -> DeepLinkResult
+    func mapParametersToDeepLinkParameters(_ parameters: [String: String]) async -> Parameters?
 }
 
 // MARK: - Protocol Extensions
 public extension DeepLinkHandler {
     nonisolated var id: String { String(describing: type(of: self)) }
-    
-    func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
-        deepLink.name.lowercased() == host.lowercased()
+}
+
+public extension DeepLinkHandler where Parameters == Never {
+    func mapParametersToDeepLinkParameters(_ parameters: [String: String]) async -> Parameters? {
+        nil
     }
 }

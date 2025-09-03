@@ -13,12 +13,12 @@ public final class DeepLinkHandlerRegistrator {
     
     private let handlers: [any DeepLinkHandler] = [
          QuizDeepLinkHandler(),
-         CategoryDeepLinkHandler(),
-         ProfileDeepLinkHandler(),
+//         CategoryDeepLinkHandler(),
+//         ProfileDeepLinkHandler(),
          SettingsDeepLinkHandler(),
-         StatsDeepLinkHandler(),
-         DiscoverDeepLinkHandler(),
-         BookmarksDeepLinkHandler(),
+//         StatsDeepLinkHandler(),
+//         DiscoverDeepLinkHandler(),
+//         BookmarksDeepLinkHandler(),
     ]
     
     public func registerAll() async {
