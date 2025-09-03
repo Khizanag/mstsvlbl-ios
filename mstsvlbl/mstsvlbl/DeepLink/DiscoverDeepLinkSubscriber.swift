@@ -6,12 +6,9 @@
 //
 
 import Mstsvlbl_Core_DeepLinking
-import SwiftUI
-import UIKit
 
 @MainActor
 final class DiscoverDeepLinkSubscriber: DeepLinkSubscriber {
-    let id = "DiscoverDeepLinkSubscriber"
     let subscribedPath = "discover"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

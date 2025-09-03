@@ -15,6 +15,8 @@ public protocol DeepLinkSubscriber: Identifiable, Sendable {
 }
 
 public extension DeepLinkSubscriber {
+    var id: String { String(describing: type(of: self)) }
+    
     func canHandleDeepLink(_ deepLink: any DeepLink) -> Bool {
         deepLink.path.lowercased() == subscribedPath.lowercased()
     }

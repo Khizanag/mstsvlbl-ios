@@ -6,12 +6,9 @@
 //
 
 import Mstsvlbl_Core_DeepLinking
-import SwiftUI
-import UIKit
 
 @MainActor
 final class SettingsDeepLinkSubscriber: DeepLinkSubscriber {
-    let id = "SettingsDeepLinkSubscriber"
     let subscribedPath = "settings"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

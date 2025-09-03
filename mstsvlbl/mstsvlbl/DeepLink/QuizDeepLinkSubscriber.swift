@@ -6,14 +6,11 @@
 //
 
 import Mstsvlbl_Core_DeepLinking
-import SwiftUI
-import UIKit
 
 @MainActor
 final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
     @Injected private var repository: QuizRepository
     
-    let id = "QuizDeepLinkSubscriber"
     let subscribedPath = "quiz"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

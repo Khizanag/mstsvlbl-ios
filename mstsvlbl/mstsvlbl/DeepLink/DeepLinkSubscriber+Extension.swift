@@ -5,9 +5,9 @@
 //  Created by Giga Khizanishvili on 03.09.25.
 //
 
+import Mstsvlbl_Core_DeepLinking
 import SwiftUI
 import UIKit
-import Mstsvlbl_Core_DeepLinking
 
 extension DeepLinkSubscriber {
     func presentViewOnTop<V: View>(_ view: V) {

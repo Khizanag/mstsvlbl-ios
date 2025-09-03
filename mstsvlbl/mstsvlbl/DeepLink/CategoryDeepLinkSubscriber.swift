@@ -6,12 +6,10 @@
 //
 
 import Mstsvlbl_Core_DeepLinking
-import SwiftUI
-import UIKit
 
 @MainActor
 final class CategoryDeepLinkSubscriber: DeepLinkSubscriber {
-    let id = "CategoryDeepLinkSubscriber"
+//    var id: String { String(describing: type(of: self)) }
     let subscribedPath = "category"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

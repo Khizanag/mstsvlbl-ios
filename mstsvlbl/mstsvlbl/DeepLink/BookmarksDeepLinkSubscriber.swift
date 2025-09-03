@@ -6,12 +6,9 @@
 //
 
 import Mstsvlbl_Core_DeepLinking
-import SwiftUI
-import UIKit
 
 @MainActor
 final class BookmarksDeepLinkSubscriber: DeepLinkSubscriber {
-    let id = "BookmarksDeepLinkSubscriber"
     let subscribedPath = "bookmarks"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
