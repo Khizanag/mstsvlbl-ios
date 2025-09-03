@@ -9,18 +9,18 @@
 public final class DeepLinkRegistrator {
     
     private let deepLinkManager: DeepLinkManager
-    private let subscriberFactories: [() async -> any DeepLinkSubscriber]
+    private let subscriberFactories: [() -> any DeepLinkSubscriber]
     
-    public init(deepLinkManager: DeepLinkManager, subscriberFactories: [() async -> any DeepLinkSubscriber]) {
+    public init(deepLinkManager: DeepLinkManager, subscriberFactories: [() -> any DeepLinkSubscriber]) {
         self.deepLinkManager = deepLinkManager
         self.subscriberFactories = subscriberFactories
     }
     
-    public func registerAllSubscribers() async {
+    public func registerAllSubscribers() {
         print("🔗 DeepLinkRegistrator: Starting subscriber registration...")
         
         for (index, factory) in subscriberFactories.enumerated() {
-            let subscriber = await factory()
+            let subscriber = factory()
             deepLinkManager.subscribe(subscriber)
             print("🔗 DeepLinkRegistrator: \(type(of: subscriber)) registered (\(index + 1)/\(subscriberFactories.count))")
         }

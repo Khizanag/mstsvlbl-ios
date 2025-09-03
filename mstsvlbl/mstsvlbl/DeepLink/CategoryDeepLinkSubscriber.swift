@@ -11,7 +11,7 @@ import UIKit
 
 @MainActor
 final class CategoryDeepLinkSubscriber: DeepLinkSubscriber {
-    var id: String { String(describing: type(of: self)) }
+    let id = "CategoryDeepLinkSubscriber"
     let subscribedPath = "category"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

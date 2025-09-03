@@ -1,5 +1,5 @@
 //
-//  ProfileDeepLinkSubscriber.swift
+//  DiscoverDeepLinkSubscriber.swift
 //  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
@@ -10,11 +10,11 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class ProfileDeepLinkSubscriber: DeepLinkSubscriber {
-    var id: String { String(describing: type(of: self)) }
-    let subscribedPath = "profile"
+final class DiscoverDeepLinkSubscriber: DeepLinkSubscriber {
+    let id = "DiscoverDeepLinkSubscriber"
+    let subscribedPath = "discover"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
-        presentViewOnTop(ProfileView())
+        presentViewOnTop(DiscoverView())
     }
 }

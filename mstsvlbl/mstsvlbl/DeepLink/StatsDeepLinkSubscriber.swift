@@ -1,5 +1,5 @@
 //
-//  BookmarksDeepLinkSubscriber.swift
+//  StatsDeepLinkSubscriber.swift
 //  Mstsvlbl_Core_DeepLinking
 //
 //  Created by Giga Khizanishvili on 02.09.25.
@@ -10,11 +10,11 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class BookmarksDeepLinkSubscriber: DeepLinkSubscriber {
-    var id: String { String(describing: type(of: self)) }
-    let subscribedPath = "bookmarks"
+final class StatsDeepLinkSubscriber: DeepLinkSubscriber {
+    let id = "StatsDeepLinkSubscriber"
+    let subscribedPath = "stats"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
-        presentViewOnTop(BookmarksView())
+        presentViewOnTop(StatsView())
     }
 }

@@ -13,7 +13,7 @@ import UIKit
 final class QuizDeepLinkSubscriber: DeepLinkSubscriber {
     @Injected private var repository: QuizRepository
     
-    var id: String { String(describing: type(of: self)) }
+    let id = "QuizDeepLinkSubscriber"
     let subscribedPath = "quiz"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {

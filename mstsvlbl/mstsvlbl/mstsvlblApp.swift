@@ -15,13 +15,11 @@ struct mstsvlblApp: App {
         WindowGroup {
             MainTabView()
                 .onOpenURL { url in
-                    print("🔗 SwiftUI App: Received URL: \(url)")
                     Task {
                         await appDelegate.deepLinkManager.handle(url: url)
                     }
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
-                    print("🔗 SwiftUI App: Received user activity: \(userActivity)")
                     if let url = userActivity.webpageURL {
                         Task {
                             await appDelegate.deepLinkManager.handle(url: url)

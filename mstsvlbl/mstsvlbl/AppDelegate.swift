@@ -12,7 +12,6 @@ import Mstsvlbl_Core_DeepLinking
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let deepLinkManager = DeepLinkManager()
-    private var coordinator: Coordinator?
     private var deepLinkRegistrator: DeepLinkRegistrator?
     var window: UIWindow?
     
@@ -22,9 +21,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         print("🔗 AppDelegate: didFinishLaunchingWithOptions called")
         DIBootstrap.bootstrap()
-        Task {
-            await setupDeepLinking()
-        }
+        setupDeepLinking()
         setupUIWindow()
         return true
     }
@@ -52,14 +49,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+// MARK: - DeepLinking
 private extension AppDelegate {
-    func setupDeepLinking() async {
-        coordinator = Coordinator()
+    func setupDeepLinking() {
         deepLinkRegistrator = DeepLinkRegistrator(
             deepLinkManager: deepLinkManager,
-            subscriberFactories: createSubscriberFactories()
+            subscriberFactories: makeSubscriberFactories()
         )
-        await deepLinkRegistrator?.registerAllSubscribers()
+        deepLinkRegistrator?.registerAllSubscribers()
     }
     
     func setupUIWindow() {
@@ -70,29 +67,15 @@ private extension AppDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func createSubscriberFactories() -> [() -> any Mstsvlbl_Core_DeepLinking.DeepLinkSubscriber] {
-        return [
-            {
-                QuizDeepLinkSubscriber()
-            },
-            {
-                CategoryDeepLinkSubscriber()
-            },
-            {
-                ProfileDeepLinkSubscriber()
-            },
-            {
-                SettingsDeepLinkSubscriber()
-            },
-            {
-                StatsDeepLinkSubscriber()
-            },
-            {
-                DiscoverDeepLinkSubscriber()
-            },
-            {
-                BookmarksDeepLinkSubscriber()
-            }
+    func makeSubscriberFactories() -> [() -> any DeepLinkSubscriber] {
+        [
+            { QuizDeepLinkSubscriber() },
+            { CategoryDeepLinkSubscriber() },
+            { ProfileDeepLinkSubscriber() },
+            { SettingsDeepLinkSubscriber() },
+            { StatsDeepLinkSubscriber() },
+            { DiscoverDeepLinkSubscriber() },
+            { BookmarksDeepLinkSubscriber() },
         ]
     }
 }

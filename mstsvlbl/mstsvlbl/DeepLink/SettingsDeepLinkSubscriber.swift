@@ -11,7 +11,7 @@ import UIKit
 
 @MainActor
 final class SettingsDeepLinkSubscriber: DeepLinkSubscriber {
-    var id: String { String(describing: type(of: self)) }
+    let id = "SettingsDeepLinkSubscriber"
     let subscribedPath = "settings"
     
     func didReceiveDeepLink(_ deepLink: any DeepLink, context: DeepLinkContext) async {
