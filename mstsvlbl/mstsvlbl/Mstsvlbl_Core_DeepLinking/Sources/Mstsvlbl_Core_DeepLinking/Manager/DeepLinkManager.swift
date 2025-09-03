@@ -10,5 +10,4 @@ import Foundation
 public protocol DeepLinkManager: Sendable {
     func handle(url: URL) async
     func register(_ handler: any DeepLinkHandler) async
-    func unregister(_ handler: any DeepLinkHandler) async
 }

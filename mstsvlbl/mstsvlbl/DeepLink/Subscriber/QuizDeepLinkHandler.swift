@@ -7,6 +7,7 @@
 
 import Mstsvlbl_Core_DeepLinking
 
+// MARK: - Parameters
 struct QuizDeepLinkParameters {
     let id: String
     let action: Action
@@ -18,6 +19,7 @@ struct QuizDeepLinkParameters {
     }
 }
 
+// MARK: - DeepLinkHandler
 @MainActor
 final class QuizDeepLinkHandler: DeepLinkHandler {
     typealias Parameters = QuizDeepLinkParameters
@@ -26,16 +28,12 @@ final class QuizDeepLinkHandler: DeepLinkHandler {
     
     let host = "quiz"
     
-    func handle(_ parameters: [String: String], context: DeepLinkContext) async -> DeepLinkResult {
-        guard let quizDeepLink = mapParametersToDeepLinkParameters(parameters) else {
-            return .failure(.missingRequiredParameters)
-        }
-        
+    func handle(_ parameters: Parameters, context: DeepLinkContext) async -> DeepLinkResult {
         do {
-            let quizzes = try await repository.get(by: [quizDeepLink.id])
+            let quizzes = try await repository.get(by: [parameters.id])
             guard let quiz = quizzes.first else { return .failure(.routingFailed) }
             
-            let page: Page = switch quizDeepLink.action {
+            let page: Page = switch parameters.action {
             case .start, .play:
                 .play(quiz)
             case .overview:
@@ -50,7 +48,7 @@ final class QuizDeepLinkHandler: DeepLinkHandler {
         }
     }
     
-    func mapParametersToDeepLinkParameters(_ parameters: [String: String]) -> Parameters? {
+    nonisolated func mapParametersToDeepLinkParameters(_ parameters: [String: String]) -> Parameters? {
         guard let id = parameters["id"],
               let actionRawValue = parameters["action"],
               let action = Parameters.Action(rawValue: actionRawValue)

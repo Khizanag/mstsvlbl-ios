@@ -9,11 +9,11 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class SettingsDeepLinkHandler: DeepLinkHandler {
-    typealias Parameters = Never
+    typealias Parameters = Void
 
     let host = "settings"
     
-    func handle(_ parameters: [String: String], context: DeepLinkContext) async -> DeepLinkResult {
+    func handle(_ parameters: Parameters, context: DeepLinkContext) async -> DeepLinkResult {
         presentViewOnTop(SettingsView())
         return .success
     }

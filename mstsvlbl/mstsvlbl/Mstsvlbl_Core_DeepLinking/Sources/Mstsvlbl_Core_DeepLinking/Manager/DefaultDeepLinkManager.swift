@@ -29,20 +29,8 @@ public final class DefaultDeepLinkManager: DeepLinkManager {
         }
     }
     
-    public func handle(universalLink: URL) async {
-        guard let deepLink = parser.parse(universalLink) else {
-            return
-        }
-        
-        await process(deepLink, source: .userActivity)
-    }
-    
     public func register(_ handler: any DeepLinkHandler) async {
         handlers[handler.host] = handler
-    }
-    
-    public func unregister(_ handler: any DeepLinkHandler) async {
-        handlers.removeValue(forKey: handler.host)
     }
 }
 
