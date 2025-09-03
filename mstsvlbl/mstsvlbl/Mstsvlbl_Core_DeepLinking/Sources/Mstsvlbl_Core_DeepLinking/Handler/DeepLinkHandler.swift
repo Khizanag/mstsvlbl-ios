@@ -6,16 +6,16 @@
 //
 
 public protocol DeepLinkHandler: Identifiable, Sendable {
-    var id: String { get }
-    var subscribedPath: String { get }
+    var host: String { get }
     func canHandleDeepLink(_ deepLink: DeepLink) -> Bool
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async
 }
 
+// MARK: - Protocol Extensions
 public extension DeepLinkHandler {
-    var id: String { String(describing: type(of: self)) }
+    nonisolated var id: String { String(describing: type(of: self)) }
     
     func canHandleDeepLink(_ deepLink: DeepLink) -> Bool {
-        deepLink.name.lowercased() == subscribedPath.lowercased()
+        deepLink.name.lowercased() == host.lowercased()
     }
 }

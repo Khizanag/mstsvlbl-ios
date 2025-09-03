@@ -9,7 +9,7 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class SettingsDeepLinkHandler: DeepLinkHandler {
-    let subscribedPath = "settings"
+    let host = "settings"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         presentViewOnTop(SettingsView())

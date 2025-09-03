@@ -9,7 +9,7 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class DiscoverDeepLinkHandler: DeepLinkHandler {
-    let subscribedPath = "discover"
+    let host = "discover"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         presentViewOnTop(DiscoverView())

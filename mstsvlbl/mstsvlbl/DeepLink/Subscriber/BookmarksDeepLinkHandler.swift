@@ -11,7 +11,7 @@ import UIKit
 
 @MainActor
 final class BookmarksDeepLinkHandler: DeepLinkHandler {
-    let subscribedPath = "bookmarks"
+    let host = "bookmarks"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         let contentView = BookmarksView()

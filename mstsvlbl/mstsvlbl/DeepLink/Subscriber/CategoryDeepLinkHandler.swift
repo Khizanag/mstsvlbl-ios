@@ -9,7 +9,7 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class CategoryDeepLinkHandler: DeepLinkHandler {
-    let subscribedPath = "category"
+    let host = "category"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         guard let categoryId = deepLink.parameters["id"],

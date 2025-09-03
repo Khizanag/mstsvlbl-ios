@@ -11,7 +11,7 @@ import Mstsvlbl_Core_DeepLinking
 final class QuizDeepLinkHandler: DeepLinkHandler {
     @Injected private var repository: QuizRepository
     
-    let subscribedPath = "quiz"
+    let host = "quiz"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         guard let quizId = deepLink.parameters["id"] else { return }

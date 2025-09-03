@@ -9,7 +9,7 @@ import Mstsvlbl_Core_DeepLinking
 
 @MainActor
 final class ProfileDeepLinkHandler: DeepLinkHandler {
-    let subscribedPath = "profile"
+    let host = "profile"
     
     func handle(_ deepLink: DeepLink, context: DeepLinkContext) async {
         presentViewOnTop(ProfileView())
