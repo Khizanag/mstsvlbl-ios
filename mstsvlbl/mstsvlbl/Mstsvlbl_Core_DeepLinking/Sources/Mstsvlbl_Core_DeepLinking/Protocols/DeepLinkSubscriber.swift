@@ -5,8 +5,6 @@
 //  Created by Giga Khizanishvili on 02.09.25.
 //
 
-import Foundation
-
 public protocol DeepLinkSubscriber: Identifiable, Sendable {
     var id: String { get }
     var subscribedPath: String { get }
