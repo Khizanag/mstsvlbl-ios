@@ -5,6 +5,8 @@
 //  Created by Giga Khizanishvili on 01.09.25.
 //
 
+import Mstsvlbl_Core_DeepLinking
+
 public enum DIBootstrap {
     public static func bootstrap() {
         DIContainer.configure { r in
@@ -16,6 +18,9 @@ public enum DIBootstrap {
             r.factory(BookmarksViewModel.self) { BookmarksViewModel() }
             r.factory(QuizListViewModel.self) { QuizListViewModel() }
             r.factory(QuizViewModel.self) { QuizViewModel() }
+            
+            // Deep Linking
+            r.singleton(DeepLinkManager.self) { DefaultDeepLinkManager() }
         }
     }
 }

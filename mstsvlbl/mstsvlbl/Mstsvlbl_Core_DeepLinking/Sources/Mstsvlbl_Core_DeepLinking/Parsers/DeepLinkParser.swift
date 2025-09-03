@@ -7,41 +7,21 @@
 
 import Foundation
 
-public final class DeepLinkParser {
-    private var parsers: [String: DeepLinkURLParser] = [:]
+public final class DeepLinkParser: Sendable {
+    private let parsers: [DeepLinkURLParser] = [
+        UniversalLinkParser(),
+        CustomSchemeParser(scheme: "mstsvlbl"),
+    ]
     
-    public init() {
-        setupDefaultParsers()
-    }
-    
-    private func setupDefaultParsers() {
-        // Register custom scheme parser with the app's scheme
-        let customSchemeParser = CustomSchemeParser(scheme: "mstsvlbl")
-        parsers["custom"] = customSchemeParser
-        
-        // Register universal link parser
-        let universalLinkParser = UniversalLinkParser()
-        parsers["universal"] = universalLinkParser
-    }
+    public init() { }
     
     public func parse(_ url: URL) -> DeepLink? {
-        if let universalLinkParser = parsers["universal"],
-           let deepLink = universalLinkParser.parse(url)
-        {
-            return deepLink
+        for parser in parsers {
+            if let deepLink = parser.parse(url) {
+                return deepLink
+            }
         }
-        
-        if let customSchemeParser = parsers["custom"],
-           let deepLink = customSchemeParser.parse(url)
-        {
-            return deepLink
-        }
-        
         
         return nil
-    }
-    
-    public func registerParser(_ parser: DeepLinkURLParser, for key: String) {
-        parsers[key] = parser
     }
 }

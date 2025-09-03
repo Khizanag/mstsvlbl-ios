@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol DeepLinkURLParser {
+public protocol DeepLinkURLParser: Sendable {
     func parse(_ url: URL) -> DeepLink?
 }

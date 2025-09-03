@@ -10,9 +10,8 @@ import SwiftUI
 import Mstsvlbl_Core_DeepLinking
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    let deepLinkManager = DeepLinkManager()
-    private var deepLinkRegistrator: DeepLinkRegistrator?
+    @Injected private var deepLinkManager: DeepLinkManager
+    private let deepLinkRegistrator = DeepLinkSubscriberRegistrator()
     var window: UIWindow?
     
     func application(
@@ -30,7 +29,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        print("🔗 AppDelegate: open URL called with: \(url)")
         Task { await deepLinkManager.handle(url: url) }
         return true
     }
@@ -40,9 +38,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
     ) -> Bool {
-        print("🔗 AppDelegate: continue userActivity called")
         if let url = userActivity.webpageURL {
-            Task { await deepLinkManager.handle(url: url) }
+            Task { await deepLinkManager.handle(universalLink: url) }
         }
         return true
     }
@@ -51,11 +48,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - Private
 private extension AppDelegate {
     func setupDeepLinking() {
-        let deepLinkRegistrator = DeepLinkRegistrator(
-            deepLinkManager: deepLinkManager
-        )
-        deepLinkRegistrator.register()
-        self.deepLinkRegistrator = deepLinkRegistrator
+        Task {
+            await deepLinkRegistrator.registerAll()
+        }
     }
     
     func setupUIWindow() {

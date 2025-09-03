@@ -6,23 +6,25 @@
 //
 
 import SwiftUI
+import Mstsvlbl_Core_DeepLinking
 
 @main
 struct mstsvlblApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @Injected private var deepLinkManager: DeepLinkManager
     
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .onOpenURL { url in
                     Task {
-                        await appDelegate.deepLinkManager.handle(url: url)
+                        await deepLinkManager.handle(url: url)
                     }
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
                     if let url = userActivity.webpageURL {
                         Task {
-                            await appDelegate.deepLinkManager.handle(url: url)
+                            await deepLinkManager.handle(universalLink: url)
                         }
                     }
                 }
