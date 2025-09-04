@@ -15,19 +15,14 @@ public final class CustomSchemeParser: DeepLinkURLParser {
     }
     
     public func parse(_ url: URL) -> DeepLink? {
-        // Verify the URL scheme matches our expected scheme
         guard url.scheme?.lowercased() == scheme.lowercased() else {
-            print("🔗 CustomSchemeParser: URL scheme '\(url.scheme ?? "nil")' doesn't match expected scheme '\(scheme)'")
             return nil
         }
         
-        // Extract the host as the name (e.g., "quiz" from "mstsvlbl://quiz?id=123")
         guard let host = url.host?.lowercased() else {
-            print("🔗 CustomSchemeParser: No host found in URL: \(url)")
             return nil
         }
         
-        // Parse query parameters
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let queryItems = components?.queryItems ?? []
         
@@ -38,7 +33,6 @@ public final class CustomSchemeParser: DeepLinkURLParser {
             }
         )
         
-        // Create and return the deep link
         return DeepLink(name: host, parameters: parameters)
     }
 }

@@ -32,17 +32,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         Task { await deepLinkManager.handle(url: url) }
         return true
     }
-    
-//    func application(
-//        _ application: UIApplication,
-//        continue userActivity: NSUserActivity,
-//        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-//    ) -> Bool {
-//        if let url = userActivity.webpageURL {
-//            Task { await deepLinkManager.handle(universalLink: url) }
-//        }
-//        return true
-//    }
 }
 
 // MARK: - Private

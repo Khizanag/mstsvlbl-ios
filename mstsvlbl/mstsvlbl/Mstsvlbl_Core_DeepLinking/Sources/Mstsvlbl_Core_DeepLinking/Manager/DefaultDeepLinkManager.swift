@@ -14,7 +14,7 @@ public final class DefaultDeepLinkManager: DeepLinkManager {
     private nonisolated let parser: DeepLinkParser
     var savedDeepLink: DeepLink?
     
-    public nonisolated init(parser: DeepLinkParser = DeepLinkParser()) {
+    public init(parser: DeepLinkParser = DeepLinkParser()) {
         self.parser = parser
     }
     

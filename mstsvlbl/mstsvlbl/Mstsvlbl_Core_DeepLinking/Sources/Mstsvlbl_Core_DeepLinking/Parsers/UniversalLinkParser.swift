@@ -13,7 +13,6 @@ public final class UniversalLinkParser: DeepLinkURLParser {
     public func parse(_ url: URL) -> DeepLink? {
         let pathComponents = url.pathComponents.filter { $0 != "/" }
         guard let firstPath = pathComponents.first else {
-            print("🔗 UniversalLinkParser: No path components found in URL: \(url)")
             return nil
         }
         
@@ -26,8 +25,6 @@ public final class UniversalLinkParser: DeepLinkURLParser {
                 return (item.name, value)
             }
         )
-        
-        print("🔗 UniversalLinkParser: Parsed URL - Name: \(firstPath), Parameters: \(parameters)")
         
         // Create and return the deep link
         return DeepLink(name: firstPath, parameters: parameters)
